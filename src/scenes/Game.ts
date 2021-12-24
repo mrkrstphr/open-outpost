@@ -61,6 +61,9 @@ export default class Game extends Phaser.Scene {
   private structures: GameEntity[] = [];
   private selectedObjects: GameEntity[] = [];
 
+  private map;
+  private controls;
+
   constructor() {
     super(Scenes.Game);
   }
@@ -72,20 +75,15 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
-    const map = this.make.tilemap({ key: 'map' });
-    const tileset = map.addTilesetImage('sands', 'tiles');
+    this.map = this.make.tilemap({ key: 'map' });
+    const tileset = this.map.addTilesetImage('sands', 'tiles');
 
-    map.createLayer('Ground', tileset);
+    this.map.createLayer('Ground', tileset);
 
-    const rocksEtcLayer = map.createLayer('Terrain', tileset);
+    const rocksEtcLayer = this.map.createLayer('Terrain', tileset);
     rocksEtcLayer.setCollisionByProperty({ collides: true });
 
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
-    rocksEtcLayer.renderDebug(debugGraphics, {
-      tileColor: null,
-      collidingTileColor: new Phaser.Display.Color(243, 144, 48, 255),
-      faceColor: new Phaser.Display.Color(40, 39, 37, 255),
-    });
+    this.configureCamera();
 
     this.structures.push(new CommandCenter(this, 50, 100));
     this.structures.push(new StructureFactory(this, 100, 50));
@@ -103,6 +101,30 @@ export default class Game extends Phaser.Scene {
         );
       }
     );
+  }
+
+  update(time, delta) {
+    this.controls.update(delta);
+  }
+
+  private configureCamera() {
+    this.cameras.main.setBounds(
+      0,
+      0,
+      this.map.widthInPixels,
+      this.map.heightInPixels
+    );
+
+    const cursors = this.input.keyboard.createCursorKeys();
+    var controlConfig = {
+      camera: this.cameras.main,
+      left: cursors.left,
+      right: cursors.right,
+      up: cursors.up,
+      down: cursors.down,
+      speed: 0.25,
+    };
+    this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
   }
 
   private checkSelected(object?) {
