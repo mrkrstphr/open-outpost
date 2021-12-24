@@ -1,49 +1,84 @@
 {
   "frames": {
-    "agridome.png": {
+    "agridome": {
       "frame": { "x": 1, "y": 1, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "command-center.png": {
+    "big01": {
+      "frame": { "x": 19, "y": 37, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    "big02": {
+      "frame": { "x": 1, "y": 63, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    "big03": {
+      "frame": { "x": 27, "y": 63, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    "big04": {
+      "frame": { "x": 1, "y": 89, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    "big05": {
+      "frame": { "x": 27, "y": 89, "w": 24, "h": 24 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
+      "sourceSize": { "w": 24, "h": 24 }
+    },
+    "command-center": {
       "frame": { "x": 19, "y": 1, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "lab.png": {
+    "lab": {
       "frame": { "x": 37, "y": 1, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "powerplant.png": {
-      "frame": { "x": 55, "y": 1, "w": 16, "h": 16 },
+    "powerplant": {
+      "frame": { "x": 1, "y": 19, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "residence.png": {
-      "frame": { "x": 73, "y": 1, "w": 16, "h": 16 },
+    "residence": {
+      "frame": { "x": 19, "y": 19, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "structure-factory.png": {
-      "frame": { "x": 91, "y": 1, "w": 16, "h": 16 },
+    "structure-factory": {
+      "frame": { "x": 37, "y": 19, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "vehicle-factory.png": {
-      "frame": { "x": 109, "y": 1, "w": 16, "h": 16 },
+    "vehicle-factory": {
+      "frame": { "x": 1, "y": 37, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -55,8 +90,8 @@
     "version": "1.0",
     "image": "buildings.png",
     "format": "RGBA8888",
-    "size": { "w": 126, "h": 18 },
+    "size": { "w": 54, "h": 114 },
     "scale": "1",
-    "smartupdate": "$TexturePacker:SmartUpdate:f872553eb2eca24be45c2ae468ccf2dc:d7639ac6803d16d58f3d59d71a866d6f:8f670863a0ac9ac15291caba2801fd50$"
+    "smartupdate": "$TexturePacker:SmartUpdate:91db109f4432323de62d2e532eac3ec5:c6810d7fa0a2e0a3b7fd0bcbb1a0497b:8f670863a0ac9ac15291caba2801fd50$"
   }
 }
