@@ -10,10 +10,10 @@ export default class Preloader extends Phaser.Scene {
     this.load.image('tiles', 'assets/tiles/sands.png');
     this.load.tilemapTiledJSON('map', 'assets/maps/sands.json');
 
-    this.load.spritesheet(
+    this.load.atlas(
       'buildings-violet',
       'assets/buildings/violet/buildings.png',
-      { frameWidth: 18, frameHeight: 18 }
+      'assets/buildings/violet/buildings.json'
     );
   }
 

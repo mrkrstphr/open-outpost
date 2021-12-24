@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { v4 as uuidv4 } from 'uuid';
-import { Scenes } from '../consts';
+import { Buildings, Scenes } from '../consts';
 
 abstract class GameEntity extends Phaser.GameObjects.Container {
   private entityName: string;
@@ -32,7 +32,7 @@ class CommandCenter extends GameEntity {
     super(scene, x, y);
 
     this.sprite = scene.physics.add
-      .sprite(x, y, 'buildings-violet', 3)
+      .sprite(x, y, 'buildings-violet', Buildings.CommandCenter)
       .setInteractive({ cursor: 'pointer' })
       .setName(this.getName());
   }
@@ -47,7 +47,7 @@ class StructureFactory extends GameEntity {
     super(scene, x, y);
 
     this.sprite = scene.physics.add
-      .sprite(x, y, 'buildings-violet', 2)
+      .sprite(x, y, 'buildings-violet', Buildings.StructureFactory)
       .setInteractive({ cursor: 'pointer' })
       .setName(this.getName());
   }
