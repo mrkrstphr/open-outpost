@@ -1,4 +1,4 @@
-export enum Buildings {
+export enum BuildingSprites {
   CommandCenter = 'command-center',
   StructureFactory = 'structure-factory',
 }

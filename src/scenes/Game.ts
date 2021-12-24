@@ -1,61 +1,6 @@
 import Phaser from 'phaser';
-import { v4 as uuidv4 } from 'uuid';
-import { Buildings, Scenes } from '../consts';
-
-abstract class GameEntity extends Phaser.GameObjects.Container {
-  private entityName: string;
-  protected isSelected = false;
-  protected sprite?: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
-
-  constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y);
-    this.entityName = `${this.entityType()}:${uuidv4()}`;
-  }
-
-  abstract entityType(): string;
-
-  getName() {
-    return this.entityName;
-  }
-
-  select() {
-    this.sprite!.setTint(0xff0000);
-  }
-
-  deselect() {
-    this.sprite!.clearTint();
-  }
-}
-
-class CommandCenter extends GameEntity {
-  constructor(scene: Game, x: number, y: number) {
-    super(scene, x, y);
-
-    this.sprite = scene.physics.add
-      .sprite(x, y, 'buildings-violet', Buildings.CommandCenter)
-      .setInteractive({ cursor: 'pointer' })
-      .setName(this.getName());
-  }
-
-  entityType() {
-    return 'Command Center';
-  }
-}
-
-class StructureFactory extends GameEntity {
-  constructor(scene: Game, x: number, y: number) {
-    super(scene, x, y);
-
-    this.sprite = scene.physics.add
-      .sprite(x, y, 'buildings-violet', Buildings.StructureFactory)
-      .setInteractive({ cursor: 'pointer' })
-      .setName(this.getName());
-  }
-
-  entityType() {
-    return 'Structure Factory';
-  }
-}
+import { Buildings, GameEntity } from '../entities';
+import { Scenes } from '../consts';
 
 export default class Game extends Phaser.Scene {
   private structures: GameEntity[] = [];
@@ -85,8 +30,8 @@ export default class Game extends Phaser.Scene {
 
     this.configureCamera();
 
-    this.structures.push(new CommandCenter(this, 50, 100));
-    this.structures.push(new StructureFactory(this, 100, 50));
+    this.structures.push(new Buildings.CommandCenter(this, 50, 100));
+    this.structures.push(new Buildings.StructureFactory(this, 100, 50));
 
     this.input.on(
       Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,

@@ -15,6 +15,12 @@ export default class Preloader extends Phaser.Scene {
       'assets/buildings/violet/buildings.png',
       'assets/buildings/violet/buildings.json'
     );
+
+    this.load.atlas(
+      'vehicles-violet',
+      'assets/vehicles/violet/vehicles.png',
+      'assets/vehicles/violet/vehicles.json'
+    );
   }
 
   create() {
