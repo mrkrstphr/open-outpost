@@ -54,82 +54,6 @@ export abstract class Vehicle extends GameEntity {
       //   this.sprite!.anims.currentAnim.key.split('-').pop() ?? 'down';
       // this.sprite!.play(`idle-${direction}`, true);
     }
-
-    // if (left) {
-    //   this.sprite!.setFlipX(true);
-    //   this.sprite!.play('walk-side', true);
-    //   this.sprite!.x -= speed;
-    // } else if (right) {
-    //   this.sprite!.setFlipX(false);
-    //   this.sprite!.play('walk-side', true);
-    //   this.sprite!.x += speed;
-    // } else if (up) {
-    //   this.sprite!.play('walk-up', true);
-    //   this.sprite!.y -= speed;
-    // } else if (down) {
-    //   this.sprite!.play('walk-down', true);
-    //   this.sprite!.y += speed;
-    // } else {
-    // }
-
-    /*
-
-    let dx = 0;
-    let dy = 0;
-
-    if (this.moveToTarget) {
-      console.log(this.moveToTarget);
-      dx = this.moveToTarget.x - this.x;
-      dy = this.moveToTarget.y - this.y;
-
-      if (Math.abs(dx) < 5) {
-        dx = 0;
-      }
-      if (Math.abs(dy) < 5) {
-        dy = 0;
-      }
-
-      if (dx === 0 && dy === 0) {
-        if (this.movePath.length > 0) {
-          this.moveToVector(this.movePath.shift()!);
-          return;
-        }
-
-        this.moveToTarget = undefined;
-      }
-      
-    }
-
-    // this logic is the same except we determine
-    // if a key is down based on dx and dy
-    const leftDown = dx < 0;
-    const rightDown = dx > 0;
-    const upDown = dy < 0;
-    const downDown = dy > 0;
-
-    const speed = 100;
-
-    if (leftDown) {
-      //   this.anims.play('faune-run-side', true);
-      //   this.setVelocity(-speed, 0);
-      //   this.flipX = true;
-    } else if (rightDown) {
-      //   this.anims.play('faune-run-side', true);
-      //   this.setVelocity(speed, 0);
-      //   this.flipX = false;
-    } else if (upDown) {
-      //   this.anims.play('faune-run-up', true);
-      //   this.setVelocity(0, -speed);
-    } else if (downDown) {
-      //   this.anims.play('faune-run-down', true);
-      //   this.setVelocity(0, speed);
-    } else {
-      //   const parts = this.anims.currentAnim.key.split('-');
-      //   parts[1] = 'idle';
-      //   this.anims.play(parts.join('-'));
-      //   this.setVelocity(0, 0);
-    }
-    */
   }
 
   private determineMovement() {
@@ -156,20 +80,6 @@ export abstract class Vehicle extends GameEntity {
       this.path.shift();
       return this.determineMovement();
     }
-
-    // if (x > tx && y > ty) {
-    //   movement.left = true;
-    //   movement.up = true;
-    // } else if (x > tx && y < ty) {
-    //   movement.left = true;
-    //   movement.down = true;
-    // } else if (x < tx && y > ty) {
-    //   movement.right = true;
-    //   movement.up = true;
-    // } else if (x < tx && y < ty) {
-    //   movement.right = true;
-    //   movement.down = true;
-    // }
 
     if (x > tx) {
       movement.left = true;
