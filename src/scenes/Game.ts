@@ -2,7 +2,7 @@ import EasyStar from 'easystarjs';
 import Phaser from 'phaser';
 import { Buildings, GameEntity, Vehicles } from '../entities';
 import { Scenes } from '../consts';
-import { Vehicle } from '~/entities/vehicles/Vehicle';
+import { Vehicle } from '../entities/vehicles/Vehicle';
 
 export default class Game extends Phaser.Scene {
   private structures: GameEntity[] = [];

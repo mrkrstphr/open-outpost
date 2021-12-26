@@ -1,5 +1,5 @@
 import { VehicleSprites } from '../../consts';
-import Game from '~/scenes/Game';
+import Game from '../../scenes/Game';
 import { Vehicle } from './Vehicle';
 
 export class Builder extends Vehicle {

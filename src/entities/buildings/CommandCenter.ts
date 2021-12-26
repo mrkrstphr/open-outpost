@@ -1,5 +1,5 @@
 import { BuildingSprites } from '../../consts';
-import Game from '~/scenes/Game';
+import Game from '../../scenes/Game';
 import GameEntity from '../GameEntity';
 
 export class CommandCenter extends GameEntity {
