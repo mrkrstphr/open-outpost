@@ -24,4 +24,8 @@ export default abstract class GameEntity extends Phaser.GameObjects.Container {
   deselect() {
     this.sprite!.clearTint();
   }
+
+  getSprite() {
+    return this.sprite;
+  }
 }
