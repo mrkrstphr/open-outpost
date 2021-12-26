@@ -1,4 +1,4 @@
-import { VehicleSprites } from '../../consts';
+import { VehicleEntityClass, VehicleSprites } from '../../consts';
 import Game from '../../scenes/Game';
 import { Vehicle } from './Vehicle';
 
@@ -12,7 +12,7 @@ export class Builder extends Vehicle {
       .setName(this.getName());
   }
 
-  entityType() {
-    return 'Command Center';
+  entityClass() {
+    return VehicleEntityClass.Builder;
   }
 }

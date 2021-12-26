@@ -3,7 +3,12 @@ export enum BuildingSprites {
   StructureFactory = 'structure-factory',
 }
 
-export const enum EntityTypes {
+export enum BuildingEntityClass {
+  CommandCenter = 'command-center',
+  FactoryBuilding = 'factory-building',
+}
+
+export enum EntityTypes {
   Building = 'building',
   Vehicle = 'vehicle',
 }
@@ -11,6 +16,10 @@ export const enum EntityTypes {
 export enum Scenes {
   Preloader = 'preloader',
   Game = 'game',
+}
+
+export enum VehicleEntityClass {
+  Builder = 'builder-vehicle',
 }
 
 export enum VehicleSprites {

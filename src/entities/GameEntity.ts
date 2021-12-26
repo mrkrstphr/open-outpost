@@ -1,3 +1,4 @@
+import { BuildingEntityClass, EntityTypes, VehicleEntityClass } from 'consts';
 import Phaser from 'phaser';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -11,9 +12,8 @@ export default abstract class GameEntity extends Phaser.GameObjects.Container {
     this.entityName = `${this.entityType()}:${uuidv4()}`;
   }
 
-  // TODO FIXME lol?
-  abstract entityType(): string;
-  abstract getEntityType(): string;
+  abstract entityType(): EntityTypes;
+  abstract entityClass(): BuildingEntityClass | VehicleEntityClass;
 
   getName() {
     return this.entityName;

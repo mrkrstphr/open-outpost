@@ -1,4 +1,4 @@
-import { BuildingSprites } from '../../consts';
+import { BuildingEntityClass, BuildingSprites } from '../../consts';
 import Game from '../../scenes/Game';
 import { Building } from './Building';
 
@@ -12,7 +12,7 @@ export class StructureFactory extends Building {
       .setName(this.getName());
   }
 
-  entityType() {
-    return 'Structure Factory';
+  entityClass() {
+    return BuildingEntityClass.FactoryBuilding;
   }
 }

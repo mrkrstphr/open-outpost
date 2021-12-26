@@ -1,8 +1,12 @@
-import { VehicleSprites } from '../../consts';
+import { EntityTypes, VehicleSprites } from '../../consts';
 import { GameEntity } from '..';
 
 export abstract class Vehicle extends GameEntity {
   private path: Phaser.Math.Vector2[] = [];
+
+  entityType() {
+    return EntityTypes.Vehicle;
+  }
 
   setPath(path: Phaser.Math.Vector2[]) {
     this.path = path;
