@@ -6,9 +6,10 @@ import { Vehicle } from '../entities/vehicles/Vehicle';
 
 export default class Game extends Phaser.Scene {
   private structures: GameEntity[] = [];
-  private selectedObjects: GameEntity[] = [];
+  private selectedStructure?: GameEntity;
 
   public vehicles: Vehicle[] = [];
+  private selectedVehicles: Vehicle[] = [];
 
   private map!: Phaser.Tilemaps.Tilemap;
   private tileset!: Phaser.Tilemaps.Tileset;
@@ -49,9 +50,14 @@ export default class Game extends Phaser.Scene {
         this.checkSelected(object);
 
         this.debug(
-          'selectedEntity',
-          this.selectedObjects.length
-            ? this.selectedObjects.map((s) => s.getName()).join(', ')
+          'selectedBuilding',
+          this.selectedStructure?.getName() ?? '[none]'
+        );
+
+        this.debug(
+          'selectedVehicles',
+          this.selectedVehicles.length
+            ? this.selectedVehicles.map((s) => s.getName()).join(', ')
             : '[none]'
         );
       }
@@ -60,6 +66,10 @@ export default class Game extends Phaser.Scene {
     this.input.on(
       Phaser.Input.Events.POINTER_UP,
       (pointer: Phaser.Input.Pointer) => {
+        if (!this.selectedVehicles.length) {
+          return;
+        }
+
         const { worldX, worldY } = pointer;
 
         this.pathFinder.findPath(
@@ -148,32 +158,35 @@ export default class Game extends Phaser.Scene {
     this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
   }
 
-  private checkSelected(object?) {
+  private checkSelected(object: Phaser.Physics.Arcade.Sprite) {
+    // we didn't select anything, so clear everything
     if (!object) {
-      this.deselectAllSelectedObjects();
-      this.selectedObjects = [];
+      this.selectedStructure && this.selectedStructure.deselect();
+      this.selectedVehicles.length &&
+        this.selectedVehicles.forEach((vehicle) => vehicle.deselect());
+      this.selectedStructure = undefined;
+      this.selectedVehicles = [];
       return;
     }
 
-    const structure = this.structures.find(
+    const building = this.structures.find(
       (structure) => structure.getName() === object?.name
     );
 
-    if (structure) {
-      if (this.selectedObjects.includes(structure)) {
-        structure.deselect();
-        this.selectedObjects = this.selectedObjects.filter(
-          (o) => o.getName() !== structure.getName()
-        );
-      } else {
-        this.deselectAllSelectedObjects();
-        structure.select();
-        this.selectedObjects = [structure];
-      }
+    if (building) {
+      this.selectedStructure && this.selectedStructure.deselect();
+      this.selectedStructure = building;
+      building.select();
     }
-  }
 
-  private deselectAllSelectedObjects() {
-    this.selectedObjects.forEach((selectedObject) => selectedObject.deselect());
+    const vehicle = this.vehicles.find(
+      (vehicles) => vehicles.getName() === object?.name
+    );
+
+    if (vehicle) {
+      this.selectedVehicles.map((vehicle) => vehicle.deselect());
+      this.selectedVehicles = [vehicle];
+      vehicle.select();
+    }
   }
 }

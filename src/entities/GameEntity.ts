@@ -11,7 +11,9 @@ export default abstract class GameEntity extends Phaser.GameObjects.Container {
     this.entityName = `${this.entityType()}:${uuidv4()}`;
   }
 
+  // TODO FIXME lol?
   abstract entityType(): string;
+  abstract getEntityType(): string;
 
   getName() {
     return this.entityName;
