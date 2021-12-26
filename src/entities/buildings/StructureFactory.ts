@@ -1,8 +1,8 @@
 import { BuildingSprites } from '../../consts';
 import Game from '../../scenes/Game';
-import GameEntity from '../GameEntity';
+import { Building } from './Building';
 
-export class StructureFactory extends GameEntity {
+export class StructureFactory extends Building {
   constructor(scene: Game, x: number, y: number) {
     super(scene, x, y);
 

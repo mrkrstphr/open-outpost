@@ -3,6 +3,11 @@ export enum BuildingSprites {
   StructureFactory = 'structure-factory',
 }
 
+export const enum EntityTypes {
+  Building = 'building',
+  Vehicle = 'vehicle',
+}
+
 export enum Scenes {
   Preloader = 'preloader',
   Game = 'game',
