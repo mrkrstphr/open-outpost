@@ -19,16 +19,20 @@ export enum Scenes {
 }
 
 export enum VehicleEntityClass {
-  Builder = 'builder-vehicle',
+  Builder = 'BuilderVehicle',
 }
 
-export enum VehicleSprites {
-  BuilderE01 = 'builder-e-01',
-  BuilderN01 = 'builder-n-01',
-  BuilderNE01 = 'builder-ne-01',
-  BuilderNW01 = 'builder-nw-01',
-  BuilderS01 = 'builder-s-01',
-  BuilderSE01 = 'builder-se-01',
-  BuilderSW01 = 'builder-sw-01',
-  BuilderW01 = 'builder-w-01',
+enum BuilderSprites {
+  East_01 = 'builder-e-01',
+  North_01 = 'builder-n-01',
+  NorthEast_01 = 'builder-ne-01',
+  NorthWest_01 = 'builder-nw-01',
+  South_01 = 'builder-s-01',
+  SouthEast_01 = 'builder-se-01',
+  SouthWest_01 = 'builder-sw-01',
+  West_01 = 'builder-w-01',
 }
+
+export const VehicleSprites = {
+  [VehicleEntityClass.Builder]: BuilderSprites,
+};

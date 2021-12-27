@@ -18,45 +18,33 @@ export abstract class Vehicle extends GameEntity {
     const speed = 1;
 
     if (left && up) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderNW01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].NorthWest_01);
       this.sprite!.x -= speed;
       this.sprite!.y -= speed;
     } else if (right && up) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderNE01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].NorthEast_01);
       this.sprite!.x += speed;
       this.sprite!.y -= speed;
     } else if (left && down) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderSW01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].SouthWest_01);
       this.sprite!.x -= speed;
       this.sprite!.y += speed;
     } else if (right && down) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderSE01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].SouthEast_01);
       this.sprite!.x += speed;
       this.sprite!.y += speed;
     } else if (left) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderW01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].West_01);
       this.sprite!.x -= speed;
     } else if (right) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderE01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].East_01);
       this.sprite!.x += speed;
     } else if (down) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderS01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].South_01);
       this.sprite!.y += speed;
     } else if (up) {
-      // TODO FIXME
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites.BuilderN01);
+      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].North_01);
       this.sprite!.y -= speed;
-    } else {
-      // const direction =
-      //   this.sprite!.anims.currentAnim.key.split('-').pop() ?? 'down';
-      // this.sprite!.play(`idle-${direction}`, true);
     }
   }
 
