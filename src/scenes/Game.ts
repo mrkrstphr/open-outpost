@@ -42,52 +42,14 @@ export default class Game extends Phaser.Scene {
 
     this.configurePathFinder();
     this.configureCamera();
+    this.configureInputHandling();
 
+    // create some test buildings + vehicles
     this.structures.push(new Buildings.CommandCenter(this, 50, 100));
     this.structures.push(new Buildings.StructureFactory(this, 100, 50));
 
     const builderVehicle = new Vehicles.Builder(this, 100, 100);
     this.vehicles.push(builderVehicle);
-
-    this.input.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, (pointer, [object]) => {
-      this.checkSelected(object);
-
-      this.debug('selectedBuilding', this.selectedStructure?.getName() ?? '[none]');
-
-      this.debug(
-        'selectedVehicles',
-        this.selectedVehicles.length
-          ? this.selectedVehicles.map((s) => s.getName()).join(', ')
-          : '[none]'
-      );
-    });
-
-    this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
-      if (!this.selectedVehicles.length) {
-        return;
-      }
-
-      const { worldX, worldY } = pointer;
-
-      this.pathFinder.findPath(
-        Math.floor(builderVehicle.getSprite()!.x / this.map.tileWidth),
-        Math.floor(builderVehicle.getSprite()!.y / this.map.tileHeight),
-        Math.floor(worldX / this.map.tileWidth),
-        Math.floor(worldY / this.map.tileHeight),
-        (path) => {
-          if (path) {
-            builderVehicle.setPath(path.map((p) => new Phaser.Math.Vector2(p.x, p.y)));
-          }
-        }
-      );
-
-      this.pathFinder.calculate();
-    });
-
-    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.input.off(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN);
-      this.input.off(Phaser.Input.Events.POINTER_UP);
-    });
   }
 
   update(time, delta) {
@@ -146,31 +108,94 @@ export default class Game extends Phaser.Scene {
     this.controls = new Phaser.Cameras.Controls.FixedKeyControl(controlConfig);
   }
 
-  private checkSelected(object: Phaser.Physics.Arcade.Sprite) {
-    // we didn't select anything, so clear everything
-    if (!object) {
-      this.selectedStructure && this.selectedStructure.deselect();
-      this.selectedVehicles.length &&
-        this.selectedVehicles.forEach((vehicle) => vehicle.deselect());
-      this.selectedStructure = undefined;
-      this.selectedVehicles = [];
-      return;
-    }
+  private configureInputHandling() {
+    this.input.mouse.disableContextMenu();
 
+    this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer, [object]) => {
+      // we didn't select anything, so clear everything
+      if (!object) {
+        // move any selected vehicles on right click
+        if (this.selectedVehicles.length && pointer.rightButtonDown()) {
+          this.moveSelectedVehicles(pointer);
+          return;
+        }
+
+        this.selectedStructure && this.selectedStructure.deselect();
+        this.selectedVehicles.length &&
+          this.selectedVehicles.forEach((vehicle) => vehicle.deselect());
+        this.selectedStructure = undefined;
+        this.selectedVehicles = [];
+
+        return;
+      }
+
+      this.handleSelectionChange(object);
+
+      this.debug('selectedBuilding', this.selectedStructure?.getName() ?? '[none]');
+
+      this.debug(
+        'selectedVehicles',
+        this.selectedVehicles.length
+          ? this.selectedVehicles.map((s) => s.getName()).join(', ')
+          : '[none]'
+      );
+    });
+
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.input.off(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN);
+      this.input.off(Phaser.Input.Events.POINTER_UP);
+    });
+  }
+
+  private handleSelectionChange(object: Phaser.Physics.Arcade.Sprite) {
     const building = this.structures.find((structure) => structure.getName() === object?.name);
 
     if (building) {
+      // if we clicked on a building, deselect any currently selected building, set
+      // the clicked building to selected. Finally, deselect any selected vehicles
       this.selectedStructure && this.selectedStructure.deselect();
       this.selectedStructure = building;
       building.select();
+
+      this.selectedVehicles.map((vehicle) => vehicle.deselect());
+      this.selectedVehicles = [];
     }
 
     const vehicle = this.vehicles.find((vehicles) => vehicles.getName() === object?.name);
 
     if (vehicle) {
+      // if we clicked on a vehicle, deselect any currently selected vehicles, set
+      // the clicked vehicle to selected. Finally, deselect any selected building.
       this.selectedVehicles.map((vehicle) => vehicle.deselect());
       this.selectedVehicles = [vehicle];
       vehicle.select();
+
+      this.selectedStructure && this.selectedStructure.deselect();
+      this.selectedStructure = undefined;
     }
+  }
+
+  private moveSelectedVehicles(pointer: Phaser.Input.Pointer) {
+    const { worldX, worldY } = pointer;
+
+    this.selectedVehicles.forEach((selectedVehicle) => {
+      this.pathFinder.findPath(
+        Math.floor(selectedVehicle.getSprite()!.x / this.map.tileWidth),
+        Math.floor(selectedVehicle.getSprite()!.y / this.map.tileHeight),
+        Math.floor(worldX / this.map.tileWidth),
+        Math.floor(worldY / this.map.tileHeight),
+        (path) => {
+          if (path) {
+            selectedVehicle.setPath(path.map((p) => new Phaser.Math.Vector2(p.x, p.y)));
+          }
+        }
+      );
+      this.pathFinder.calculate();
+    });
+
+    this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.input.off(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN);
+      this.input.off(Phaser.Input.Events.POINTER_UP);
+    });
   }
 }
