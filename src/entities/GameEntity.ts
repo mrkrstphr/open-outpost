@@ -9,7 +9,7 @@ export default abstract class GameEntity extends Phaser.GameObjects.Container {
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y);
-    this.entityName = `${this.entityType()}:${uuidv4()}`;
+    this.entityName = `${this.entityClass()}:${uuidv4()}`;
   }
 
   abstract entityType(): EntityTypes;

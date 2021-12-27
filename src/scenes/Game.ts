@@ -28,6 +28,11 @@ export default class Game extends Phaser.Scene {
     document.getElementById(key)!.innerText = value;
   }
 
+  getColor() {
+    // TODO FIXME the user can choose their color
+    return 'violet';
+  }
+
   create() {
     this.map = this.make.tilemap({ key: 'map' });
     this.tileset = this.map.addTilesetImage('sands', 'tiles');
@@ -44,51 +49,40 @@ export default class Game extends Phaser.Scene {
     const builderVehicle = new Vehicles.Builder(this, 100, 100);
     this.vehicles.push(builderVehicle);
 
-    this.input.on(
-      Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN,
-      (pointer, [object]) => {
-        this.checkSelected(object);
+    this.input.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, (pointer, [object]) => {
+      this.checkSelected(object);
 
-        this.debug(
-          'selectedBuilding',
-          this.selectedStructure?.getName() ?? '[none]'
-        );
+      this.debug('selectedBuilding', this.selectedStructure?.getName() ?? '[none]');
 
-        this.debug(
-          'selectedVehicles',
-          this.selectedVehicles.length
-            ? this.selectedVehicles.map((s) => s.getName()).join(', ')
-            : '[none]'
-        );
+      this.debug(
+        'selectedVehicles',
+        this.selectedVehicles.length
+          ? this.selectedVehicles.map((s) => s.getName()).join(', ')
+          : '[none]'
+      );
+    });
+
+    this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+      if (!this.selectedVehicles.length) {
+        return;
       }
-    );
 
-    this.input.on(
-      Phaser.Input.Events.POINTER_UP,
-      (pointer: Phaser.Input.Pointer) => {
-        if (!this.selectedVehicles.length) {
-          return;
-        }
+      const { worldX, worldY } = pointer;
 
-        const { worldX, worldY } = pointer;
-
-        this.pathFinder.findPath(
-          Math.floor(builderVehicle.getSprite()!.x / this.map.tileWidth),
-          Math.floor(builderVehicle.getSprite()!.y / this.map.tileHeight),
-          Math.floor(worldX / this.map.tileWidth),
-          Math.floor(worldY / this.map.tileHeight),
-          (path) => {
-            if (path) {
-              builderVehicle.setPath(
-                path.map((p) => new Phaser.Math.Vector2(p.x, p.y))
-              );
-            }
+      this.pathFinder.findPath(
+        Math.floor(builderVehicle.getSprite()!.x / this.map.tileWidth),
+        Math.floor(builderVehicle.getSprite()!.y / this.map.tileHeight),
+        Math.floor(worldX / this.map.tileWidth),
+        Math.floor(worldY / this.map.tileHeight),
+        (path) => {
+          if (path) {
+            builderVehicle.setPath(path.map((p) => new Phaser.Math.Vector2(p.x, p.y)));
           }
-        );
+        }
+      );
 
-        this.pathFinder.calculate();
-      }
-    );
+      this.pathFinder.calculate();
+    });
 
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.input.off(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN);
@@ -131,20 +125,14 @@ export default class Game extends Phaser.Scene {
       }
 
       if (!properties[i].collision) acceptableTiles.push(i + 1);
-      if (properties[i].cost)
-        this.pathFinder.setTileCost(i + 1, properties[i].cost);
+      if (properties[i].cost) this.pathFinder.setTileCost(i + 1, properties[i].cost);
     }
 
     this.pathFinder.setAcceptableTiles(acceptableTiles);
   }
 
   private configureCamera() {
-    this.cameras.main.setBounds(
-      0,
-      0,
-      this.map.widthInPixels,
-      this.map.heightInPixels
-    );
+    this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
     const cursors = this.input.keyboard.createCursorKeys();
     var controlConfig = {
@@ -169,9 +157,7 @@ export default class Game extends Phaser.Scene {
       return;
     }
 
-    const building = this.structures.find(
-      (structure) => structure.getName() === object?.name
-    );
+    const building = this.structures.find((structure) => structure.getName() === object?.name);
 
     if (building) {
       this.selectedStructure && this.selectedStructure.deselect();
@@ -179,9 +165,7 @@ export default class Game extends Phaser.Scene {
       building.select();
     }
 
-    const vehicle = this.vehicles.find(
-      (vehicles) => vehicles.getName() === object?.name
-    );
+    const vehicle = this.vehicles.find((vehicles) => vehicles.getName() === object?.name);
 
     if (vehicle) {
       this.selectedVehicles.map((vehicle) => vehicle.deselect());

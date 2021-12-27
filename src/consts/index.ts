@@ -1,11 +1,6 @@
-export enum BuildingSprites {
+export enum BuildingKeys {
   CommandCenter = 'command-center',
   StructureFactory = 'structure-factory',
-}
-
-export enum BuildingEntityClass {
-  CommandCenter = 'command-center',
-  FactoryBuilding = 'factory-building',
 }
 
 export enum EntityTypes {
@@ -19,7 +14,7 @@ export enum Scenes {
 }
 
 export enum VehicleEntityClass {
-  Builder = 'BuilderVehicle',
+  Builder = 'builder-vehicle',
 }
 
 enum BuilderSprites {

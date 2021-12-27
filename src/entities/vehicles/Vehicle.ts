@@ -1,8 +1,27 @@
 import { EntityTypes, VehicleSprites } from '../../consts';
 import { GameEntity } from '..';
+import Game from '../../scenes/Game';
 
 export abstract class Vehicle extends GameEntity {
   private path: Phaser.Math.Vector2[] = [];
+  private texturePack: string;
+
+  constructor(scene: Game, x: number, y: number) {
+    super(scene, x, y);
+
+    this.texturePack = `vehicles-${scene.getColor()}`;
+
+    this.sprite = scene.physics.add
+      .sprite(x, y, this.texturePack, this.getRandomDirection())
+      .setInteractive({ cursor: 'pointer' })
+      .setName(this.getName());
+  }
+
+  private getRandomDirection(): string {
+    const directions = Object.values(VehicleSprites[this.entityClass()]) as string[];
+
+    return directions[Math.floor(Math.random() * directions.length)];
+  }
 
   entityType() {
     return EntityTypes.Vehicle;
@@ -18,32 +37,32 @@ export abstract class Vehicle extends GameEntity {
     const speed = 1;
 
     if (left && up) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].NorthWest_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].NorthWest_01);
       this.sprite!.x -= speed;
       this.sprite!.y -= speed;
     } else if (right && up) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].NorthEast_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].NorthEast_01);
       this.sprite!.x += speed;
       this.sprite!.y -= speed;
     } else if (left && down) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].SouthWest_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].SouthWest_01);
       this.sprite!.x -= speed;
       this.sprite!.y += speed;
     } else if (right && down) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].SouthEast_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].SouthEast_01);
       this.sprite!.x += speed;
       this.sprite!.y += speed;
     } else if (left) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].West_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].West_01);
       this.sprite!.x -= speed;
     } else if (right) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].East_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].East_01);
       this.sprite!.x += speed;
     } else if (down) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].South_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].South_01);
       this.sprite!.y += speed;
     } else if (up) {
-      this.sprite!.setTexture('vehicles-violet', VehicleSprites[this.entityClass()].North_01);
+      this.sprite!.setTexture(this.texturePack, VehicleSprites[this.entityClass()].North_01);
       this.sprite!.y -= speed;
     }
   }
