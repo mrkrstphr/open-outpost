@@ -24,10 +24,6 @@ export default class Game extends Phaser.Scene {
 
   init() {}
 
-  debug(key, value) {
-    document.getElementById(key)!.innerText = value;
-  }
-
   getColor() {
     // TODO FIXME the user can choose their color
     return 'violet';
@@ -130,15 +126,6 @@ export default class Game extends Phaser.Scene {
       }
 
       this.handleSelectionChange(object);
-
-      this.debug('selectedBuilding', this.selectedStructure?.getName() ?? '[none]');
-
-      this.debug(
-        'selectedVehicles',
-        this.selectedVehicles.length
-          ? this.selectedVehicles.map((s) => s.getName()).join(', ')
-          : '[none]'
-      );
     });
 
     this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
