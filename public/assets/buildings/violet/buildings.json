@@ -42,7 +42,7 @@
       "spriteSourceSize": { "x": 0, "y": 0, "w": 24, "h": 24 },
       "sourceSize": { "w": 24, "h": 24 }
     },
-    "command-center": {
+    "Command Center": {
       "frame": { "x": 19, "y": 1, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,
@@ -70,7 +70,7 @@
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "structure-factory": {
+    "Structure Factory": {
       "frame": { "x": 37, "y": 19, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,

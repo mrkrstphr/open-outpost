@@ -4,8 +4,8 @@ import Game from './scenes/Game';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
-  width: 400,
-  height: 280,
+  width: 800,
+  height: 640,
   parent: 'root',
   physics: {
     default: 'arcade',
@@ -14,7 +14,7 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
   scale: {
-    zoom: 2,
+    // zoom: 2,
   },
   scene: [Preloader, Game],
 };
