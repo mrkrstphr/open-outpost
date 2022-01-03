@@ -20,4 +20,23 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [Preloader, Game, EntityDetailsScene],
 };
 
-export default new Phaser.Game(config);
+let game;
+
+function create() {
+  if (game) return;
+  game = new Phaser.Game(config);
+}
+
+function destroy() {
+  if (!game) return;
+  game.destroy(true);
+  game.runDestroy();
+  game = null;
+}
+
+if (module.hot) {
+  module.hot.dispose(destroy);
+  module.hot.accept(create);
+}
+
+if (!game) create();
