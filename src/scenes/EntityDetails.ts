@@ -1,7 +1,7 @@
 import { Scenes } from '../consts';
 import Phaser from 'phaser';
 import eventEmitter, { GameEvents } from './GameEvents';
-import { GameEntity } from 'entities';
+import { GameEntity } from '../entities';
 
 export default class EntityDetailsScene extends Phaser.Scene {
   private text!: Phaser.GameObjects.Text;
