@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { Scenes } from '../consts';
+import assets from '../assets';
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -7,19 +8,13 @@ export default class Preloader extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('tiles', 'assets/tiles/sands.png');
-    this.load.tilemapTiledJSON('map', 'assets/maps/sands.json');
-
-    this.load.atlas(
-      'buildings-violet',
-      'assets/buildings/violet/buildings.png',
-      'assets/buildings/violet/buildings.json'
+    Object.entries(assets.images).map(([key, imageFile]) => this.load.image(key, imageFile));
+    Object.entries(assets.tilemaps).map(([key, definition]) =>
+      this.load.tilemapTiledJSON(key, definition)
     );
 
-    this.load.atlas(
-      'vehicles-violet',
-      'assets/vehicles/violet/vehicles.png',
-      'assets/vehicles/violet/vehicles.json'
+    Object.entries(assets.sprites).map(([key, { definition, sprites }]) =>
+      this.load.atlas(key, sprites, definition)
     );
   }
 
