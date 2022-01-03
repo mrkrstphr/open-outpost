@@ -14,7 +14,8 @@ export abstract class Vehicle extends GameEntity {
     this.sprite = scene.physics.add
       .sprite(x, y, this.texturePack, this.getRandomDirection())
       .setInteractive({ cursor: 'pointer' })
-      .setName(this.getName());
+      .setName(this.getName())
+      .setScale(1.5);
   }
 
   private getRandomDirection(): string {
