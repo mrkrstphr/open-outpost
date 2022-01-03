@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { Buildings, GameEntity, Vehicles } from '../entities';
 import { Scenes } from '../consts';
 import { Vehicle } from '../entities/vehicles/Vehicle';
+import eventEmitter, { GameEvents } from './GameEvents';
 
 export default class Game extends Phaser.Scene {
   private structures: GameEntity[] = [];
@@ -122,6 +123,8 @@ export default class Game extends Phaser.Scene {
         this.selectedStructure = undefined;
         this.selectedVehicles = [];
 
+        eventEmitter.emit(GameEvents.ClearSelection);
+
         return;
       }
 
@@ -159,6 +162,13 @@ export default class Game extends Phaser.Scene {
 
       this.selectedStructure && this.selectedStructure.deselect();
       this.selectedStructure = undefined;
+    }
+
+    if (this.selectedStructure || this.selectedVehicles.length) {
+      eventEmitter.emit(
+        GameEvents.SelectedEntities,
+        this.selectedStructure || this.selectedVehicles
+      );
     }
   }
 

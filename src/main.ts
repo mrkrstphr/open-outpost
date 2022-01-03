@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Preloader from './scenes/Preloader';
 import Game from './scenes/Game';
+import EntityDetailsScene from './scenes/EntityDetails';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -16,7 +17,7 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     // zoom: 2,
   },
-  scene: [Preloader, Game],
+  scene: [Preloader, Game, EntityDetailsScene],
 };
 
 export default new Phaser.Game(config);
