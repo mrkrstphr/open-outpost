@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import Preloader from './scenes/Preloader';
-import Game from './scenes/Game';
 import EntityDetailsScene from './scenes/EntityDetails';
+import Game from './scenes/Game';
+import Preloader from './scenes/Preloader';
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -34,8 +34,11 @@ function destroy() {
   game = null;
 }
 
+// @ts-ignore
 if (module.hot) {
+  // @ts-ignore
   module.hot.dispose(destroy);
+  // @ts-ignore
   module.hot.accept(create);
 }
 

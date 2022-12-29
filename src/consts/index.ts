@@ -1,9 +1,3 @@
-export enum BuildingKeys {
-  CommandCenter = 'Command Center',
-  StructureFactory = 'Structure Factory',
-  VehicleFactory = 'Vehicle Factory',
-}
-
 export enum EntityTypes {
   Building = 'building',
   Vehicle = 'vehicle',
@@ -15,8 +9,14 @@ export enum Scenes {
   Game = 'game',
 }
 
+export enum BuildingEntityClass {
+  CommandCenter = 'Command Center',
+  StructureFactory = 'Structure Factory',
+  VehicleFactory = 'Vehicle Factory',
+}
+
 export enum VehicleEntityClass {
-  Builder = 'builder-vehicle',
+  Builder = 'Builder',
 }
 
 enum BuilderSprites {

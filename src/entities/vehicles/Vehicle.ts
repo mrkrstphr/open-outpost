@@ -1,5 +1,5 @@
-import { EntityTypes, VehicleSprites } from '../../consts';
 import { GameEntity } from '..';
+import { EntityTypes, VehicleSprites } from '../../consts';
 import Game from '../../scenes/Game';
 
 export abstract class Vehicle extends GameEntity {
@@ -81,6 +81,7 @@ export abstract class Vehicle extends GameEntity {
     }
 
     const target = this.path[0];
+    // @ts-ignore TODO FIXME
     const { x, y } = this.sprite;
     const tx = target.x * 8 + 4;
     const ty = target.y * 8 + 4;

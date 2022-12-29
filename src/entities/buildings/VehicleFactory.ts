@@ -1,8 +1,8 @@
-import { BuildingKeys } from '../../consts';
+import { BuildingEntityClass } from '../../consts';
 import { Building } from './Building';
 
 export class VehicleFactory extends Building {
   entityClass() {
-    return BuildingKeys.VehicleFactory;
+    return BuildingEntityClass.VehicleFactory;
   }
 }
