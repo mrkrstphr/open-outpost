@@ -77,7 +77,7 @@
       "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
       "sourceSize": { "w": 16, "h": 16 }
     },
-    "vehicle-factory": {
+    "Vehicle Factory": {
       "frame": { "x": 1, "y": 37, "w": 16, "h": 16 },
       "rotated": false,
       "trimmed": false,

@@ -1,9 +1,9 @@
-import tiles from './tiles/sands.png';
-import map from './maps/sands.json';
-import violetBuildingSprites from './buildings/violet/buildings.png';
 import violetBuildingDefinition from './buildings/violet/buildings.json';
-import violetVehicleSprites from './vehicles/violet/vehicles.png';
+import violetBuildingSprites from './buildings/violet/buildings.png';
+import map from './maps/sands.json';
+import tiles from './tiles/sands.png';
 import violetVehicleDefinition from './vehicles/violet/vehicles.json';
+import violetVehicleSprites from './vehicles/violet/vehicles.png';
 
 export default {
   images: { tiles },

@@ -1,6 +1,7 @@
 export enum BuildingKeys {
   CommandCenter = 'Command Center',
   StructureFactory = 'Structure Factory',
+  VehicleFactory = 'Vehicle Factory',
 }
 
 export enum EntityTypes {

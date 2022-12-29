@@ -44,6 +44,7 @@ export default class Game extends Phaser.Scene {
     // create some test buildings + vehicles
     this.structures.push(new Buildings.CommandCenter(this, 50, 100));
     this.structures.push(new Buildings.StructureFactory(this, 100, 50));
+    this.structures.push(new Buildings.VehicleFactory(this, 255, 80));
 
     const builderVehicle = new Vehicles.Builder(this, 100, 100);
     this.vehicles.push(builderVehicle);
