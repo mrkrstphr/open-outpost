@@ -1,61 +1,13 @@
-import Phaser from 'phaser';
 import { Scenes } from '../consts';
+import BaseScene from './BaseScene';
 
-export default class FramScene extends Phaser.Scene {
-  private DEBUG = false;
-
-  private canvasWidth = 0;
-  private canvasHeight = 0;
-  private tileSize = 8;
-  private sidebarWidth = 240;
-  private minimapHeight = 192;
-  private tabbarHeight = 32;
-
-  private mapStartX = this.tileSize;
-  private mapStartY = this.tileSize;
-  private mapWidth = 0;
-  private mapHeight = 0;
-
-  private sidebarStartX = 0;
-  private sidebarStartY = this.tileSize;
-
+export default class FramScene extends BaseScene {
   constructor() {
     super(Scenes.Frame);
   }
 
   create() {
-    this.canvasWidth = this.game.canvas.width;
-    this.canvasHeight = this.game.canvas.height;
-
-    this.mapWidth = this.canvasWidth - this.sidebarWidth - this.tileSize * 2;
-    this.mapHeight = this.canvasHeight - this.tileSize * 2;
-
-    this.sidebarStartX = this.canvasWidth - this.sidebarWidth;
-
-    if (this.DEBUG) {
-      this.add
-        .rectangle(this.mapStartX, this.mapStartY, this.mapWidth, this.mapHeight, 0xbb0000)
-        .setOrigin(0, 0)
-        .setAlpha(0.5);
-
-      this.add
-        .rectangle(
-          this.sidebarStartX,
-          this.sidebarStartY,
-          this.sidebarWidth - this.tileSize,
-          this.mapHeight,
-          0x00bb00
-        )
-        .setOrigin(0, 0)
-        .setAlpha(0.5);
-
-      const mmX = this.sidebarStartX;
-      const mmY = this.sidebarStartY;
-      const mmW = this.sidebarWidth - this.tileSize;
-      const mmH = this.minimapHeight;
-
-      this.add.rectangle(mmX, mmY, mmW, mmH, 0xff33ff).setOrigin(0, 0).setAlpha(0.5);
-    }
+    super.create();
 
     this.drawOuterBorder();
     this.drawGameBorder();

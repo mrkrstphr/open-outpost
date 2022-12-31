@@ -1,31 +1,19 @@
 import Phaser from 'phaser';
 import { Scenes } from '../consts';
 import { GameEntity } from '../entities';
+import BaseScene from './BaseScene';
 import eventEmitter, { GameEvents } from './GameEvents';
 
-export default class EntityDetailsScene extends Phaser.Scene {
+export default class EntityDetailsScene extends BaseScene {
   private text!: Phaser.GameObjects.Text;
   private selectedEntities: GameEntity[] = [];
-
-  private canvasWidth = 0;
-  private canvasHeight = 0;
-  private sidebarWidth = 240;
-  private tileSize = 8;
-  private minimapHeight = 192;
-  private tabbarHeight = 32;
-
-  private sidebarStartX = 0;
-  private sidebarStartY = this.tileSize;
 
   constructor() {
     super(Scenes.EntityDetails);
   }
 
   create() {
-    this.canvasWidth = this.game.canvas.width;
-    this.canvasHeight = this.game.canvas.height;
-
-    this.sidebarStartX = this.canvasWidth - this.sidebarWidth;
+    super.create();
 
     eventEmitter.on(GameEvents.SelectedEntities, (selected) => {
       this.selectedEntities = Array.isArray(selected) ? selected : [selected];

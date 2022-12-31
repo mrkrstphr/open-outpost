@@ -3,9 +3,10 @@ import Phaser from 'phaser';
 import { Scenes } from '../consts';
 import { Buildings, GameEntity, Vehicles } from '../entities';
 import { Vehicle } from '../entities/vehicles/Vehicle';
+import BaseScene from './BaseScene';
 import eventEmitter, { GameEvents } from './GameEvents';
 
-export default class Game extends Phaser.Scene {
+export default class Game extends BaseScene {
   private structures: GameEntity[] = [];
   private selectedStructure?: GameEntity;
 
@@ -31,6 +32,8 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
+    super.create();
+
     this.map = this.make.tilemap({ key: 'map' });
     this.tileset = this.map.addTilesetImage('sands', 'tiles');
 
