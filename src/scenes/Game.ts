@@ -95,7 +95,12 @@ export default class Game extends BaseScene {
   }
 
   private configureCamera() {
-    this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.cameras.main.setBounds(
+      0,
+      0,
+      this.map.widthInPixels + this.sidebarWidth,
+      this.map.heightInPixels
+    );
 
     const cursors = this.input.keyboard.createCursorKeys();
     var controlConfig = {
