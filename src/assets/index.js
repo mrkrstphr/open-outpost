@@ -2,6 +2,8 @@ import violetBuildingDefinition from './buildings/violet/buildings.json';
 import violetBuildingSprites from './buildings/violet/buildings.png';
 import map from './maps/sands.json';
 import tiles from './tiles/sands.png';
+import uiDefinition from './ui/ui.json';
+import uiSprites from './ui/ui.png';
 import violetVehicleDefinition from './vehicles/violet/vehicles.json';
 import violetVehicleSprites from './vehicles/violet/vehicles.png';
 
@@ -11,5 +13,6 @@ export default {
   sprites: {
     'buildings-violet': { definition: violetBuildingDefinition, sprites: violetBuildingSprites },
     'vehicles-violet': { definition: violetVehicleDefinition, sprites: violetVehicleSprites },
+    ui: { definition: uiDefinition, sprites: uiSprites },
   },
 };

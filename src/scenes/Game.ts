@@ -1,7 +1,7 @@
 import EasyStar from 'easystarjs';
 import Phaser from 'phaser';
-import { Buildings, GameEntity, Vehicles } from '../entities';
 import { Scenes } from '../consts';
+import { Buildings, GameEntity, Vehicles } from '../entities';
 import { Vehicle } from '../entities/vehicles/Vehicle';
 import eventEmitter, { GameEvents } from './GameEvents';
 

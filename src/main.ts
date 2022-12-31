@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import EntityDetailsScene from './scenes/EntityDetails';
+import FrameScene from './scenes/Frame';
 import Game from './scenes/Game';
 import Preloader from './scenes/Preloader';
 
@@ -17,7 +18,7 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     // zoom: 2,
   },
-  scene: [Preloader, Game, EntityDetailsScene],
+  scene: [Preloader, Game, FrameScene, EntityDetailsScene],
 };
 
 let game;

@@ -5,6 +5,7 @@ export enum EntityTypes {
 
 export enum Scenes {
   EntityDetails = 'entity-details',
+  Frame = 'frame',
   Preloader = 'preloader',
   Game = 'game',
 }

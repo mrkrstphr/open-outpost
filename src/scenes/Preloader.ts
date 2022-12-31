@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { Scenes } from '../consts';
 import assets from '../assets';
+import { Scenes } from '../consts';
 
 export default class Preloader extends Phaser.Scene {
   constructor() {
@@ -19,6 +19,6 @@ export default class Preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start(Scenes.Game).launch(Scenes.EntityDetails);
+    this.scene.start(Scenes.Game).launch(Scenes.Frame).launch(Scenes.EntityDetails);
   }
 }
