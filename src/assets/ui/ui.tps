@@ -176,11 +176,9 @@
             <key type="filename">tiles/ui-bottom-center-trans.png</key>
             <key type="filename">tiles/ui-bottom-center.png</key>
             <key type="filename">tiles/ui-bottom-left-inner.png</key>
-            <key type="filename">tiles/ui-bottom-left-round.png</key>
             <key type="filename">tiles/ui-bottom-left-trans.png</key>
             <key type="filename">tiles/ui-bottom-left.png</key>
             <key type="filename">tiles/ui-bottom-right-inner.png</key>
-            <key type="filename">tiles/ui-bottom-right-round.png</key>
             <key type="filename">tiles/ui-bottom-right-trans.png</key>
             <key type="filename">tiles/ui-bottom-right.png</key>
             <key type="filename">tiles/ui-center-left-trans.png</key>
@@ -191,11 +189,9 @@
             <key type="filename">tiles/ui-top-center-trans.png</key>
             <key type="filename">tiles/ui-top-center.png</key>
             <key type="filename">tiles/ui-top-left-inner.png</key>
-            <key type="filename">tiles/ui-top-left-round.png</key>
             <key type="filename">tiles/ui-top-left-trans.png</key>
             <key type="filename">tiles/ui-top-left.png</key>
             <key type="filename">tiles/ui-top-right-inner.png</key>
-            <key type="filename">tiles/ui-top-right-round.png</key>
             <key type="filename">tiles/ui-top-right-trans.png</key>
             <key type="filename">tiles/ui-top-right.png</key>
             <struct type="IndividualSpriteSettings">
@@ -221,7 +217,6 @@
                 <array>
                     <filename>tiles/ui-bottom-center-trans.png</filename>
                     <filename>tiles/ui-bottom-center.png</filename>
-                    <filename>tiles/ui-bottom-left-round.png</filename>
                     <filename>tiles/ui-bottom-left-trans.png</filename>
                     <filename>tiles/ui-bottom-left.png</filename>
                     <filename>tiles/ui-bottom-right-trans.png</filename>
@@ -233,13 +228,10 @@
                     <filename>tiles/ui-center.png</filename>
                     <filename>tiles/ui-top-center-trans.png</filename>
                     <filename>tiles/ui-top-center.png</filename>
-                    <filename>tiles/ui-top-left-round.png</filename>
                     <filename>tiles/ui-top-left-trans.png</filename>
                     <filename>tiles/ui-top-left.png</filename>
-                    <filename>tiles/ui-top-right-round.png</filename>
                     <filename>tiles/ui-top-right-trans.png</filename>
                     <filename>tiles/ui-top-right.png</filename>
-                    <filename>tiles/ui-bottom-right-round.png</filename>
                     <filename>tiles/ui-bottom-left-inner.png</filename>
                     <filename>tiles/ui-bottom-right-inner.png</filename>
                     <filename>tiles/ui-top-left-inner.png</filename>
