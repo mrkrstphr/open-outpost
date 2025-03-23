@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Content } from '../../components/Content';
 import { ProgressBar } from '../../components/ProgressBar';
+import { structureSpec } from '../../data/structures';
 import { useOre } from '../../hooks/useOre';
 import { useStructures } from '../../hooks/useStructures';
 import { createStructure } from '../../store';
@@ -11,7 +12,7 @@ import PlaymouthCommandCenter from '../../structures/plymouth-command-center.png
 import PlymouthSmelterCommon from '../../structures/plymouth-smelter-common.png';
 import PlymouthStructureFactory from '../../structures/plymouth-structure-factory.png';
 import { BuildingStatus, BuildingType } from '../../types';
-import { createAgridome } from '../../utils';
+import { canBuildStructure, createNewStructure } from '../../utils';
 
 const buildingTypeToImageMap = {
   Agridome: PlymouthAgridome,
@@ -24,7 +25,7 @@ const buildingTypeToImageMap = {
 export const StructuresPanel = () => {
   const dispatch = useDispatch();
   const structures = useStructures();
-  const { common, rare } = useOre();
+  const ore = useOre();
 
   const [selectedStructure, setSelectedStructure] = useState<BuildingType | undefined>();
   const [highlightedStructure, setHighlighedStructure] = useState<BuildingType | undefined>();
@@ -44,8 +45,14 @@ export const StructuresPanel = () => {
   // });
   return (
     <Content title="Structures">
-      <button type="button" onClick={() => dispatch(createStructure(createAgridome(100, 100)))}>
-        create
+      <button
+        type="button"
+        disabled={!canBuildStructure(ore, structureSpec.Agridome)}
+        onClick={() =>
+          dispatch(createStructure(createNewStructure(100, 100, structureSpec.Agridome)))
+        }
+      >
+        create {canBuildStructure(ore, structureSpec.Agridome) ? 'Yes' : 'NO'}
       </button>
       <div className="flex flex-wrap">
         {structures.map((building) => (

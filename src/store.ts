@@ -1,5 +1,6 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { produce } from 'immer';
+import { structureSpec } from './data/structures';
 import {
   BuildingStatus,
   BuildingType,
@@ -8,12 +9,7 @@ import {
   LabStandard,
   ResearchItem,
 } from './types';
-import {
-  createCommandCenter,
-  createSmelterCommon,
-  createStandardLab,
-  createStructureFactory,
-} from './utils';
+import { canBuildStructure, createNewStructure } from './utils';
 
 export type GameState = {
   tick: number;
@@ -123,10 +119,10 @@ export const gameSlice = createSlice({
   // TODO: FIXME: how to setup initial game state??
   initialState: createGameState({
     buildings: [
-      createCommandCenter(10, 10, BuildingStatus.Online),
-      createSmelterCommon(20, 20, BuildingStatus.Online),
-      createStructureFactory(15, 15, BuildingStatus.Online),
-      createStandardLab(0, 0),
+      createNewStructure(0, 0, structureSpec.CommandCenter, BuildingStatus.Online),
+      createNewStructure(10, 10, structureSpec.FactoryStructure, BuildingStatus.Online),
+      createNewStructure(20, 20, structureSpec.SmelterCommon, BuildingStatus.Online),
+      createNewStructure(30, 30, structureSpec.LabStandard),
     ],
     ore: { common: 4000 },
   }),
@@ -151,20 +147,17 @@ export const gameSlice = createSlice({
       });
     },
 
-    createStructure: (state, action) => {
-      const newStructure = action.payload as BuildingType;
+    createStructure: (state, action: PayloadAction<BuildingType>) => {
+      const definition = structureSpec[action.payload.type];
 
-      if (
-        newStructure.buildCost.common > state.ore.common ||
-        newStructure.buildCost.rare > state.ore.rare
-      ) {
+      if (!canBuildStructure(state.ore, definition)) {
         console.info('Not enough ore to create structure');
         return;
       }
 
-      state.ore.common -= newStructure.buildCost.common;
-      state.ore.rare -= newStructure.buildCost.rare;
-      state.buildings.push(newStructure);
+      state.ore.common -= definition.buildCost.common;
+      state.ore.rare -= definition.buildCost.rare;
+      state.buildings.push(action.payload);
     },
 
     updateBuildingProgress: (state, action) => {

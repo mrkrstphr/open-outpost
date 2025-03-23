@@ -24,7 +24,6 @@ export type Building = {
   health: number;
   maxHealth: number;
   status: BuildingStatus;
-  buildCost: { common: number; rare: number };
   lastMark?: number;
 };
 

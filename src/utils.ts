@@ -1,14 +1,6 @@
 import { v4 } from 'uuid';
-import {
-  Agridome,
-  BuildingStatus,
-  BuildingType,
-  CommandCenter,
-  FactoryStructure,
-  LabStandard,
-  type LabType,
-  type ResearchItem,
-} from './types';
+import { StructureDetails } from './data/structures';
+import { BuildingStatus, BuildingType, GameState, type LabType, type ResearchItem } from './types';
 
 export function filterAvailableResearch(
   targetLab: LabType,
@@ -27,60 +19,25 @@ export function filterAvailableResearch(
     });
 }
 
-export function createStructure(
+export function createNewStructure(
   x: number,
   y: number,
-  type: BuildingType['type'],
-  maxHealth: number,
-  buildCost: { common: number; rare: number },
+  structure: StructureDetails,
   buildingStatus?: BuildingStatus
 ): BuildingType {
   const status = buildingStatus ?? BuildingStatus.Building;
 
   return {
     id: v4(),
-    type,
-    health: status === BuildingStatus.Building ? 0 : maxHealth,
+    type: structure.type,
+    health: status === BuildingStatus.Building ? 0 : structure.hp,
     status,
-    maxHealth,
-    buildCost,
+    maxHealth: structure.hp,
   };
 }
 
-export function createAgridome(x: number, y: number, status?: BuildingStatus): Agridome {
-  return createStructure(x, y, 'Agridome', 1500, { common: 225, rare: 0 }, status) as Agridome;
-}
-
-export function createCommandCenter(x: number, y: number, status?: BuildingStatus): CommandCenter {
-  return createStructure(
-    x,
-    y,
-    'CommandCenter',
-    2500,
-    { common: 0, rare: 0 },
-    status
-  ) as CommandCenter;
-}
-
-export function createStandardLab(x: number, y: number, status?: BuildingStatus): LabStandard {
-  return createStructure(x, y, 'LabStandard', 1250, { common: 0, rare: 0 }, status) as LabStandard;
-}
-
-export function createStructureFactory(
-  x: number,
-  y: number,
-  status?: BuildingStatus
-): FactoryStructure {
-  return createStructure(
-    x,
-    y,
-    'FactoryStructure',
-    2000,
-    { common: 0, rare: 0 },
-    status
-  ) as FactoryStructure;
-}
-
-export function createSmelterCommon(x: number, y: number, status?: BuildingStatus): BuildingType {
-  return createStructure(x, y, 'SmelterCommon', 2000, { common: 0, rare: 0 }, status);
-}
+export const canBuildStructure = (ore: GameState['ore'], structure: StructureDetails) => {
+  return (
+    ore.common >= (structure.buildCost.common ?? 0) && ore.rare >= (structure.buildCost.rare ?? 0)
+  );
+};

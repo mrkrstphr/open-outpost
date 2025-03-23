@@ -12,43 +12,7 @@ import {
   CommandCenter,
   FactoryStructure,
   LabStandard,
-  type GameState,
 } from './types';
-
-// Agridome:
-//   Plymouth:
-//     Build Cost: 225
-//     HP: 1000
-//     Power: 20
-//     Workers: 1
-//     Scientists: 0
-//     Production: 36
-// Standard Lab:
-//   Plymouth:
-//     Build Cost: 950
-//     HP: 1250
-//     Power: 50
-//     Workers: 1
-//     Scientists: 0
-// Command Center:
-//   Plymouth:
-//     Build Cost: ???
-//     HP: 2500
-//     Power: 0
-//     Workers: 4
-//     Scientists: 1
-// Residence:
-//   Plymouth:
-//     Build Cost: 225
-// Smelter, Common Ore:
-//   Plymouth:
-//     Build Cost:
-//     HP: 2000
-// Tokamak Reactor:
-//   Plymouth:
-//     Build Cost:
-//     HP: 1500
-//     Production: 250
 
 function updateConstructionState(dispatch: AppDispatch, structure: BuildingType) {
   if (structure?.status === BuildingStatus.Building) {
@@ -60,7 +24,6 @@ function updateConstructionState(dispatch: AppDispatch, structure: BuildingType)
           health: structure.maxHealth,
         })
       );
-      // return { ...structure, status: BuildingStatus.Online, health: structure.maxHealth };
     } else {
       dispatch(
         updateBuildingProgress({
@@ -69,7 +32,6 @@ function updateConstructionState(dispatch: AppDispatch, structure: BuildingType)
           health: structure.maxHealth,
         })
       );
-      // return { ...structure, health: structure.health + 1 };
     }
   }
 
@@ -112,36 +74,6 @@ function smelterCommonHandler(mark: number, dispatch: AppDispatch, smelter: Buil
   });
 }
 
-const initialState: GameState = {
-  tick: 0,
-  mark: 0,
-  buildings: [],
-  currentResearchTopic: undefined,
-  finishedResearch: [],
-  gameLog: [],
-  ore: {
-    rare: 0,
-    common: 0,
-  },
-};
-
-function createGameState({
-  buildings,
-  ore,
-}: {
-  buildings?: Array<BuildingType>;
-  ore?: { common?: number; rare?: number };
-}) {
-  return {
-    ...initialState,
-    buildings: buildings ? buildings : [],
-    ore: {
-      ...initialState.ore,
-      ...ore,
-    },
-  };
-}
-
 enum Tabs {
   Home,
   Research,
@@ -173,17 +105,6 @@ function DebugPanel() {
       </div>
     </Content>
   );
-}
-
-function calculateTickAndMark(currentState: GameState): GameState {
-  return produce(currentState, (draft) => {
-    if ((draft.tick + 1) % 100 === 0) {
-      draft.tick = 0;
-      draft.mark = draft.mark + 1;
-    } else {
-      draft.tick += 1;
-    }
-  });
 }
 
 function getBuildingManager(type: BuildingType['type']) {
