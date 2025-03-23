@@ -1,78 +1,10 @@
-import { produce } from 'immer';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Content } from './components/Content';
 import { Tab } from './components/Tab';
 import ResearchPanel from './panels/Research';
 import { StructuresPanel } from './panels/Structures';
-import { AppDispatch, RootState, tick, updateBuildingProgress } from './store';
-import {
-  BuildingStatus,
-  BuildingType,
-  CommandCenter,
-  FactoryStructure,
-  LabStandard,
-} from './types';
-
-function updateConstructionState(dispatch: AppDispatch, structure: BuildingType) {
-  if (structure?.status === BuildingStatus.Building) {
-    if (structure.health + 1 >= structure.maxHealth) {
-      dispatch(
-        updateBuildingProgress({
-          id: structure.id,
-          status: BuildingStatus.Online,
-          health: structure.maxHealth,
-        })
-      );
-    } else {
-      dispatch(
-        updateBuildingProgress({
-          id: structure.id,
-          status: BuildingStatus.Building,
-          health: structure.maxHealth,
-        })
-      );
-    }
-  }
-
-  return structure;
-}
-
-function agridomeHandler(mark: number, dispatch: AppDispatch, agridome: BuildingType) {
-  const newState = updateConstructionState(dispatch, agridome);
-
-  return newState;
-}
-
-function standardLabHandler(mark: number, dispatch: AppDispatch, lab: LabStandard) {
-  const newState = updateConstructionState(dispatch, lab);
-
-  return newState;
-}
-
-function commandCenterHandler(mark: number, dispatch: AppDispatch, center: CommandCenter) {
-  const newState = updateConstructionState(dispatch, center);
-
-  return newState;
-}
-
-function factoryStructureHandler(mark: number, dispatch: AppDispatch, factory: FactoryStructure) {
-  const newState = updateConstructionState(dispatch, factory);
-
-  return newState;
-}
-
-function smelterCommonHandler(mark: number, dispatch: AppDispatch, smelter: BuildingType) {
-  const newState = updateConstructionState(dispatch, smelter);
-
-  if (smelter.status === BuildingStatus.Online && smelter.lastMark !== mark) {
-    // ?? how to update ore??
-  }
-
-  return produce(newState, (draft) => {
-    draft.lastMark = mark;
-  });
-}
+import { RootState, tick } from './store';
 
 enum Tabs {
   Home,
@@ -107,21 +39,6 @@ function DebugPanel() {
   );
 }
 
-function getBuildingManager(type: BuildingType['type']) {
-  switch (type) {
-    case 'Agridome':
-      return agridomeHandler;
-    case 'CommandCenter':
-      return commandCenterHandler;
-    case 'LabStandard':
-      return standardLabHandler;
-    case 'FactoryStructure':
-      return factoryStructureHandler;
-    case 'SmelterCommon':
-      return smelterCommonHandler;
-  }
-}
-
 function App() {
   const state = useSelector((state: RootState) => state.game);
   const structures = useSelector((state: RootState) => state.game.buildings);
@@ -136,16 +53,7 @@ function App() {
   useEffect(() => {
     const tickInterval = 1000 / (settings.gameSpeed * 4);
 
-    const interval = setInterval(() => {
-      dispatch(tick());
-      structures.forEach((structure) => {
-        const buildingManager = getBuildingManager(structure.type);
-        if (buildingManager) {
-          // @ts-ignore TODO: FIXME: typing???
-          buildingManager(state.mark, dispatch, structure);
-        }
-      });
-    }, tickInterval);
+    const interval = setInterval(() => dispatch(tick()), tickInterval);
 
     return () => clearInterval(interval);
   }, [settings.gameSpeed]);
@@ -183,7 +91,7 @@ function App() {
             <span className="text-purple-400"> | </span> Rare:{' '}
             <span className="bg-yellow-500 text-sm py-0.5 px-0.5">{state.ore.rare}</span>
             <span className="text-purple-400"> | </span> Moral:{' '}
-            <span className="bg-blue-400 text-sm py-0.5 px-0.5">??</span>
+            <span className="bg-blue-400 text-sm py-0.5 px-0.5">{state.morale}</span>
           </div>
         </div>
         <div className="border border-purple-400 m-1 p-1 text-white">

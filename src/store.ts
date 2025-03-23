@@ -1,33 +1,30 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { produce } from 'immer';
+import { isNotNil } from 'ramda';
 import { structureSpec } from './data/structures';
-import {
-  BuildingStatus,
-  BuildingType,
-  CommandCenter,
-  FactoryStructure,
-  LabStandard,
-  ResearchItem,
-} from './types';
+import { BuildingStatus, BuildingType, FactoryStructure, ResearchItem } from './types';
 import { canBuildStructure, createNewStructure } from './utils';
 
 export type GameState = {
   tick: number;
   mark: number;
+  morale: number;
   buildings: Array<BuildingType>;
   currentResearchTopic?: ResearchItem & { counter: number };
   finishedResearch: string[];
   gameLog: string[];
+  food: number;
   ore: { common: number; rare: number };
 };
 
-const initialState: GameState = {
+export const initialState: GameState = {
   tick: 0,
   mark: 0,
+  morale: 75,
   buildings: [],
   currentResearchTopic: undefined,
   finishedResearch: [],
   gameLog: [],
+  food: 0,
   ore: {
     rare: 0,
     common: 0,
@@ -46,55 +43,69 @@ function updateConstructionState(structure: BuildingType) {
   return structure;
 }
 
-function agridomeHandler(mark: number, agridome: BuildingType) {
-  const newState = updateConstructionState(agridome);
+function buildingManager(mark: number, building: BuildingType) {
+  const newState = updateConstructionState(building);
 
-  return newState;
-}
+  if (newState.current?.type) {
+    // TODO: FIXME: make 1
+    newState.current.progress += 10;
 
-function standardLabHandler(mark: number, lab: LabStandard) {
-  const newState = updateConstructionState(lab);
-
-  return newState;
-}
-
-function commandCenterHandler(mark: number, center: CommandCenter) {
-  const newState = updateConstructionState(center);
-
-  return newState;
-}
-
-function factoryStructureHandler(mark: number, factory: FactoryStructure) {
-  const newState = updateConstructionState(factory);
-
-  return newState;
-}
-
-function smelterCommonHandler(mark: number, smelter: BuildingType) {
-  const newState = updateConstructionState(smelter);
-
-  if (smelter.status === BuildingStatus.Online && smelter.lastMark !== mark) {
-    // ?? how to update ore??
+    if (newState.current.progress >= structureSpec[newState.current.type].hp) {
+      newState.storage = newState.storage
+        ? [...newState.storage, newState.current.type]
+        : [newState.current.type];
+      newState.current = {};
+    }
   }
 
-  return produce(newState, (draft) => {
-    draft.lastMark = mark;
+  // if (factory.current?.type) {
+  //   console.log('up');
+  //   dispatch(
+  //     updateManufactoringProgress({ id: factory.id, progress: factory.current.progress + 1 })
+  //   );
+  //   // const details = structureSpec[newState.current.type];
+  //   // if (details) {
+  //   // dispatch()
+  //   // newState.current.progress += 1;
+  //   // }
+  // }
+
+  return newState;
+}
+
+function runProducers(state: GameState) {
+  const maxCommon = state.buildings.reduce(
+    (acc, building) => acc + (structureSpec[building.type].stores?.ore?.common ?? 0),
+    0
+  );
+  const maxRare = state.buildings.reduce(
+    (acc, building) => acc + (structureSpec[building.type].stores?.ore?.rare ?? 0),
+    0
+  );
+  const maxFood = state.buildings.reduce(
+    (acc, building) => acc + (structureSpec[building.type].stores?.food ?? 0),
+    0
+  );
+
+  state.buildings.forEach((building, index) => {
+    const definition = structureSpec[building.type];
+
+    if (state.mark === building.lastMark) return;
+
+    if (isNotNil(building.lastMark)) {
+      if (definition.produces?.ore?.common) {
+        state.ore.common = Math.min(state.ore.common + definition.produces.ore.common, maxCommon);
+      }
+      if (definition.produces?.ore?.rare) {
+        state.ore.rare = Math.min(state.ore.rare + definition.produces.ore.rare, maxRare);
+      }
+      if (definition.produces?.food) {
+        state.food = Math.min(state.food + definition.produces.food, maxFood);
+      }
+    }
+
+    state.buildings[index].lastMark = state.mark;
   });
-}
-
-function getBuildingManager(type: BuildingType['type']) {
-  switch (type) {
-    case 'Agridome':
-      return agridomeHandler;
-    case 'CommandCenter':
-      return commandCenterHandler;
-    case 'LabStandard':
-      return standardLabHandler;
-    case 'FactoryStructure':
-      return factoryStructureHandler;
-    case 'SmelterCommon':
-      return smelterCommonHandler;
-  }
 }
 
 function createGameState({
@@ -136,15 +147,45 @@ export const gameSlice = createSlice({
       }
 
       state.buildings = state.buildings.map((building) => {
-        const buildingManager = getBuildingManager(building.type);
-        if (buildingManager) {
-          // @ts-ignore TODO: FIXME: typing???
-          return buildingManager(state.mark, building);
+        return buildingManager(state.mark, building);
+      });
+
+      runProducers(state);
+    },
+
+    buildStructure: (
+      state,
+      action: PayloadAction<{ factory: FactoryStructure; type: BuildingType['type'] }>
+    ) => {
+      const { factory, type } = action.payload;
+      const factoryDefinition = structureSpec[factory.type];
+      const definition = structureSpec[type];
+
+      if (factory.current?.type) {
+        console.info('Factory is busy building another structure');
+        return;
+      }
+
+      if (factory.storage?.length >= (factoryDefinition.produces?.slots ?? 0)) {
+        console.info('Factory storage is full');
+        return;
+      }
+
+      if (!canBuildStructure(state.ore, definition)) {
+        console.info('Not enough ore to create structure');
+        return;
+      }
+
+      state.buildings = state.buildings.map((building) => {
+        if (building.id === factory.id) {
+          return { ...building, current: { type, progress: 0 } };
         }
 
-        console.error(`No building manager found for type: ${building.type}`);
         return building;
       });
+
+      state.ore.common -= definition.buildCost.common;
+      state.ore.rare -= definition.buildCost.rare;
     },
 
     createStructure: (state, action: PayloadAction<BuildingType>) => {
@@ -160,6 +201,20 @@ export const gameSlice = createSlice({
       state.buildings.push(action.payload);
     },
 
+    updateManufactoringProgress: (state, action) => {
+      const { id, progress } = action.payload;
+
+      state.buildings = state.buildings.map((building) => {
+        if (building.id === id && building.current?.type) {
+          return {
+            ...building,
+            current: { ...building.current, progress: progress + 1 },
+          };
+        }
+        return building;
+      });
+    },
+
     updateBuildingProgress: (state, action) => {
       state.buildings.map((building) => {
         if (building.id === action.payload.id) {
@@ -171,7 +226,13 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { createStructure, tick, updateBuildingProgress } = gameSlice.actions;
+export const {
+  buildStructure,
+  createStructure,
+  tick,
+  updateBuildingProgress,
+  updateManufactoringProgress,
+} = gameSlice.actions;
 
 export const store = configureStore({
   reducer: { game: gameSlice.reducer },

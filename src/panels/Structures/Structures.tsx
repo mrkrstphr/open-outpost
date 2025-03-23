@@ -1,18 +1,14 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { lazy, Suspense, useState } from 'react';
 import { Content } from '../../components/Content';
 import { ProgressBar } from '../../components/ProgressBar';
 import { structureSpec } from '../../data/structures';
-import { useOre } from '../../hooks/useOre';
 import { useStructures } from '../../hooks/useStructures';
-import { createStructure } from '../../store';
 import PlymouthLabStandard from '../../structures/playmouth-standard-lab.png';
 import PlymouthAgridome from '../../structures/plymouth-agridome.png';
 import PlaymouthCommandCenter from '../../structures/plymouth-command-center.png';
 import PlymouthSmelterCommon from '../../structures/plymouth-smelter-common.png';
 import PlymouthStructureFactory from '../../structures/plymouth-structure-factory.png';
 import { BuildingStatus, BuildingType } from '../../types';
-import { canBuildStructure, createNewStructure } from '../../utils';
 
 const buildingTypeToImageMap = {
   Agridome: PlymouthAgridome,
@@ -22,12 +18,8 @@ const buildingTypeToImageMap = {
   SmelterCommon: PlymouthSmelterCommon,
 };
 
-export const StructuresPanel = () => {
-  const dispatch = useDispatch();
+const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) => {
   const structures = useStructures();
-  const ore = useOre();
-
-  const [selectedStructure, setSelectedStructure] = useState<BuildingType | undefined>();
   const [highlightedStructure, setHighlighedStructure] = useState<BuildingType | undefined>();
 
   if (structures.length === 0) {
@@ -43,17 +35,9 @@ export const StructuresPanel = () => {
 
   //   return 0;
   // });
+
   return (
     <Content title="Structures">
-      <button
-        type="button"
-        disabled={!canBuildStructure(ore, structureSpec.Agridome)}
-        onClick={() =>
-          dispatch(createStructure(createNewStructure(100, 100, structureSpec.Agridome)))
-        }
-      >
-        create {canBuildStructure(ore, structureSpec.Agridome) ? 'Yes' : 'NO'}
-      </button>
       <div className="flex flex-wrap">
         {structures.map((building) => (
           <div key={`building-${building.type}-${building.id}`} className="m-4">
@@ -72,20 +56,73 @@ export const StructuresPanel = () => {
                 }`}
                 onMouseOver={() => setHighlighedStructure(building)}
                 onMouseOut={() => setHighlighedStructure(undefined)}
-                onClick={() => setSelectedStructure(building)}
+                onClick={() => onSelect(building.id)}
               />
             </div>
-            {/* <p>
-            {building.type} -{' '}
-            {building.status === BuildingStatus.Building ? 'Building: ' : 'Health: '}{' '}
-            {building.health}/{building.maxHealth}
-          </p> */}
           </div>
         ))}
       </div>
       <div className="border-t border-purple-400 -mx-1 px-1 -mb-1 text-sm">
-        {highlightedStructure ? highlightedStructure.type : <>&nbsp;</>}
+        {highlightedStructure ? (
+          `${structureSpec[highlightedStructure.type].name} [@${highlightedStructure.id.substring(
+            0,
+            6
+          )}]`
+        ) : (
+          <>&nbsp;</>
+        )}
       </div>
     </Content>
+  );
+};
+
+const structureContentMap: Record<BuildingType['type'], React.ElementType> = {
+  Agridome: () => <div>TODO: Agridome</div>,
+  CommandCenter: () => <div>TODO: Command Center</div>,
+  FactoryStructure: lazy(() => import('./FactoryStructure')),
+  LabStandard: () => <div>TODO: Lab</div>,
+  SmelterCommon: () => <div>TODO: Smelter</div>,
+};
+
+const SelectedStructure = ({
+  structure,
+  onClose,
+}: {
+  structure: BuildingType;
+  onClose: () => void;
+}) => {
+  const ContentPanel = structureContentMap[structure.type];
+
+  return (
+    <Content
+      title={`${structureSpec[structure.type].name} [@${structure.id.substring(0, 6)}]`}
+      action={
+        <button
+          type="button"
+          className="bg-purple-500 text-white py-0.5 px-1 hover:bg-purple-600"
+          onClick={onClose}
+        >
+          Close
+        </button>
+      }
+    >
+      <Suspense fallback={<div className="text-center">Loading...</div>}>
+        <ContentPanel structure={structure} />
+      </Suspense>
+    </Content>
+  );
+};
+
+export const StructuresPanel = () => {
+  const structures = useStructures();
+  const [selectedStructure, setSelectedStructure] = useState<string | undefined>();
+
+  return selectedStructure ? (
+    <SelectedStructure
+      structure={structures.find((s) => s.id === selectedStructure) as BuildingType}
+      onClose={() => setSelectedStructure(undefined)}
+    />
+  ) : (
+    <AllStructures onSelect={setSelectedStructure} />
   );
 };

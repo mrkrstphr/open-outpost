@@ -13,6 +13,11 @@ export type StructureDetails = {
     food?: number;
     power?: number;
     ore?: { common?: number; rare?: number };
+    slots?: number;
+  };
+  stores?: {
+    food?: number;
+    ore?: { common?: number; rare?: number };
   };
 };
 
@@ -49,6 +54,7 @@ export const structureSpec: Record<BuildingType['type'], StructureDetails> = {
     powerUsage: 0,
     workers: 1,
     scientists: 0,
+    produces: { slots: 6 },
   },
   LabStandard: {
     name: 'Lab, Standard',
@@ -74,6 +80,8 @@ export const structureSpec: Record<BuildingType['type'], StructureDetails> = {
     // TODO: FIXME:
     workers: 0,
     scientists: 0,
+    produces: { ore: { common: 75 } },
+    stores: { ore: { common: 10000 } },
   },
   // Tokamak: {
   //   name: 'Tokamak',

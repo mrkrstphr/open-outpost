@@ -37,6 +37,8 @@ export type CommandCenter = Building & {
 
 export type FactoryStructure = Building & {
   type: 'FactoryStructure';
+  current: { type: BuildingType['type']; progress: number };
+  storage: Array<BuildingType['type']>;
 };
 
 export type LabStandard = Building & {
