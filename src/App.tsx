@@ -4,7 +4,8 @@ import { Content } from './components/Content';
 import { Tab } from './components/Tab';
 import ResearchPanel from './panels/Research';
 import { StructuresPanel } from './panels/Structures';
-import { RootState, tick } from './store';
+import { tick } from './state/slices/game';
+import { RootState } from './store';
 
 enum Tabs {
   Home,

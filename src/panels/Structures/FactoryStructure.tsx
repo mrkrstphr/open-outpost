@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { buildStructure } from '../../store';
+import { buildStructure } from '../../state/slices/game';
 import { FactoryStructure as FactoryStructureType } from '../../types';
 
 const FactoryStructure = ({ structure }: { structure: FactoryStructureType }) => {
