@@ -1,9 +1,11 @@
 import { produce } from 'immer';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Content } from './components/Content';
 import { Tab } from './components/Tab';
 import ResearchPanel from './panels/Research';
 import { StructuresPanel } from './panels/Structures';
+import { AppDispatch, RootState, tick, updateBuildingProgress } from './store';
 import {
   BuildingStatus,
   BuildingType,
@@ -11,14 +13,7 @@ import {
   FactoryStructure,
   LabStandard,
   type GameState,
-  type ResearchItem,
 } from './types';
-import {
-  createCommandCenter,
-  createSmelterCommon,
-  createStandardLab,
-  createStructureFactory,
-} from './utils';
 
 // Agridome:
 //   Plymouth:
@@ -55,44 +50,58 @@ import {
 //     HP: 1500
 //     Production: 250
 
-function updateConstructionState(structure: BuildingType) {
+function updateConstructionState(dispatch: AppDispatch, structure: BuildingType) {
   if (structure?.status === BuildingStatus.Building) {
     if (structure.health + 1 >= structure.maxHealth) {
-      return { ...structure, status: BuildingStatus.Online, health: structure.maxHealth };
+      dispatch(
+        updateBuildingProgress({
+          id: structure.id,
+          status: BuildingStatus.Online,
+          health: structure.maxHealth,
+        })
+      );
+      // return { ...structure, status: BuildingStatus.Online, health: structure.maxHealth };
     } else {
-      return { ...structure, health: structure.health + 1 };
+      dispatch(
+        updateBuildingProgress({
+          id: structure.id,
+          status: BuildingStatus.Building,
+          health: structure.maxHealth,
+        })
+      );
+      // return { ...structure, health: structure.health + 1 };
     }
   }
 
   return structure;
 }
 
-function agridomeHandler(mark: number, agridome: BuildingType) {
-  const newState = updateConstructionState(agridome);
+function agridomeHandler(mark: number, dispatch: AppDispatch, agridome: BuildingType) {
+  const newState = updateConstructionState(dispatch, agridome);
 
   return newState;
 }
 
-function standardLabHandler(mark: number, lab: LabStandard) {
-  const newState = updateConstructionState(lab);
+function standardLabHandler(mark: number, dispatch: AppDispatch, lab: LabStandard) {
+  const newState = updateConstructionState(dispatch, lab);
 
   return newState;
 }
 
-function commandCenterHandler(mark: number, center: CommandCenter) {
-  const newState = updateConstructionState(center);
+function commandCenterHandler(mark: number, dispatch: AppDispatch, center: CommandCenter) {
+  const newState = updateConstructionState(dispatch, center);
 
   return newState;
 }
 
-function factoryStructureHandler(mark: number, factory: FactoryStructure) {
-  const newState = updateConstructionState(factory);
+function factoryStructureHandler(mark: number, dispatch: AppDispatch, factory: FactoryStructure) {
+  const newState = updateConstructionState(dispatch, factory);
 
   return newState;
 }
 
-function smelterCommonHandler(mark: number, smelter: BuildingType) {
-  const newState = updateConstructionState(smelter);
+function smelterCommonHandler(mark: number, dispatch: AppDispatch, smelter: BuildingType) {
+  const newState = updateConstructionState(dispatch, smelter);
 
   if (smelter.status === BuildingStatus.Online && smelter.lastMark !== mark) {
     // ?? how to update ore??
@@ -140,11 +149,13 @@ enum Tabs {
   Debug,
 }
 
-function HomePanel({ state }: { state: GameState }) {
+function HomePanel() {
   return <Content title="Home">Hello, World.</Content>;
 }
 
-function DebugPanel({ state }: { state: GameState }) {
+function DebugPanel() {
+  const state = useSelector((state: RootState) => state.game);
+
   return (
     <Content title="Debug">
       <div>Game State:</div>
@@ -190,37 +201,10 @@ function getBuildingManager(type: BuildingType['type']) {
   }
 }
 
-function updateGameState(currentState: GameState): GameState {
-  let newState = calculateTickAndMark(currentState);
-
-  newState = produce(newState, (draft) => {
-    draft.buildings = draft.buildings.map((building) => {
-      const buildingManager = getBuildingManager(building.type);
-      if (buildingManager) {
-        // @ts-ignore TODO: FIXME: typing???
-        return buildingManager(draft.mark, building);
-      }
-
-      console.error(`No building manager found for type: ${building.type}`);
-      return building;
-    });
-  });
-
-  return newState;
-}
-
 function App() {
-  const [gameState, setGameState] = useState<GameState>(
-    createGameState({
-      buildings: [
-        createCommandCenter(10, 10, BuildingStatus.Online),
-        createSmelterCommon(20, 20, BuildingStatus.Online),
-        createStructureFactory(15, 15, BuildingStatus.Online),
-        createStandardLab(0, 0),
-      ],
-      ore: { common: 4000 },
-    })
-  );
+  const state = useSelector((state: RootState) => state.game);
+  const structures = useSelector((state: RootState) => state.game.buildings);
+  const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -231,15 +215,19 @@ function App() {
   useEffect(() => {
     const tickInterval = 1000 / (settings.gameSpeed * 4);
 
-    const interval = setInterval(
-      () => setGameState((currentState) => updateGameState(currentState)),
-      tickInterval
-    );
+    const interval = setInterval(() => {
+      dispatch(tick());
+      structures.forEach((structure) => {
+        const buildingManager = getBuildingManager(structure.type);
+        if (buildingManager) {
+          // @ts-ignore TODO: FIXME: typing???
+          buildingManager(state.mark, dispatch, structure);
+        }
+      });
+    }, tickInterval);
 
     return () => clearInterval(interval);
   }, [settings.gameSpeed]);
-
-  const setResearchTopic = (topic: ResearchItem) => console.log(`TODO: research ${topic.topic}`);
 
   return (
     <div className="lg:w-2/3 w-full mx-auto p-4">
@@ -268,43 +256,20 @@ function App() {
           </div>
           <div className="justify-self-end text-white mr-1">
             {/* @ts-ignore */}
-            Mark: <span className="bg-purple-400 text-sm py-0.5 px-0.5">{gameState.mark}</span>
+            Mark: <span className="bg-purple-400 text-sm py-0.5 px-0.5">{state.mark}</span>
             <span className="text-purple-400"> | </span> Common:{' '}
-            <span className="bg-orange-500 text-sm py-0.5 px-0.5">{gameState.ore.common}</span>
+            <span className="bg-orange-500 text-sm py-0.5 px-0.5">{state.ore.common}</span>
             <span className="text-purple-400"> | </span> Rare:{' '}
-            <span className="bg-yellow-500 text-sm py-0.5 px-0.5">{gameState.ore.rare}</span>
+            <span className="bg-yellow-500 text-sm py-0.5 px-0.5">{state.ore.rare}</span>
             <span className="text-purple-400"> | </span> Moral:{' '}
             <span className="bg-blue-400 text-sm py-0.5 px-0.5">??</span>
           </div>
         </div>
         <div className="border border-purple-400 m-1 p-1 text-white">
-          {activeTab === Tabs.Home && <HomePanel state={gameState} />}
-          {activeTab === Tabs.Research && (
-            <ResearchPanel state={gameState} onStartResearch={setResearchTopic} />
-          )}
-          {activeTab === Tabs.Structures && (
-            <StructuresPanel
-              state={gameState}
-              onCreateStructure={(structure: BuildingType) =>
-                setGameState(
-                  produce(gameState, (draft) => {
-                    if (
-                      draft.ore.common < structure.buildCost.common ||
-                      draft.ore.rare < structure.buildCost.rare
-                    ) {
-                      console.error('Not enough ore to build structure');
-                      return;
-                    }
-
-                    draft.buildings.push(structure);
-                    draft.ore.common -= structure.buildCost.common;
-                    draft.ore.rare -= structure.buildCost.rare;
-                  })
-                )
-              }
-            />
-          )}
-          {activeTab === Tabs.Debug && <DebugPanel state={gameState} />}
+          {activeTab === Tabs.Home && <HomePanel />}
+          {activeTab === Tabs.Research && <ResearchPanel />}
+          {activeTab === Tabs.Structures && <StructuresPanel />}
+          {activeTab === Tabs.Debug && <DebugPanel />}
         </div>
       </div>
     </div>

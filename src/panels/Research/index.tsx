@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Content } from '../../components/Content';
 import _edenResearchTree from '../../eden-research-tree.json';
-import { GameState, ResearchItem } from '../../types';
+import { RootState } from '../../store';
+import { ResearchItem } from '../../types';
 import { filterAvailableResearch } from '../../utils';
 
 const edenResearchTree = _edenResearchTree as ResearchItem[];
@@ -20,13 +22,9 @@ function TopicDetails({ topic }: { topic: ResearchItem }) {
   );
 }
 
-function AvailableResearchView({
-  state,
-  onStartResearch,
-}: {
-  state: GameState;
-  onStartResearch: (topic: ResearchItem) => void;
-}) {
+function AvailableResearchView() {
+  const state = useSelector((state: RootState) => state.game);
+
   const [selectedTopic, setSelectedTopic] = useState<ResearchItem | undefined>();
 
   const standardLabTopics = filterAvailableResearch(
@@ -68,9 +66,9 @@ function AvailableResearchView({
             {!state.currentResearchTopic && (
               <div className="mt-1 text-center">
                 <button
+                  disabled
                   type="button"
                   className="bg-green-500 text-white py-0.5 px-1 hover:bg-green-600"
-                  onClick={() => onStartResearch(selectedTopic)}
                 >
                   Start Research
                 </button>
@@ -83,7 +81,9 @@ function AvailableResearchView({
   );
 }
 
-function ActiveResearchView({ state }: { state: GameState }) {
+function ActiveResearchView() {
+  const state = useSelector((state: RootState) => state.game);
+
   if (!state.currentResearchTopic) {
     return null;
   }
@@ -116,20 +116,12 @@ function ActiveResearchView({ state }: { state: GameState }) {
   );
 }
 
-export default function ResearchPanel({
-  state,
-  onStartResearch,
-}: {
-  state: GameState;
-  onStartResearch: (topic: ResearchItem) => void;
-}) {
+export default function ResearchPanel() {
+  const state = useSelector((state: RootState) => state.game);
+
   return (
     <Content title="Research">
-      {state.currentResearchTopic ? (
-        <ActiveResearchView state={state} />
-      ) : (
-        <AvailableResearchView state={state} onStartResearch={onStartResearch} />
-      )}
+      {state.currentResearchTopic ? <ActiveResearchView /> : <AvailableResearchView />}
     </Content>
   );
 }
