@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { gameSlice } from './state/slices/game';
-import { BuildingType, ResearchItem } from './types';
+import { Building, ResearchItem } from './types';
 
 export type GameState = {
   tick: number;
   mark: number;
   morale: number;
-  buildings: Array<BuildingType>;
+  buildings: Array<Building>;
   currentResearchTopic?: ResearchItem & { counter: number };
   finishedResearch: string[];
   gameLog: string[];

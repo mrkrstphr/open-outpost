@@ -39,11 +39,12 @@ export const canBuildStructure = (
   structure: Pick<StructureDetails, 'buildCost'>
 ) => {
   return (
-    ore.common >= (structure.buildCost.common ?? 0) && ore.rare >= (structure.buildCost.rare ?? 0)
+    (ore.common ?? 0) >= (structure.buildCost.common ?? 0) &&
+    (ore.rare ?? 0) >= (structure.buildCost.rare ?? 0)
   );
 };
 
-export const sortStructures = (structures: Array<Pick<Building, 'id' | 'type'>>) =>
+export const sortStructures = (structures: Array<Building>) =>
   [...structures].sort((a, b) => {
     const firstLabel = `${a.type}-${a.id}`;
     const secondLabel = `${b.type}-${b.id}`;

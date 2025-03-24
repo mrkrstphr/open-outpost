@@ -1,11 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { BuildingType, FactoryStructure, GameState } from '../../types';
+import { Building, BuildingTypes, GameState } from '../../types';
 import { canBuildStructure } from '../../utils';
 
 export const produceStructure = (
   state: GameState,
-  action: PayloadAction<{ factory: FactoryStructure; type: BuildingType['type'] }>
+  action: PayloadAction<{ factory: Building; type: BuildingTypes }>
 ) => {
   const { factory, type } = action.payload;
   const factoryDefinition = structureSpec[factory.type];
@@ -16,7 +16,7 @@ export const produceStructure = (
     return;
   }
 
-  if (factory.storage?.length >= (factoryDefinition.produces?.slots ?? 0)) {
+  if ((factory.storage?.length ?? 0) >= (factoryDefinition.produces?.slots ?? 0)) {
     console.info('Factory storage is full');
     return;
   }
@@ -34,6 +34,6 @@ export const produceStructure = (
     return building;
   });
 
-  state.ore.common -= definition.buildCost.common;
-  state.ore.rare -= definition.buildCost.rare;
+  state.ore.common -= definition.buildCost.common ?? 0;
+  state.ore.rare -= definition.buildCost.rare ?? 0;
 };

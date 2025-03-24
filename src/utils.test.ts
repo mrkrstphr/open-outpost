@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { structureSpec } from './data/structures';
-import { BuildingStatus, BuildingTypes } from './types';
+import { Building, BuildingStatus, BuildingTypes } from './types';
 import { buildingLabel, canBuildStructure, createNewStructure, sortStructures } from './utils';
 
 describe('createNewStructure', () => {
@@ -70,7 +70,7 @@ describe('sortStructures', () => {
       { id: '3', type: BuildingTypes.Agridome },
     ];
 
-    const sorted = sortStructures(structures);
+    const sorted = sortStructures(structures as Building[]);
     expect(sorted).toEqual([
       { id: '2', type: BuildingTypes.Agridome },
       { id: '3', type: BuildingTypes.Agridome },

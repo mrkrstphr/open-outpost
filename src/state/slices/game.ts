@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { isNotNil } from 'ramda';
 import { structureSpec } from '../../data/structures';
-import { BuildingStatus, BuildingType, GameState } from '../../types';
-import { canBuildStructure, createNewStructure } from '../../utils';
+import { Building, BuildingStatus, GameState } from '../../types';
+import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
 
-function updateConstructionState(structure: BuildingType) {
+function updateConstructionState(structure: Building) {
   if (structure?.status === BuildingStatus.Building) {
     if (structure.health + 1 >= structure.maxHealth) {
       return { ...structure, status: BuildingStatus.Online, health: structure.maxHealth };
@@ -19,31 +19,19 @@ function updateConstructionState(structure: BuildingType) {
   return structure;
 }
 
-function buildingManager(mark: number, building: BuildingType) {
+function buildingManager(mark: number, building: Building) {
   const newState = updateConstructionState(building);
 
   if (newState.current?.type) {
     newState.current.progress += 1;
 
-    if (newState.current.progress >= structureSpec[newState.current.type].hp) {
+    if (newState.current.progress >= structureSpec[newState.current.type].kitBuildTime) {
       newState.storage = newState.storage
         ? [...newState.storage, newState.current.type]
         : [newState.current.type];
-      newState.current = {};
+      newState.current = undefined;
     }
   }
-
-  // if (factory.current?.type) {
-  //   console.log('up');
-  //   dispatch(
-  //     updateManufactoringProgress({ id: factory.id, progress: factory.current.progress + 1 })
-  //   );
-  //   // const details = structureSpec[newState.current.type];
-  //   // if (details) {
-  //   // dispatch()
-  //   // newState.current.progress += 1;
-  //   // }
-  // }
 
   return newState;
 }
@@ -87,7 +75,7 @@ function createGameState({
   buildings,
   ore,
 }: {
-  buildings?: Array<BuildingType>;
+  buildings?: Array<Building>;
   ore?: { common?: number; rare?: number };
 }) {
   return {
@@ -130,52 +118,9 @@ export const gameSlice = createSlice({
 
     buildStructure: buildStructureFunc,
     produceStructure: produceStructureFunc,
-
-    createStructure: (state, action: PayloadAction<BuildingType>) => {
-      const definition = structureSpec[action.payload.type];
-
-      if (!canBuildStructure(state.ore, definition)) {
-        console.info('Not enough ore to create structure');
-        return;
-      }
-
-      state.ore.common -= definition.buildCost.common;
-      state.ore.rare -= definition.buildCost.rare;
-      state.buildings.push(action.payload);
-    },
-
-    updateManufactoringProgress: (state, action) => {
-      const { id, progress } = action.payload;
-
-      state.buildings = state.buildings.map((building) => {
-        if (building.id === id && building.current?.type) {
-          return {
-            ...building,
-            current: { ...building.current, progress: progress + 1 },
-          };
-        }
-        return building;
-      });
-    },
-
-    updateBuildingProgress: (state, action) => {
-      state.buildings.map((building) => {
-        if (building.id === action.payload.id) {
-          return { ...building, health: action.payload.health, status: action.payload.status };
-        }
-        return building;
-      });
-    },
   },
 });
 
-export const {
-  buildStructure,
-  createStructure,
-  produceStructure,
-  tick,
-  updateBuildingProgress,
-  updateManufactoringProgress,
-} = gameSlice.actions;
+export const { buildStructure, produceStructure, tick } = gameSlice.actions;
 
 export default gameSlice.reducer;

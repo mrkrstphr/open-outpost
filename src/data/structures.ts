@@ -1,8 +1,10 @@
 import PlymouthLabStandard from '../structures/playmouth-standard-lab.png';
 import PlymouthAgridome from '../structures/plymouth-agridome.png';
 import PlymouthCommandCenter from '../structures/plymouth-command-center.png';
+import PlymouthResidence from '../structures/plymouth-residence.png';
 import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
 import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
+import PlymouthTokamak from '../structures/plymouth-tokamak.png';
 import { BuildingTypes } from '../types';
 
 export type StructureDetails = {
@@ -10,7 +12,7 @@ export type StructureDetails = {
   type: BuildingTypes;
   hp: number;
   buildCost: { common?: number; rare?: number };
-  buildTime: number;
+  kitBuildTime: number;
   requiredResearch?: Array<string>;
   workers?: number;
   scientists?: number;
@@ -34,7 +36,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     type: BuildingTypes.Agridome,
     hp: 1000,
     buildCost: { common: 225, rare: 0 },
-    buildTime: 200,
+    kitBuildTime: 200,
     powerUsage: 20,
     workers: 1,
     scientists: 0,
@@ -46,7 +48,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     type: BuildingTypes.CommandCenter,
     hp: 2500,
     buildCost: { common: 2800, rare: 0 },
-    buildTime: 1925,
+    kitBuildTime: 1925,
     powerUsage: 0,
     workers: 4,
     scientists: 1,
@@ -59,7 +61,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     hp: 2000,
     // TODO: FIXME:
     buildCost: { common: 2500, rare: 0 },
-    buildTime: 1875,
+    kitBuildTime: 1875,
     powerUsage: 50,
     workers: 1,
     scientists: 0,
@@ -71,7 +73,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     type: BuildingTypes.LabStandard,
     hp: 1250,
     buildCost: { common: 1500, rare: 0 },
-    buildTime: 1025,
+    kitBuildTime: 1025,
     powerUsage: 50,
     workers: 1,
     scientists: 0,
@@ -82,15 +84,16 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     type: BuildingTypes.Residence,
     hp: 800,
     buildCost: { common: 600 },
-    buildTime: 225,
+    kitBuildTime: 225,
     workers: 1,
+    image: PlymouthResidence,
   },
   SmelterCommon: {
     name: 'Smelter, Common Ore',
     type: BuildingTypes.SmelterCommon,
     hp: 2000,
     buildCost: { common: 2000, rare: 0 },
-    buildTime: 1500,
+    kitBuildTime: 1500,
     powerUsage: 50,
     workers: 3,
     scientists: 0,
@@ -103,7 +106,8 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     type: BuildingTypes.Tokamak,
     hp: 1500,
     buildCost: { common: 1100 },
-    buildTime: 825,
+    kitBuildTime: 825,
     produces: { power: 250 },
+    image: PlymouthTokamak,
   },
 };

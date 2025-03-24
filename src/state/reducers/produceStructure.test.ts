@@ -1,7 +1,7 @@
 import { createDraft, produce } from 'immer';
 import { expect, test, vi } from 'vitest';
 import { structureSpec } from '../../data/structures';
-import { BuildingStatus } from '../../types';
+import { BuildingStatus, BuildingTypes } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { produceStructure } from './produceStructure';
@@ -15,13 +15,13 @@ test('starts producing the new structure when all conditions are met', () => {
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: 'Agridome' },
+    payload: { factory: previousState.buildings[0], type: BuildingTypes.Agridome },
   });
 
   expect(newState).toEqual(
     produce(previousState, (draft) => {
-      draft.ore.common = draft.ore.common - structureSpec.Agridome.buildCost.common;
-      draft.buildings[0].current = { type: 'Agridome', progress: 0 };
+      draft.ore.common = draft.ore.common - (structureSpec.Agridome.buildCost.common ?? 0);
+      draft.buildings[0].current = { type: BuildingTypes.Agridome, progress: 0 };
     })
   );
 });
@@ -37,7 +37,7 @@ test('without enough ore, does not start producing the new structure', () => {
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: 'Agridome' },
+    payload: { factory: previousState.buildings[0], type: BuildingTypes.Agridome },
   });
 
   expect(newState).toEqual(previousState);
@@ -50,13 +50,13 @@ test('does not start producing if the factory is busy', () => {
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
     draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
-    draft.buildings[0].current = { type: 'Agridome', progress: 0 };
+    draft.buildings[0].current = { type: BuildingTypes.Agridome, progress: 0 };
   });
 
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: 'LabStandard' },
+    payload: { factory: previousState.buildings[0], type: BuildingTypes.LabStandard },
   });
 
   expect(newState).toEqual(previousState);
@@ -70,19 +70,19 @@ test('does not start producing if the factory storage is full', () => {
     draft.ore.common = 5000;
     draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
     draft.buildings[0].storage = [
-      'Agridome',
-      'LabStandard',
-      'SmelterCommon',
-      'CommandCenter',
-      'FactoryStructure',
-      'Agridome',
+      BuildingTypes.Agridome,
+      BuildingTypes.LabStandard,
+      BuildingTypes.SmelterCommon,
+      BuildingTypes.CommandCenter,
+      BuildingTypes.FactoryStructure,
+      BuildingTypes.Agridome,
     ];
   });
 
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: 'LabStandard' },
+    payload: { factory: previousState.buildings[0], type: BuildingTypes.LabStandard },
   });
 
   expect(newState).toEqual(previousState);

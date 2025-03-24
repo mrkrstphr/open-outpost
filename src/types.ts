@@ -43,9 +43,11 @@ export type Building = {
 export type GameState = {
   tick: number;
   mark: number;
-  buildings: Array<BuildingTypes>;
+  buildings: Array<Building>;
   currentResearchTopic?: ResearchItem & { counter: number };
   finishedResearch: string[];
   gameLog: string[];
+  food: number;
+  population: { children: number; workers: number; scientists: number };
   ore: { common: number; rare: number };
 };

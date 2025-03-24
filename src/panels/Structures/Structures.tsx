@@ -81,7 +81,7 @@ const SelectedStructure = ({
       }
     >
       <Suspense fallback={<div className="text-center">Loading...</div>}>
-        <ContentPanel structure={structure} />
+        <ContentPanel structure={structure} onClose={onClose} />
       </Suspense>
     </ContentBox>
   );
