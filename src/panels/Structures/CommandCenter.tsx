@@ -63,7 +63,7 @@ const CommandCenterStructure = () => {
           rows={[
             [
               { label: 'Production', value: foodProduction },
-              { label: 'Utilization', value: foodStorage },
+              { label: 'Storage', value: foodStorage },
             ],
           ]}
         />

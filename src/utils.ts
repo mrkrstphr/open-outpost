@@ -59,3 +59,6 @@ export const buildingLabel = (building: Pick<Building, 'id' | 'type'>) => {
   const structure = structureSpec[building.type];
   return `${structure.name}@${building.id.substring(0, 6)}`;
 };
+
+export const filterActiveStructures = (structures: Array<Building>) =>
+  structures.filter((structure) => structure.status === BuildingStatus.Online);

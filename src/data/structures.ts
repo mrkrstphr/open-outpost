@@ -41,6 +41,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     workers: 1,
     scientists: 0,
     produces: { food: 36 },
+    stores: { food: 1000 },
     image: PlymouthAgridome,
   },
   CommandCenter: {

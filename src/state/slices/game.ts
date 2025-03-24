@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { isNotNil } from 'ramda';
 import { structureSpec } from '../../data/structures';
 import { Building, BuildingStatus, ResearchItem } from '../../types';
-import { createNewStructure } from '../../utils';
+import { createNewStructure, filterActiveStructures } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
@@ -57,12 +57,12 @@ function runProducers(state: GameState) {
     (acc, building) => acc + (structureSpec[building.type].stores?.ore?.rare ?? 0),
     0
   );
-  const maxFood = state.buildings.reduce(
+  const maxFood = filterActiveStructures(state.buildings).reduce(
     (acc, building) => acc + (structureSpec[building.type].stores?.food ?? 0),
     0
   );
 
-  state.buildings.forEach((building, index) => {
+  filterActiveStructures(state.buildings).forEach((building, index) => {
     const definition = structureSpec[building.type];
 
     if (state.mark === building.lastMark) return;
