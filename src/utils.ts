@@ -62,3 +62,9 @@ export const buildingLabel = (building: Pick<Building, 'id' | 'type'>) => {
 
 export const filterActiveStructures = (structures: Array<Building>) =>
   structures.filter((structure) => structure.status === BuildingStatus.Online);
+
+export const filterOnlineOrNoPowerStructures = (structures: Array<Building>) =>
+  structures.filter(
+    (structure) =>
+      structure.status === BuildingStatus.Online || structure.status === BuildingStatus.NoPower
+  );
