@@ -81,11 +81,11 @@ const BuildingState = ({ structure }: BuildingStateProps) => {
               className="flex-1"
               percent={Math.min(
                 100,
-                ((structure.current?.progress ?? 0) / currentDefinition.hp) * 100
+                ((structure.current?.progress ?? 0) / currentDefinition.kitBuildTime) * 100
               )}
             />
             <div className="w-22 text-right">
-              {structure.current?.progress ?? 0}/{currentDefinition.hp}
+              {structure.current?.progress ?? 0}/{currentDefinition.kitBuildTime}
             </div>
           </div>
         </div>
