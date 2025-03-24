@@ -74,13 +74,13 @@ function App() {
             </Tab>
           </div>
           <div className="justify-self-end text-white mr-1">
-            Mark: <span className="bg-purple-400 text-sm py-0.5 px-0.5">{state.mark}</span>
+            Mark: <span className="bg-purple-400 text-sm py-0.5 px-1">{state.mark}</span>
             <span className="text-purple-400"> | </span> Common:{' '}
-            <span className="bg-orange-500 text-sm py-0.5 px-0.5">{state.ore.common}</span>
+            <span className="bg-orange-500 text-sm py-0.5 px-1">{state.ore.common}</span>
             <span className="text-purple-400"> | </span> Rare:{' '}
-            <span className="bg-yellow-500 text-sm py-0.5 px-0.5">{state.ore.rare}</span>
+            <span className="bg-yellow-500 text-sm py-0.5 px-1">{state.ore.rare}</span>
             <span className="text-purple-400"> | </span> Moral:{' '}
-            <span className="bg-blue-400 text-sm py-0.5 px-0.5">{state.morale}</span>
+            <span className="bg-blue-400 text-sm py-0.5 px-1">{state.morale}</span>
           </div>
         </Box>
 

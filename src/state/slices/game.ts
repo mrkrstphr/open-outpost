@@ -1,11 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { isNotNil } from 'ramda';
 import { structureSpec } from '../../data/structures';
-import { Building, BuildingStatus, GameState } from '../../types';
+import { Building, BuildingStatus, ResearchItem } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
+
+export type GameState = {
+  tick: number;
+  mark: number;
+  morale: number;
+  buildings: Array<Building>;
+  currentResearchTopic?: ResearchItem & { counter: number };
+  finishedResearch: string[];
+  gameLog: string[];
+  food: number;
+  ore: { common: number; rare: number };
+};
 
 function updateConstructionState(structure: Building) {
   if (structure?.status === BuildingStatus.Building) {
@@ -19,7 +31,7 @@ function updateConstructionState(structure: Building) {
   return structure;
 }
 
-function buildingManager(mark: number, building: Building) {
+function buildingManager(building: Building) {
   const newState = updateConstructionState(building);
 
   if (newState.current?.type) {
@@ -110,7 +122,7 @@ export const gameSlice = createSlice({
       }
 
       state.buildings = state.buildings.map((building) => {
-        return buildingManager(state.mark, building);
+        return buildingManager(building);
       });
 
       runProducers(state);

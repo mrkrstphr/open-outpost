@@ -39,15 +39,3 @@ export type Building = {
   storage?: Array<BuildingTypes>;
   current?: { type: BuildingTypes; progress: number };
 };
-
-export type GameState = {
-  tick: number;
-  mark: number;
-  buildings: Array<Building>;
-  currentResearchTopic?: ResearchItem & { counter: number };
-  finishedResearch: string[];
-  gameLog: string[];
-  food: number;
-  population: { children: number; workers: number; scientists: number };
-  ore: { common: number; rare: number };
-};

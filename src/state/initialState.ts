@@ -1,4 +1,4 @@
-import { GameState } from '../types';
+import { GameState } from './slices/game';
 
 export const initialState: GameState = {
   tick: 0,
