@@ -4,7 +4,7 @@ import { structureSpec } from '../../data/structures';
 import { BuildingStatus } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
-import { buildStructure } from './buildStructure';
+import { produceStructure } from './produceStructure';
 
 test('starts producing the new structure when all conditions are met', () => {
   const previousState = produce(initialState, (draft) => {
@@ -16,7 +16,9 @@ test('starts producing the new structure when all conditions are met', () => {
 
   const newState = createDraft(previousState);
 
-  buildStructure(newState, { payload: { factory: previousState.buildings[0], type: 'Agridome' } });
+  produceStructure(newState, {
+    payload: { factory: previousState.buildings[0], type: 'Agridome' },
+  });
 
   expect(newState).toEqual(
     produce(previousState, (draft) => {
@@ -38,7 +40,9 @@ test('without enough ore, does not start producing the new structure', () => {
 
   const newState = createDraft(previousState);
 
-  buildStructure(newState, { payload: { factory: previousState.buildings[0], type: 'Agridome' } });
+  produceStructure(newState, {
+    payload: { factory: previousState.buildings[0], type: 'Agridome' },
+  });
 
   expect(newState).toEqual(previousState);
   expect(consoleMock).toHaveBeenCalledWith('Not enough ore to create structure');
@@ -57,7 +61,7 @@ test('does not start producing if the factory is busy', () => {
 
   const newState = createDraft(previousState);
 
-  buildStructure(newState, {
+  produceStructure(newState, {
     payload: { factory: previousState.buildings[0], type: 'LabStandard' },
   });
 
@@ -85,7 +89,7 @@ test('does not start producing if the factory storage is full', () => {
 
   const newState = createDraft(previousState);
 
-  buildStructure(newState, {
+  produceStructure(newState, {
     payload: { factory: previousState.buildings[0], type: 'LabStandard' },
   });
 

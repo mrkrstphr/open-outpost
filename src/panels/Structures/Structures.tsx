@@ -45,7 +45,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
               {building.health !== building.maxHealth && (
                 <ProgressBar
                   percent={(building.health / building.maxHealth) * 100}
-                  className="absolute m-1"
+                  className="absolute inset-0.5 m-1"
                 />
               )}
               <img

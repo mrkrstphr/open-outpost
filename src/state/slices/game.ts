@@ -5,6 +5,7 @@ import { BuildingStatus, BuildingType, GameState } from '../../types';
 import { canBuildStructure, createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
+import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
 
 function updateConstructionState(structure: BuildingType) {
   if (structure?.status === BuildingStatus.Building) {
@@ -22,8 +23,7 @@ function buildingManager(mark: number, building: BuildingType) {
   const newState = updateConstructionState(building);
 
   if (newState.current?.type) {
-    // TODO: FIXME: make 1
-    newState.current.progress += 10;
+    newState.current.progress += 1;
 
     if (newState.current.progress >= structureSpec[newState.current.type].hp) {
       newState.storage = newState.storage
@@ -129,6 +129,7 @@ export const gameSlice = createSlice({
     },
 
     buildStructure: buildStructureFunc,
+    produceStructure: produceStructureFunc,
 
     createStructure: (state, action: PayloadAction<BuildingType>) => {
       const definition = structureSpec[action.payload.type];
@@ -171,6 +172,7 @@ export const gameSlice = createSlice({
 export const {
   buildStructure,
   createStructure,
+  produceStructure,
   tick,
   updateBuildingProgress,
   updateManufactoringProgress,

@@ -19,47 +19,31 @@ export enum BuildingStatus {
   NoPower = 'NoPower',
 }
 
+export enum BuildingTypes {
+  Agridome = 'Agridome',
+  CommandCenter = 'CommandCenter',
+  FactoryStructure = 'FactoryStructure',
+  LabStandard = 'LabStandard',
+  Residence = 'Residence',
+  SmelterCommon = 'SmelterCommon',
+  Tokamak = 'Tokamak',
+}
+
 export type Building = {
   id: string;
+  type: BuildingTypes;
   health: number;
   maxHealth: number;
   status: BuildingStatus;
   lastMark?: number;
+  storage?: Array<BuildingTypes>;
+  current?: { type: BuildingTypes; progress: number };
 };
-
-export type Agridome = Building & {
-  type: 'Agridome';
-};
-
-export type CommandCenter = Building & {
-  type: 'CommandCenter';
-};
-
-export type FactoryStructure = Building & {
-  type: 'FactoryStructure';
-  current: { type: BuildingType['type']; progress: number };
-  storage: Array<BuildingType['type']>;
-};
-
-export type LabStandard = Building & {
-  type: 'LabStandard';
-};
-
-export type SmelterCommon = Building & {
-  type: 'SmelterCommon';
-};
-
-export type BuildingType =
-  | Agridome
-  | CommandCenter
-  | FactoryStructure
-  | SmelterCommon
-  | LabStandard;
 
 export type GameState = {
   tick: number;
   mark: number;
-  buildings: Array<BuildingType>;
+  buildings: Array<BuildingTypes>;
   currentResearchTopic?: ResearchItem & { counter: number };
   finishedResearch: string[];
   gameLog: string[];

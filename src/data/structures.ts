@@ -1,14 +1,20 @@
-import { BuildingType } from '../types';
+import PlymouthLabStandard from '../structures/playmouth-standard-lab.png';
+import PlymouthAgridome from '../structures/plymouth-agridome.png';
+import PlymouthCommandCenter from '../structures/plymouth-command-center.png';
+import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
+import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
+import { BuildingTypes } from '../types';
 
 export type StructureDetails = {
   name: string;
-  type: BuildingType['type'];
+  type: BuildingTypes;
   hp: number;
-  buildCost: { common: number; rare: number };
+  buildCost: { common?: number; rare?: number };
+  buildTime: number;
   requiredResearch?: Array<string>;
   workers?: number;
   scientists?: number;
-  powerUsage: number;
+  powerUsage?: number;
   produces?: {
     food?: number;
     power?: number;
@@ -19,74 +25,85 @@ export type StructureDetails = {
     food?: number;
     ore?: { common?: number; rare?: number };
   };
+  image?: any;
 };
 
-export const structureSpec: Record<BuildingType['type'], StructureDetails> = {
+export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   Agridome: {
     name: 'Agridome',
-    type: 'Agridome',
+    type: BuildingTypes.Agridome,
     hp: 1000,
     buildCost: { common: 225, rare: 0 },
+    buildTime: 200,
     powerUsage: 20,
     workers: 1,
     scientists: 0,
     produces: { food: 36 },
+    image: PlymouthAgridome,
   },
   CommandCenter: {
     name: 'Command Center',
-    type: 'CommandCenter',
+    type: BuildingTypes.CommandCenter,
     hp: 2500,
-    // TODO: FIXME:
-    buildCost: { common: 0, rare: 0 },
+    buildCost: { common: 2800, rare: 0 },
+    buildTime: 1925,
     powerUsage: 0,
     workers: 4,
     scientists: 1,
-    // TODO: FIXME:
-    produces: { power: 0 },
+    produces: { power: 50 },
+    image: PlymouthCommandCenter,
   },
   FactoryStructure: {
     name: 'Factory, Structure',
-    type: 'FactoryStructure',
+    type: BuildingTypes.FactoryStructure,
     hp: 2000,
     // TODO: FIXME:
-    buildCost: { common: 0, rare: 0 },
-    // TODO: FIXME:
-    powerUsage: 0,
-    workers: 1,
-    scientists: 0,
-    produces: { slots: 6 },
-  },
-  LabStandard: {
-    name: 'Lab, Standard',
-    type: 'LabStandard',
-    hp: 1250,
-    // TODO: FIXME:
-    buildCost: { common: 0, rare: 0 },
+    buildCost: { common: 2500, rare: 0 },
+    buildTime: 1875,
     powerUsage: 50,
     workers: 1,
     scientists: 0,
+    produces: { slots: 6 },
+    image: PlymouthStructureFactory,
   },
-  // Residence: {
-  //   buildCost: {common: 225},
-  // },
+  LabStandard: {
+    name: 'Lab, Standard',
+    type: BuildingTypes.LabStandard,
+    hp: 1250,
+    buildCost: { common: 1500, rare: 0 },
+    buildTime: 1025,
+    powerUsage: 50,
+    workers: 1,
+    scientists: 0,
+    image: PlymouthLabStandard,
+  },
+  Residence: {
+    name: 'Residence',
+    type: BuildingTypes.Residence,
+    hp: 800,
+    buildCost: { common: 600 },
+    buildTime: 225,
+    workers: 1,
+  },
   SmelterCommon: {
     name: 'Smelter, Common Ore',
-    type: 'SmelterCommon',
+    type: BuildingTypes.SmelterCommon,
     hp: 2000,
-    // TODO: FIXME:
-    buildCost: { common: 0, rare: 0 },
-    // TODO: FIXME:
-    powerUsage: 0,
-    // TODO: FIXME:
-    workers: 0,
+    buildCost: { common: 2000, rare: 0 },
+    buildTime: 1500,
+    powerUsage: 50,
+    workers: 3,
     scientists: 0,
     produces: { ore: { common: 75 } },
     stores: { ore: { common: 10000 } },
+    image: PlymouthSmelterCommon,
   },
-  // Tokamak: {
-  //   name: 'Tokamak',
-  //   type: 'Tokamak',
-  //   hp: 1500,
-  //   produces: { power: 250 },
-  // },
+  Tokamak: {
+    name: 'Tokamak',
+    type: BuildingTypes.Tokamak,
+    hp: 1500,
+    buildCost: { common: 1100 },
+    buildTime: 825,
+    produces: { power: 250 },
+  },
 };

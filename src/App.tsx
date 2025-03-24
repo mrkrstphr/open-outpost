@@ -42,7 +42,6 @@ function DebugPanel() {
 
 function App() {
   const state = useSelector((state: RootState) => state.game);
-  const structures = useSelector((state: RootState) => state.game.buildings);
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState(0);
