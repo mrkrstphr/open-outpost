@@ -22,11 +22,11 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
   const [highlightedStructure, setHighlighedStructure] = useState<Building | undefined>();
 
   if (structures.length === 0) {
-    return <ContentBox title="Structures">No buildings available.</ContentBox>;
+    return <ContentBox title="Your Colony">There are no buildings in your colony.</ContentBox>;
   }
 
   return (
-    <ContentBox title="Structures">
+    <ContentBox title="Your Colony">
       <div className="flex flex-wrap">
         {sortedStructures.map((building) => (
           <div key={`building-${building.type}-${building.id}`} className="m-4">

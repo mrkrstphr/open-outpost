@@ -1,39 +1,18 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from './components/Box';
-import { ContentBox } from './components/ContentBox';
 import { Tab } from './components/Tab';
 import ResearchPanel from './panels/Research';
 import { StructuresPanel } from './panels/Structures';
 import { tick } from './state/slices/game';
 import { RootState } from './store';
 
+const DebugPanel = lazy(() => import('./panels/Debug/Debug'));
+
 enum Tabs {
   Home,
   Research,
   Debug,
-}
-
-function DebugPanel() {
-  const state = useSelector((state: RootState) => state.game);
-
-  return (
-    <ContentBox title="Debug">
-      <div>Game State:</div>
-      <pre className="mt-1 border border-purple-400 p-1 text-xs text-green-400 whitespace-pre-wrap">
-        {JSON.stringify(state, null, 2)}
-      </pre>
-      <div>
-        Current Research Topic: {state.currentResearchTopic?.topic ?? 'None'}
-        <br />
-        Counter: {state.currentResearchTopic?.counter ?? '0'}
-        <br />
-        Duration: {state.currentResearchTopic?.cost}
-        <br />
-        {/* Elapsed: {state.currentResearchTopic && Date.now() - state.currentResearchTopic.started} */}
-      </div>
-    </ContentBox>
-  );
 }
 
 function App() {
@@ -84,11 +63,11 @@ function App() {
           </div>
         </Box>
 
-        <>
+        <Suspense>
           {activeTab === Tabs.Home && <StructuresPanel />}
           {activeTab === Tabs.Research && <ResearchPanel />}
           {activeTab === Tabs.Debug && <DebugPanel />}
-        </>
+        </Suspense>
       </Box>
     </div>
   );
