@@ -8,7 +8,7 @@ import { buildingLabel, sortStructures } from '../../utils';
 
 const structureContentMap: Record<BuildingTypes, React.ElementType> = {
   Agridome: () => <div>TODO: Agridome</div>,
-  CommandCenter: () => <div>TODO: Command Center</div>,
+  CommandCenter: lazy(() => import('./CommandCenter')),
   FactoryStructure: lazy(() => import('./FactoryStructure')),
   LabStandard: () => <div>TODO: Lab</div>,
   Residence: () => <div>TODO: Residence</div>,
