@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Content } from '../../components/Content';
+import { ContentBox } from '../../components/ContentBox';
 import _edenResearchTree from '../../eden-research-tree.json';
 import { RootState } from '../../store';
 import { ResearchItem } from '../../types';
@@ -120,8 +120,8 @@ export default function ResearchPanel() {
   const state = useSelector((state: RootState) => state.game);
 
   return (
-    <Content title="Research">
+    <ContentBox title="Research">
       {state.currentResearchTopic ? <ActiveResearchView /> : <AvailableResearchView />}
-    </Content>
+    </ContentBox>
   );
 }

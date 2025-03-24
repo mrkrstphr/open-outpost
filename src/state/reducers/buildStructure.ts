@@ -17,7 +17,7 @@ export const buildStructure = (
 
   const structure = structureSpec[structureToBuild];
 
-  state.buildings.push(createNewStructure(0, 0, structure));
+  state.buildings.push(createNewStructure(structure));
 
   state.buildings = state.buildings.map((building) => {
     if (building.id === factory.id) {

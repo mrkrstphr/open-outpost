@@ -105,10 +105,10 @@ export const gameSlice = createSlice({
   // TODO: FIXME: how to setup initial game state??
   initialState: createGameState({
     buildings: [
-      createNewStructure(0, 0, structureSpec.CommandCenter, BuildingStatus.Online),
-      createNewStructure(10, 10, structureSpec.FactoryStructure, BuildingStatus.Online),
-      createNewStructure(20, 20, structureSpec.SmelterCommon, BuildingStatus.Online),
-      createNewStructure(30, 30, structureSpec.LabStandard),
+      createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
+      createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online),
+      createNewStructure(structureSpec.SmelterCommon, BuildingStatus.Online),
+      createNewStructure(structureSpec.LabStandard),
     ],
     ore: { common: 4000 },
   }),

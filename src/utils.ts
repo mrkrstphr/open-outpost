@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
-import { StructureDetails } from './data/structures';
-import { BuildingStatus, BuildingType, GameState, type LabType, type ResearchItem } from './types';
+import { StructureDetails, structureSpec } from './data/structures';
+import { Building, BuildingStatus, GameState, type LabType, type ResearchItem } from './types';
 
 export function filterAvailableResearch(
   targetLab: LabType,
@@ -20,11 +20,9 @@ export function filterAvailableResearch(
 }
 
 export function createNewStructure(
-  x: number,
-  y: number,
   structure: StructureDetails,
   buildingStatus?: BuildingStatus
-): BuildingType {
+): Building {
   const status = buildingStatus ?? BuildingStatus.Building;
 
   return {
@@ -36,8 +34,27 @@ export function createNewStructure(
   };
 }
 
-export const canBuildStructure = (ore: GameState['ore'], structure: StructureDetails) => {
+export const canBuildStructure = (
+  ore: GameState['ore'],
+  structure: Pick<StructureDetails, 'buildCost'>
+) => {
   return (
     ore.common >= (structure.buildCost.common ?? 0) && ore.rare >= (structure.buildCost.rare ?? 0)
   );
+};
+
+export const sortStructures = (structures: Array<Pick<Building, 'id' | 'type'>>) =>
+  [...structures].sort((a, b) => {
+    const firstLabel = `${a.type}-${a.id}`;
+    const secondLabel = `${b.type}-${b.id}`;
+
+    if (firstLabel < secondLabel) return -1;
+    if (firstLabel > secondLabel) return 1;
+
+    return 0;
+  });
+
+export const buildingLabel = (building: Pick<Building, 'id' | 'type'>) => {
+  const structure = structureSpec[building.type];
+  return `${structure.name}@${building.id.substring(0, 6)}`;
 };

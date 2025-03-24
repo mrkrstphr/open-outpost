@@ -1,45 +1,34 @@
-import { lazy, Suspense, useState } from 'react';
-import { Content } from '../../components/Content';
+import { lazy, Suspense, useMemo, useState } from 'react';
+import { ContentBox } from '../../components/ContentBox';
 import { ProgressBar } from '../../components/ProgressBar';
 import { structureSpec } from '../../data/structures';
 import { useStructures } from '../../hooks/useStructures';
-import PlymouthLabStandard from '../../structures/playmouth-standard-lab.png';
-import PlymouthAgridome from '../../structures/plymouth-agridome.png';
-import PlaymouthCommandCenter from '../../structures/plymouth-command-center.png';
-import PlymouthSmelterCommon from '../../structures/plymouth-smelter-common.png';
-import PlymouthStructureFactory from '../../structures/plymouth-structure-factory.png';
-import { BuildingStatus, BuildingType } from '../../types';
+import { Building, BuildingStatus, BuildingTypes } from '../../types';
+import { buildingLabel, sortStructures } from '../../utils';
 
-const buildingTypeToImageMap = {
-  Agridome: PlymouthAgridome,
-  CommandCenter: PlaymouthCommandCenter,
-  FactoryStructure: PlymouthStructureFactory,
-  LabStandard: PlymouthLabStandard,
-  SmelterCommon: PlymouthSmelterCommon,
+const structureContentMap: Record<BuildingTypes, React.ElementType> = {
+  Agridome: () => <div>TODO: Agridome</div>,
+  CommandCenter: () => <div>TODO: Command Center</div>,
+  FactoryStructure: lazy(() => import('./FactoryStructure')),
+  LabStandard: () => <div>TODO: Lab</div>,
+  Residence: () => <div>TODO: Residence</div>,
+  SmelterCommon: () => <div>TODO: Smelter</div>,
+  Tokamak: () => <div>TODO: Tokamak</div>,
 };
 
 const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) => {
   const structures = useStructures();
-  const [highlightedStructure, setHighlighedStructure] = useState<BuildingType | undefined>();
+  const sortedStructures = useMemo(() => sortStructures(structures), [structures]);
+  const [highlightedStructure, setHighlighedStructure] = useState<Building | undefined>();
 
   if (structures.length === 0) {
-    return <Content title="Structures">No buildings available.</Content>;
+    return <ContentBox title="Structures">No buildings available.</ContentBox>;
   }
 
-  // const orderedStructures = state.buildings.sort((a, b) => {
-  //   const firstLabel = `${a.type}-${a.id}`;
-  //   const secondLabel = `${b.type}-${b.id}`;
-
-  //   if (firstLabel < secondLabel) return -1;
-  //   if (firstLabel > secondLabel) return 1;
-
-  //   return 0;
-  // });
-
   return (
-    <Content title="Structures">
+    <ContentBox title="Structures">
       <div className="flex flex-wrap">
-        {structures.map((building) => (
+        {sortedStructures.map((building) => (
           <div key={`building-${building.type}-${building.id}`} className="m-4">
             <div className="relative">
               {building.health !== building.maxHealth && (
@@ -49,7 +38,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
                 />
               )}
               <img
-                src={buildingTypeToImageMap[building.type]}
+                src={structureSpec[building.type].image}
                 alt={building.type}
                 className={`h-16 ${
                   building.status !== BuildingStatus.Offline ? 'hover:bg-black cursor-pointer' : ''
@@ -62,39 +51,24 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
           </div>
         ))}
       </div>
-      <div className="border-t border-purple-400 -mx-1 px-1 -mb-1 text-sm">
-        {highlightedStructure ? (
-          `${structureSpec[highlightedStructure.type].name} [@${highlightedStructure.id.substring(
-            0,
-            6
-          )}]`
-        ) : (
-          <>&nbsp;</>
-        )}
+      <div className="border-t border-purple-500 -mx-1 px-1 -mb-1 text-sm">
+        {highlightedStructure ? buildingLabel(highlightedStructure) : <>&nbsp;</>}
       </div>
-    </Content>
+    </ContentBox>
   );
-};
-
-const structureContentMap: Record<BuildingType['type'], React.ElementType> = {
-  Agridome: () => <div>TODO: Agridome</div>,
-  CommandCenter: () => <div>TODO: Command Center</div>,
-  FactoryStructure: lazy(() => import('./FactoryStructure')),
-  LabStandard: () => <div>TODO: Lab</div>,
-  SmelterCommon: () => <div>TODO: Smelter</div>,
 };
 
 const SelectedStructure = ({
   structure,
   onClose,
 }: {
-  structure: BuildingType;
+  structure: Building;
   onClose: () => void;
 }) => {
   const ContentPanel = structureContentMap[structure.type];
 
   return (
-    <Content
+    <ContentBox
       title={`${structureSpec[structure.type].name} [@${structure.id.substring(0, 6)}]`}
       action={
         <button
@@ -109,7 +83,7 @@ const SelectedStructure = ({
       <Suspense fallback={<div className="text-center">Loading...</div>}>
         <ContentPanel structure={structure} />
       </Suspense>
-    </Content>
+    </ContentBox>
   );
 };
 
@@ -119,7 +93,7 @@ export const StructuresPanel = () => {
 
   return selectedStructure ? (
     <SelectedStructure
-      structure={structures.find((s) => s.id === selectedStructure) as BuildingType}
+      structure={structures.find((s) => s.id === selectedStructure) as Building}
       onClose={() => setSelectedStructure(undefined)}
     />
   ) : (

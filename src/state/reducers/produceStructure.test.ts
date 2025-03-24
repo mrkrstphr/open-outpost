@@ -9,9 +9,7 @@ import { produceStructure } from './produceStructure';
 test('starts producing the new structure when all conditions are met', () => {
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
-    draft.buildings.push(
-      createNewStructure(0, 0, structureSpec.FactoryStructure, BuildingStatus.Online)
-    );
+    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
   });
 
   const newState = createDraft(previousState);
@@ -33,9 +31,7 @@ test('without enough ore, does not start producing the new structure', () => {
 
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 100;
-    draft.buildings.push(
-      createNewStructure(0, 0, structureSpec.FactoryStructure, BuildingStatus.Online)
-    );
+    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
   });
 
   const newState = createDraft(previousState);
@@ -53,9 +49,7 @@ test('does not start producing if the factory is busy', () => {
 
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
-    draft.buildings.push(
-      createNewStructure(0, 0, structureSpec.FactoryStructure, BuildingStatus.Online)
-    );
+    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
     draft.buildings[0].current = { type: 'Agridome', progress: 0 };
   });
 
@@ -74,9 +68,7 @@ test('does not start producing if the factory storage is full', () => {
 
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
-    draft.buildings.push(
-      createNewStructure(0, 0, structureSpec.FactoryStructure, BuildingStatus.Online)
-    );
+    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
     draft.buildings[0].storage = [
       'Agridome',
       'LabStandard',
