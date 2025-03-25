@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box } from '../../components/Box';
+import { Button } from '../../components/Button';
 import { ContentBox } from '../../components/ContentBox';
 import { ProgressBar } from '../../components/ProgressBar';
 import { StructureDetails, structureSpec } from '../../data/structures';
@@ -134,13 +135,7 @@ const BuildMenuItem = ({ selected, structure, onBuild, onSelect }: BuildMenuItem
       </div>
       {selected && (
         <div className="flex items-center justify-center">
-          <button
-            type="button"
-            className="bg-purple-500 text-white py-0.5 px-1 hover:bg-purple-600 cursor:pointer"
-            onClick={onBuild}
-          >
-            Build
-          </button>
+          <Button onClick={onBuild}>Build</Button>
         </div>
       )}
     </Box>

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
+import { Button } from '../../components/Button';
 import { ContentBox } from '../../components/ContentBox';
 import { ProgressBar } from '../../components/ProgressBar';
 import { StructureStatusDot } from '../../components/StructureStatusDot';
@@ -76,15 +77,7 @@ const SelectedStructure = ({
   return (
     <ContentBox
       title={`${structureSpec[structure.type].name} [@${structure.id.substring(0, 6)}]`}
-      action={
-        <button
-          type="button"
-          className="bg-purple-500 text-white py-0.5 px-1 hover:bg-purple-600"
-          onClick={onClose}
-        >
-          Close
-        </button>
-      }
+      action={<Button onClick={onClose}>Close</Button>}
     >
       <Suspense fallback={<div className="text-center">Loading...</div>}>
         {structure.status === BuildingStatus.Building ? (

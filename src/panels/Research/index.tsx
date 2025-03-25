@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Button } from '../../components/Button';
 import { ContentBox } from '../../components/ContentBox';
 import _edenResearchTree from '../../eden-research-tree.json';
 import { RootState } from '../../store';
@@ -65,13 +66,9 @@ function AvailableResearchView() {
 
             {!state.currentResearchTopic && (
               <div className="mt-1 text-center">
-                <button
-                  disabled
-                  type="button"
-                  className="bg-green-500 text-white py-0.5 px-1 hover:bg-green-600"
-                >
+                <Button variant="success" disabled>
                   Start Research
-                </button>
+                </Button>
               </div>
             )}
           </>
