@@ -6,6 +6,9 @@ import { structureSpec } from '../../data/structures';
 import { useStructures } from '../../hooks/useStructures';
 import { Building, BuildingStatus, BuildingTypes } from '../../types';
 import { buildingLabel, sortStructures } from '../../utils';
+import { StructureHasNoPower } from './StructureHasNoPower';
+import { StructureIsBuildingPanel } from './StructureIsBuildingPanel';
+import { StructureIsDisabled } from './StructureIsDisabled';
 
 const structureContentMap: Record<BuildingTypes, React.ElementType> = {
   Agridome: () => <div>TODO: Agridome</div>,
@@ -20,7 +23,7 @@ const structureContentMap: Record<BuildingTypes, React.ElementType> = {
 const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) => {
   const structures = useStructures();
   const sortedStructures = useMemo(() => sortStructures(structures), [structures]);
-  const [highlightedStructure, setHighlighedStructure] = useState<Building | undefined>();
+  const [highlightedStructure, setHighlightedStructure] = useState<Building | undefined>();
 
   if (structures.length === 0) {
     return <ContentBox title="Your Colony">There are no buildings in your colony.</ContentBox>;
@@ -45,11 +48,9 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
               <img
                 src={structureSpec[building.type].image}
                 alt={building.type}
-                className={`h-16 ${
-                  building.status !== BuildingStatus.Offline ? 'hover:bg-black cursor-pointer' : ''
-                }`}
-                onMouseOver={() => setHighlighedStructure(building)}
-                onMouseOut={() => setHighlighedStructure(undefined)}
+                className="hover:bg-gray-900 cursor-pointer h-16"
+                onMouseOver={() => setHighlightedStructure(building)}
+                onMouseOut={() => setHighlightedStructure(undefined)}
                 onClick={() => onSelect(building.id)}
               />
             </div>
@@ -86,7 +87,15 @@ const SelectedStructure = ({
       }
     >
       <Suspense fallback={<div className="text-center">Loading...</div>}>
-        <ContentPanel structure={structure} onClose={onClose} />
+        {structure.status === BuildingStatus.Building ? (
+          <StructureIsBuildingPanel structure={structure} />
+        ) : structure.status === BuildingStatus.Offline ? (
+          <StructureIsDisabled structure={structure} />
+        ) : structure.status === BuildingStatus.NoPower ? (
+          <StructureHasNoPower structure={structure} />
+        ) : (
+          <ContentPanel structure={structure} onClose={onClose} />
+        )}
       </Suspense>
     </ContentBox>
   );
