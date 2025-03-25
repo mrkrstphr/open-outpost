@@ -11,6 +11,7 @@ export type ContentBoxProps = BoxProps & {
 
 export const ContentBox = ({
   action,
+  icon: Icon,
   title,
   children,
   className,
@@ -22,7 +23,7 @@ export const ContentBox = ({
       <div className="p-1">
         <div className="flex items-center">
           <div className="flex-1 flex items-center space-x-1">
-            {props.icon && <props.icon className={classNames?.icon} />}
+            {Icon && <Icon className={classNames?.icon} />}
             <span className="flex-1 ">{title}</span>
           </div>
           {action}

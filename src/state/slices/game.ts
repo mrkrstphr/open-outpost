@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { mergeDeepRight } from 'ramda';
+import type { PartialDeep } from 'type-fest';
 import { structureSpec } from '../../data/structures';
 import { Building, BuildingStatus } from '../../types';
 import { createNewStructure } from '../../utils';
@@ -19,24 +21,11 @@ export type GameState = {
   food: number;
   ore: { common: number; rare: number };
   notices: Array<{ message: string; mark: number }>;
+  colonists: { children: number; scientists: number; workers: number };
 };
 
-function createGameState({
-  buildings,
-  ore,
-}: {
-  buildings?: Array<Building>;
-  ore?: { common?: number; rare?: number };
-}) {
-  return {
-    ...initialState,
-    buildings: buildings ? buildings : [],
-    ore: {
-      ...initialState.ore,
-      ...ore,
-    },
-  };
-}
+const createGameState = (state?: PartialDeep<GameState>) =>
+  mergeDeepRight(initialState, state ?? {});
 
 export const gameSlice = createSlice({
   name: 'game',
@@ -51,6 +40,7 @@ export const gameSlice = createSlice({
       createNewStructure(structureSpec.Agridome),
     ],
     ore: { common: 4000 },
+    colonists: { children: 0, scientists: 10, workers: 30 },
   }),
   reducers: {
     buildStructure: buildStructureFunc,

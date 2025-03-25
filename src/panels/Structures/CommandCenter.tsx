@@ -10,7 +10,12 @@ import { useColonists, useFood, useMark, useMorale, useOre, usePower } from '../
 const CommandCenterStructure = () => {
   const mark = useMark();
   const morale = useMorale();
-  const { total: totalColonists } = useColonists();
+  const {
+    total: totalColonists,
+    children: totalChildren,
+    availableScientists,
+    availableWorkers,
+  } = useColonists();
   const { production: foodProduction, storage: foodStorage } = useFood();
   const { production: powerProduction, utilization: powerUtilization } = usePower();
   const { common, rare } = useOre();
@@ -35,11 +40,11 @@ const CommandCenterStructure = () => {
           rows={[
             [
               { label: 'Total', value: totalColonists },
-              { label: 'Children', value: '???' },
+              { label: 'Children', value: totalChildren },
             ],
             [
-              { label: 'Workers', value: '???' },
-              { label: 'Scientists', value: '???' },
+              { label: 'Available Workers', value: availableWorkers },
+              { label: 'Scientists', value: availableScientists },
             ],
           ]}
         />

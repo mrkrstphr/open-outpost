@@ -1,7 +1,15 @@
 import { describe, expect, test } from 'vitest';
 import { structureSpec } from './data/structures';
-import { Building, BuildingStatus, BuildingTypes } from './types';
-import { buildingLabel, canBuildStructure, createNewStructure, sortStructures } from './utils';
+import { GameState } from './state/slices/game';
+import { Building, BuildingStatus, BuildingTypes, LabResearchTopic } from './types';
+import {
+  buildingLabel,
+  calculateAvailableScientists,
+  calculateAvailableWorkers,
+  canBuildStructure,
+  createNewStructure,
+  sortStructures,
+} from './utils';
 
 describe('createNewStructure', () => {
   test('creates a new structure with default status as Building', () => {
@@ -88,5 +96,47 @@ describe('buildingLabel', () => {
     };
 
     expect(buildingLabel(building)).toEqual('Agridome@123456');
+  });
+});
+
+describe('calculateAvailableScientists', () => {
+  test('calculates the number of available scientists', () => {
+    const state = {
+      colonists: { children: 0, scientists: 5, workers: 10 },
+      buildings: [
+        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
+        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Offline),
+        createNewStructure(structureSpec.LabStandard, BuildingStatus.Online),
+      ],
+    };
+
+    state.buildings[0].researchTopic = {
+      assignedScientists: 2,
+    } as LabResearchTopic;
+
+    const availableScientists = calculateAvailableScientists(state as GameState);
+
+    expect(availableScientists).toEqual(2);
+  });
+});
+
+describe('calculateAvailableWorkers', () => {
+  test('calculates the number of available workers', () => {
+    const state = {
+      colonists: { children: 0, scientists: 5, workers: 30 },
+      buildings: [
+        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
+        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Offline),
+        createNewStructure(structureSpec.LabStandard, BuildingStatus.Online),
+      ],
+    };
+
+    state.buildings[0].researchTopic = {
+      assignedScientists: 2,
+    } as LabResearchTopic;
+
+    const availableScientists = calculateAvailableWorkers(state as GameState);
+
+    expect(availableScientists).toEqual(25);
   });
 });

@@ -1,3 +1,18 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { calculateAvailableScientists, calculateAvailableWorkers } from '../utils';
+
 export const useColonists = () => {
-  return { total: 0, children: 0, scientists: 0, availableScientists: 0, availableWorkers: 0 };
+  const state = useSelector((state: RootState) => state.game);
+  const { colonists } = state;
+
+  const availableScientists = calculateAvailableScientists(state);
+  const availableWorkers = calculateAvailableWorkers(state);
+
+  return {
+    ...colonists,
+    total: colonists.children + colonists.workers + colonists.scientists,
+    availableScientists: Math.max(0, availableScientists),
+    availableWorkers: Math.max(0, availableWorkers),
+  };
 };

@@ -69,3 +69,19 @@ export const filterOnlineOrNoPowerStructures = (structures: Array<Building>) =>
     (structure) =>
       structure.status === BuildingStatus.Online || structure.status === BuildingStatus.NoPower
   );
+
+export const calculateAvailableScientists = ({ colonists, buildings }: GameState) =>
+  colonists.scientists -
+  filterActiveStructures(buildings).reduce((acc, structure) => {
+    const def = structureSpec[structure.type];
+
+    return acc + (def.scientists ?? 0) + (structure.researchTopic?.assignedScientists ?? 0);
+  }, 0);
+
+export const calculateAvailableWorkers = ({ colonists, buildings }: GameState) =>
+  colonists.workers -
+  filterActiveStructures(buildings).reduce((acc, structure) => {
+    const def = structureSpec[structure.type];
+
+    return acc + (def.workers ?? 0);
+  }, 0);

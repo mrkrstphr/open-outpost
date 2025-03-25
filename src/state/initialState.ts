@@ -13,4 +13,9 @@ export const initialState: GameState = {
     rare: 0,
     common: 0,
   },
+  population: {
+    children: 0,
+    scientists: 0,
+    workers: 0,
+  },
 };
