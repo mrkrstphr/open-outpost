@@ -46,6 +46,7 @@ export const LabIsReady = ({ structure }: { structure: Building }) => {
         <ul className="ml-12 list-decimal">
           {availableTopics.map((topic) => (
             <li
+              key={`topic-${topic.topic}`}
               className="mb-0.5 hover:underline cursor-pointer hover:text-purple-500"
               onClick={() => setSelectedTopic(topic)}
             >
@@ -62,7 +63,16 @@ export const LabIsReady = ({ structure }: { structure: Building }) => {
             {!structure.researchTopic && (
               <div className="mt-1 text-center">
                 <Button
-                  onClick={() => dispatch(startResearch({ lab: structure, topic: selectedTopic }))}
+                  // TODO: FIXME: scientist assignment...
+                  onClick={() =>
+                    dispatch(
+                      startResearch({
+                        lab: structure,
+                        topic: selectedTopic,
+                        scientists: selectedTopic.scientists,
+                      })
+                    )
+                  }
                 >
                   Start Research
                 </Button>

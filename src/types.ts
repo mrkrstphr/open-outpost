@@ -38,5 +38,9 @@ export type Building = {
   lastMark?: number;
   storage?: Array<BuildingTypes>;
   current?: { type: BuildingTypes; progress: number };
-  researchTopic?: ResearchItem & { progress: number; assignedScientists: number };
+  researchTopic?: ResearchItem & {
+    startMark: number;
+    progress: number;
+    assignedScientists: number;
+  };
 };

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Building, BuildingStatus, ResearchItem } from '../../types';
+import { Building, BuildingStatus } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
@@ -14,7 +14,6 @@ export type GameState = {
   mark: number;
   morale: number;
   buildings: Array<Building>;
-  currentResearchTopic?: ResearchItem & { counter: number };
   finishedResearch: string[];
   gameLog: string[];
   food: number;

@@ -1,4 +1,4 @@
-import { isNotNil } from 'ramda';
+import { isNil, isNotNil } from 'ramda';
 import { structureSpec } from '../../data/structures';
 import { Building, BuildingStatus } from '../../types';
 import { filterActiveStructures } from '../../utils';
@@ -63,9 +63,30 @@ function runProducers(state: GameState) {
         state.food = Math.min(state.food + definition.produces.food, maxFood);
       }
     }
-
-    state.buildings[index].lastMark = state.mark;
   });
+}
+
+function performResearch(state: GameState) {
+  const activeLabs = state.buildings.filter(
+    (structure) => structure.status === BuildingStatus.Online && !!structure.researchTopic
+  );
+
+  for (const lab of activeLabs) {
+    if (isNil(lab.lastMark) || lab.lastMark === state.mark) continue;
+    if (lab.lastMark - lab.researchTopic!.startMark === 0) continue;
+    // We do research every 3 marks... arbitrary, really
+    if ((lab.lastMark - lab.researchTopic!.startMark) % 3 !== 0) continue;
+
+    lab.researchTopic!.progress += Math.min(
+      lab.researchTopic!.cost,
+      lab.researchTopic!.assignedScientists * 10
+    );
+
+    if (lab.researchTopic!.progress >= lab.researchTopic!.cost) {
+      state.finishedResearch.push(lab.researchTopic!.id);
+      lab.researchTopic = undefined;
+    }
+  }
 }
 
 export const tick = (state: GameState) => {
@@ -76,9 +97,12 @@ export const tick = (state: GameState) => {
     state.tick += 1;
   }
 
-  state.buildings = state.buildings.map((building) => {
-    return buildingManager(building);
+  state.buildings = state.buildings.map((structure) => {
+    return buildingManager(structure);
   });
 
   runProducers(state);
+  performResearch(state);
+
+  state.buildings = state.buildings.map((structure) => ({ ...structure, lastMark: state.mark }));
 };
