@@ -1,8 +1,8 @@
-import PlymouthLabStandard from '../structures/playmouth-standard-lab.png';
 import PlymouthAgridome from '../structures/plymouth-agridome.png';
 import PlymouthCommandCenter from '../structures/plymouth-command-center.png';
 import PlymouthResidence from '../structures/plymouth-residence.png';
 import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
+import PlymouthLabStandard from '../structures/plymouth-standard-lab.png';
 import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
 import PlymouthTokamak from '../structures/plymouth-tokamak.png';
 import { BuildingTypes, ResearchType } from '../types';
