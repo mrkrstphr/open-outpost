@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from './components/Box';
 import { Tab } from './components/Tab';
-import ResearchPanel from './panels/Research';
 import { StructuresPanel } from './panels/Structures';
 import { tick } from './state/slices/game';
 import { RootState } from './store';
@@ -11,7 +10,6 @@ const DebugPanel = lazy(() => import('./panels/Debug/Debug'));
 
 enum Tabs {
   Home,
-  Research,
   Debug,
 }
 
@@ -45,9 +43,6 @@ function App() {
             <Tab active={activeTab === Tabs.Home} onClick={() => setActiveTab(Tabs.Home)}>
               Home
             </Tab>
-            <Tab active={activeTab === Tabs.Research} onClick={() => setActiveTab(Tabs.Research)}>
-              Research
-            </Tab>
             <Tab active={activeTab === Tabs.Debug} onClick={() => setActiveTab(Tabs.Debug)}>
               Debug
             </Tab>
@@ -65,7 +60,6 @@ function App() {
 
         <Suspense>
           {activeTab === Tabs.Home && <StructuresPanel />}
-          {activeTab === Tabs.Research && <ResearchPanel />}
           {activeTab === Tabs.Debug && <DebugPanel />}
         </Suspense>
       </Box>

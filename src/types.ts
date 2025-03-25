@@ -1,11 +1,11 @@
-export type LabType = 'Standard' | 'Advanced';
+export type ResearchType = 'Standard' | 'Advanced';
 
 export type ResearchItem = {
   id: string;
   topic: string;
   cost: number;
   scientists: number;
-  lab: LabType;
+  lab: ResearchType;
   requires: string[];
   teaser: string;
   description: string;
@@ -38,4 +38,5 @@ export type Building = {
   lastMark?: number;
   storage?: Array<BuildingTypes>;
   current?: { type: BuildingTypes; progress: number };
+  researchTopic?: ResearchItem & { progress: number; assignedScientists: number };
 };

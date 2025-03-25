@@ -7,6 +7,7 @@ import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
 import { cancelProduceStructure as cancelProduceStructureFunc } from '../reducers/cancelProduceStructure';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
+import { startResearch as startResearchFunc } from '../reducers/startResearch';
 
 export type GameState = {
   tick: number;
@@ -134,9 +135,11 @@ export const gameSlice = createSlice({
     buildStructure: buildStructureFunc,
     cancelProduceStructure: cancelProduceStructureFunc,
     produceStructure: produceStructureFunc,
+    startResearch: startResearchFunc,
   },
 });
 
-export const { buildStructure, cancelProduceStructure, produceStructure, tick } = gameSlice.actions;
+export const { buildStructure, cancelProduceStructure, produceStructure, startResearch, tick } =
+  gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -5,7 +5,7 @@ import PlymouthResidence from '../structures/plymouth-residence.png';
 import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
 import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
 import PlymouthTokamak from '../structures/plymouth-tokamak.png';
-import { BuildingTypes } from '../types';
+import { BuildingTypes, ResearchType } from '../types';
 
 export type StructureDetails = {
   name: string;
@@ -27,6 +27,7 @@ export type StructureDetails = {
     food?: number;
     ore?: { common?: number; rare?: number };
   };
+  researchType?: ResearchType;
   image?: any;
 };
 
@@ -78,6 +79,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
     powerUsage: 50,
     workers: 1,
     scientists: 0,
+    researchType: 'Standard',
     image: PlymouthLabStandard,
   },
   Residence: {
