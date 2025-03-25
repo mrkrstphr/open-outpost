@@ -1,6 +1,8 @@
+import { Colony } from '../types';
 import type { GameState } from './slices/game';
 
 export const initialState: GameState = {
+  colony: Colony.Eden,
   tick: 0,
   mark: 0,
   morale: 75,

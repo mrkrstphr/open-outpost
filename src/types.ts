@@ -1,5 +1,10 @@
 export type ResearchType = 'Standard' | 'Advanced';
 
+export enum Colony {
+  Eden = 'Eden',
+  Plymouth = 'Plymouth',
+}
+
 export type ResearchItem = {
   id: string;
   topic: string;

@@ -2,15 +2,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../components/Button';
 import { ProgressBar } from '../../components/ProgressBar';
+import { researchTree } from '../../data/research';
 import { structureSpec } from '../../data/structures';
-import _edenResearchTree from '../../eden-research-tree.json';
 import { startResearch } from '../../state/slices/game';
 import type { RootState } from '../../store';
 import type { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
-
-// TODO: FIXME: remove hardcoded Eden
-const edenResearchTree = _edenResearchTree as ResearchItem[];
 
 function TopicDetails({ topic }: { topic: ResearchItem }) {
   return (
@@ -28,13 +25,13 @@ function TopicDetails({ topic }: { topic: ResearchItem }) {
 
 export const LabIsReady = ({ structure }: { structure: Structure }) => {
   const definition = structureSpec[structure.type];
-  const { finishedResearch } = useSelector((state: RootState) => state.game);
+  const { colony, finishedResearch } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
 
   const [selectedTopic, setSelectedTopic] = useState<ResearchItem | undefined>();
 
   const availableTopics = definition.researchType
-    ? filterAvailableResearch(definition.researchType, edenResearchTree, finishedResearch)
+    ? filterAvailableResearch(definition.researchType, researchTree[colony], finishedResearch)
     : [];
 
   return (

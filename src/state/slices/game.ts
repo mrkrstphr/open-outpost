@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
 import type { PartialDeep } from 'type-fest';
 import { structureSpec } from '../../data/structures';
-import { StructureStatus, type Structure } from '../../types';
+import { Colony, type Structure, StructureStatus } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
@@ -12,6 +12,7 @@ import { startResearch as startResearchFunc } from '../reducers/startResearch';
 import { tick as tickFunc } from '../reducers/tick';
 
 export type GameState = {
+  colony: Colony;
   tick: number;
   mark: number;
   morale: number;
