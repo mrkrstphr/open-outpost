@@ -5,8 +5,8 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { structureSpec } from '../../data/structures';
 import _edenResearchTree from '../../eden-research-tree.json';
 import { startResearch } from '../../state/slices/game';
-import { RootState } from '../../store';
-import { ResearchItem, Structure } from '../../types';
+import type { RootState } from '../../store';
+import type { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
 
 // TODO: FIXME: remove hardcoded Eden
@@ -85,10 +85,7 @@ export const LabIsReady = ({ structure }: { structure: Structure }) => {
 
 export default function LabPanel({ structure }: { structure: Structure }) {
   if (structure.researchTopic) {
-    const percent = Math.min(
-      (structure.researchTopic.progress / structure.researchTopic.cost) * 100,
-      100
-    );
+    const percent = Math.min((structure.researchTopic.progress / structure.researchTopic.cost) * 100, 100);
     return (
       <div>
         <div className="flex space-x-2">

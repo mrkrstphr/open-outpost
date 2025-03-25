@@ -1,4 +1,4 @@
-import { Structure } from '../../types';
+import type { Structure } from '../../types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function StructureHasNoPower({ structure }: { structure: Structure }) {

@@ -1,7 +1,7 @@
-import { PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { ResearchItem, Structure } from '../../types';
-import { GameState } from '../slices/game';
+import type { ResearchItem, Structure } from '../../types';
+import type { GameState } from '../slices/game';
 
 export const startResearch = (
   state: GameState,

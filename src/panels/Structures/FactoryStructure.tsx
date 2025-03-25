@@ -5,10 +5,10 @@ import { Box } from '../../components/Box';
 import { Button } from '../../components/Button';
 import { ContentBox } from '../../components/ContentBox';
 import { ProgressBar } from '../../components/ProgressBar';
-import { StructureDetails, structureSpec } from '../../data/structures';
+import { type StructureDetails, structureSpec } from '../../data/structures';
 import { useOre } from '../../hooks/useOre';
 import { buildStructure, cancelProduceStructure, produceStructure } from '../../state/slices/game';
-import { Structure } from '../../types';
+import type { Structure } from '../../types';
 import { canBuildStructure } from '../../utils';
 
 export type FactoryStructureProps = {
@@ -71,30 +71,21 @@ const BuildingState = ({ structure }: BuildingStateProps) => {
     <ContentBox title="Current Production">
       <div className="flex space-x-1">
         <Box className="bg-gray-900">
-          <img
-            src={currentDefinition.image}
-            alt={currentDefinition.type}
-            className="h-16 w-16 object-contain"
-          />
+          <img src={currentDefinition.image} alt={currentDefinition.type} className="h-16 w-16 object-contain" />
         </Box>
         <div className="flex flex-col space-y-1 flex-1">
           <div className="mb-1">{currentDefinition.name}</div>
           <div className="flex items-center space-x-1">
             <ProgressBar
               className="flex-1"
-              percent={Math.min(
-                100,
-                ((structure.current?.progress ?? 0) / currentDefinition.kitBuildTime) * 100
-              )}
+              percent={Math.min(100, ((structure.current?.progress ?? 0) / currentDefinition.kitBuildTime) * 100)}
             />
             <div className="w-22 text-right">
               {structure.current?.progress ?? 0}/{currentDefinition.kitBuildTime}
             </div>
           </div>
           <div>
-            {!isPendingCancel && (
-              <Button onClick={() => setIsPendingCancel(true)}>Cancel Construction</Button>
-            )}
+            {!isPendingCancel && <Button onClick={() => setIsPendingCancel(true)}>Cancel Construction</Button>}
             {isPendingCancel && (
               <div className="flex space-x-1 items-center">
                 <div>Are you sure you want to cancel construction?</div>
@@ -179,8 +170,8 @@ const BuildMenu = ({ structure }: BuildMenuProps) => {
   return (
     <ContentBox title="Build Menu">
       <p className="text-sm mb-1">
-        Select a structure kit to start manufacturing it. Once the kit is complete, the building may
-        be constructed in the colony.
+        Select a structure kit to start manufacturing it. Once the kit is complete, the building may be constructed in
+        the colony.
       </p>
       <div className="flex flex-col space-y-1">
         {Object.values(structureSpec).map((definition) => (

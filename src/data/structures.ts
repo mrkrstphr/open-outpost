@@ -5,7 +5,7 @@ import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
 import PlymouthLabStandard from '../structures/plymouth-standard-lab.png';
 import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
 import PlymouthTokamak from '../structures/plymouth-tokamak.png';
-import { ResearchType, StructureTypes } from '../types';
+import { type ResearchType, StructureTypes } from '../types';
 
 export type StructureDetails = {
   name: string;

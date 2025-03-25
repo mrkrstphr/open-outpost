@@ -1,5 +1,5 @@
-import { IconType } from 'react-icons/lib';
-import { BoxProps } from './Box';
+import type { IconType } from 'react-icons/lib';
+import type { BoxProps } from './Box';
 
 export type ContentBoxProps = BoxProps & {
   action?: React.ReactNode;

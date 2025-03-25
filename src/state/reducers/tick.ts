@@ -1,8 +1,8 @@
 import { isNil, isNotNil } from 'ramda';
 import { structureSpec } from '../../data/structures';
-import { Structure, StructureStatus } from '../../types';
+import { type Structure, StructureStatus } from '../../types';
 import { filterActiveStructures } from '../../utils';
-import { GameState } from '../slices/game';
+import type { GameState } from '../slices/game';
 
 function updateConstructionState(structure: Structure) {
   if (structure?.status === StructureStatus.Building) {
@@ -23,9 +23,7 @@ function structureManager(structure: Structure, state: GameState) {
     newState.current.progress += 1;
 
     if (newState.current.progress >= structureSpec[newState.current.type].kitBuildTime) {
-      newState.storage = newState.storage
-        ? [...newState.storage, newState.current.type]
-        : [newState.current.type];
+      newState.storage = newState.storage ? [...newState.storage, newState.current.type] : [newState.current.type];
 
       state.notices.push({
         message: `Structure kit manufactured: ${newState.current.type}`,
@@ -83,10 +81,7 @@ function performResearch(state: GameState) {
     // We do research every 3 marks... arbitrary, really
     if ((lab.lastMark - lab.researchTopic!.startMark) % 3 !== 0) continue;
 
-    lab.researchTopic!.progress += Math.min(
-      lab.researchTopic!.cost,
-      lab.researchTopic!.assignedScientists * 10
-    );
+    lab.researchTopic!.progress += Math.min(lab.researchTopic!.cost, lab.researchTopic!.assignedScientists * 10);
 
     if (lab.researchTopic!.progress >= lab.researchTopic!.cost) {
       state.finishedResearch.push(lab.researchTopic!.id);

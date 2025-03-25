@@ -1,11 +1,8 @@
 import clsx from 'clsx';
-import { DetailedHTMLProps, HTMLAttributes } from 'react';
+import type { DetailedHTMLProps, HTMLAttributes } from 'react';
 import { StructureStatus } from '../types';
 
-export type StructureStatusDotProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> & {
+export type StructureStatusDotProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
   status: StructureStatus;
 };
 

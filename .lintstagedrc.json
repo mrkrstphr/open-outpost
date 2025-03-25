@@ -1,0 +1,4 @@
+{
+  "*.{ts,tsx}": ["bash -c 'npm run typecheck'"],
+  "*.{ts,tsx,js,jsx,mjs}": ["npm run lint -- --max-warnings 0"]
+}

@@ -1,12 +1,9 @@
-import { PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Structure } from '../../types';
-import { GameState } from '../slices/game';
+import type { Structure } from '../../types';
+import type { GameState } from '../slices/game';
 
-export const cancelProduceStructure = (
-  state: GameState,
-  action: PayloadAction<{ factory: Structure }>
-) => {
+export const cancelProduceStructure = (state: GameState, action: PayloadAction<{ factory: Structure }>) => {
   console.log('type', action.type);
   const { factory } = action.payload;
 

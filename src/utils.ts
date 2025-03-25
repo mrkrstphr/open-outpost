@@ -1,29 +1,20 @@
 import { v4 } from 'uuid';
-import { StructureDetails, structureSpec } from './data/structures';
-import { GameState } from './state/slices/game';
-import { ResearchType, Structure, StructureStatus, type ResearchItem } from './types';
+import { structureSpec, type StructureDetails } from './data/structures';
+import type { GameState } from './state/slices/game';
+import { StructureStatus, type ResearchItem, type ResearchType, type Structure } from './types';
 
-export function filterAvailableResearch(
-  targetLab: ResearchType,
-  allTopics: ResearchItem[],
-  finishedTopics: string[]
-) {
+export function filterAvailableResearch(targetLab: ResearchType, allTopics: ResearchItem[], finishedTopics: string[]) {
   return allTopics
     .filter(({ id }) => !finishedTopics.includes(id))
     .filter(({ lab }) => lab === targetLab)
     .filter(({ requires }) => {
-      const unsatisfiedPrerequisites = requires.filter(
-        (requirement) => !finishedTopics.includes(requirement)
-      );
+      const unsatisfiedPrerequisites = requires.filter((requirement) => !finishedTopics.includes(requirement));
 
       return unsatisfiedPrerequisites.length === 0;
     });
 }
 
-export function createNewStructure(
-  structure: StructureDetails,
-  structureStatus?: StructureStatus
-): Structure {
+export function createNewStructure(structure: StructureDetails, structureStatus?: StructureStatus): Structure {
   const status = structureStatus ?? StructureStatus.Building;
 
   return {
@@ -35,14 +26,8 @@ export function createNewStructure(
   };
 }
 
-export const canBuildStructure = (
-  ore: GameState['ore'],
-  structure: Pick<StructureDetails, 'buildCost'>
-) => {
-  return (
-    (ore.common ?? 0) >= (structure.buildCost.common ?? 0) &&
-    (ore.rare ?? 0) >= (structure.buildCost.rare ?? 0)
-  );
+export const canBuildStructure = (ore: GameState['ore'], structure: Pick<StructureDetails, 'buildCost'>) => {
+  return (ore.common ?? 0) >= (structure.buildCost.common ?? 0) && (ore.rare ?? 0) >= (structure.buildCost.rare ?? 0);
 };
 
 export const sortStructures = (structures: Array<Structure>) =>
@@ -66,8 +51,7 @@ export const filterActiveStructures = (structures: Array<Structure>) =>
 
 export const filterOnlineOrNoPowerStructures = (structures: Array<Structure>) =>
   structures.filter(
-    (structure) =>
-      structure.status === StructureStatus.Online || structure.status === StructureStatus.NoPower
+    (structure) => structure.status === StructureStatus.Online || structure.status === StructureStatus.NoPower
   );
 
 export const calculateAvailableScientists = ({ colonists, structures }: GameState) =>

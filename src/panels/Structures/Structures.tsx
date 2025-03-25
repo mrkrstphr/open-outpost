@@ -5,7 +5,7 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { StructureStatusDot } from '../../components/StructureStatusDot';
 import { structureSpec } from '../../data/structures';
 import { useStructures } from '../../hooks/useStructures';
-import { Structure, StructureStatus, StructureTypes } from '../../types';
+import { type Structure, StructureStatus, StructureTypes } from '../../types';
 import { sortStructures, structureLabel } from '../../utils';
 import { StructureHasNoPower } from './StructureHasNoPower';
 import { StructureIsBuildingPanel } from './StructureIsBuildingPanel';
@@ -42,10 +42,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
                   className="absolute inset-x-0.5 bottom-0.5 m-1"
                 />
               )}
-              <StructureStatusDot
-                status={structure.status}
-                className="absolute inset-y-0.5 right-0.5"
-              />
+              <StructureStatusDot status={structure.status} className="absolute inset-y-0.5 right-0.5" />
               <img
                 src={structureSpec[structure.type].image}
                 alt={structure.type}
@@ -65,13 +62,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
   );
 };
 
-const SelectedStructure = ({
-  structure,
-  onClose,
-}: {
-  structure: Structure;
-  onClose: () => void;
-}) => {
+const SelectedStructure = ({ structure, onClose }: { structure: Structure; onClose: () => void }) => {
   const ContentPanel = structureContentMap[structure.type];
 
   return (

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { structureSpec } from './data/structures';
-import { GameState } from './state/slices/game';
-import { LabResearchTopic, Structure, StructureStatus, StructureTypes } from './types';
+import type { GameState } from './state/slices/game';
+import { type LabResearchTopic, type Structure, StructureStatus, StructureTypes } from './types';
 import {
   calculateAvailableScientists,
   calculateAvailableWorkers,

@@ -5,9 +5,9 @@ import { Box } from './components/Box';
 import { Tab } from './components/Tab';
 import { useNotices } from './hooks/useNotices';
 import { StructuresPanel } from './panels/Structures';
-import boopSfx from './sound/alert.mp3';
+import alertSfx from './sound/alert.mp3';
 import { tick } from './state/slices/game';
-import { RootState } from './store';
+import type { RootState } from './store';
 
 const DebugPanel = lazy(() => import('./panels/Debug/Debug'));
 
@@ -20,7 +20,7 @@ function App() {
   const state = useSelector((state: RootState) => state.game);
   const [latestNotice] = useNotices(1);
   const dispatch = useDispatch();
-  const [play] = useSound(boopSfx, { volume: 0.25 });
+  const [play] = useSound(alertSfx, { volume: 0.25 });
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -40,7 +40,7 @@ function App() {
     const interval = setInterval(() => dispatch(tick()), tickInterval);
 
     return () => clearInterval(interval);
-  }, [settings.gameSpeed]);
+  }, [dispatch, settings.gameSpeed]);
 
   return (
     <div className="lg:w-2/3 w-full mx-auto p-4 text-white">

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
 import type { PartialDeep } from 'type-fest';
 import { structureSpec } from '../../data/structures';
-import { Structure, StructureStatus } from '../../types';
+import { StructureStatus, type Structure } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
@@ -24,8 +24,7 @@ export type GameState = {
   colonists: { children: number; scientists: number; workers: number };
 };
 
-const createGameState = (state?: PartialDeep<GameState>) =>
-  mergeDeepRight(initialState, state ?? {});
+const createGameState = (state?: PartialDeep<GameState>) => mergeDeepRight(initialState, state ?? {});
 
 export const gameSlice = createSlice({
   name: 'game',
@@ -51,7 +50,6 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { buildStructure, cancelProduceStructure, produceStructure, startResearch, tick } =
-  gameSlice.actions;
+export const { buildStructure, cancelProduceStructure, produceStructure, startResearch, tick } = gameSlice.actions;
 
 export default gameSlice.reducer;

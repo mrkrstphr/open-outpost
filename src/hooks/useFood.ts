@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { structureSpec } from '../data/structures';
-import { RootState } from '../store';
+import type { RootState } from '../store';
 import { filterActiveStructures } from '../utils';
 
 export function useFood() {

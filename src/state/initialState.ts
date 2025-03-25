@@ -1,4 +1,4 @@
-import { GameState } from './slices/game';
+import type { GameState } from './slices/game';
 
 export const initialState: GameState = {
   tick: 0,
@@ -13,7 +13,7 @@ export const initialState: GameState = {
     rare: 0,
     common: 0,
   },
-  population: {
+  colonists: {
     children: 0,
     scientists: 0,
     workers: 0,
