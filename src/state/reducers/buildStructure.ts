@@ -1,12 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Building } from '../../types';
+import { Structure } from '../../types';
 import { createNewStructure } from '../../utils';
 import { GameState } from '../slices/game';
 
 export const buildStructure = (
   state: GameState,
-  action: PayloadAction<{ factory: Building; index: number }>
+  action: PayloadAction<{ factory: Structure; index: number }>
 ) => {
   const { factory, index } = action.payload;
   const structureToBuild = factory.storage?.[index];
@@ -16,15 +16,15 @@ export const buildStructure = (
     return;
   }
 
-  const structure = structureSpec[structureToBuild];
+  const structureDef = structureSpec[structureToBuild];
 
-  state.buildings.push(createNewStructure(structure));
+  state.structures.push(createNewStructure(structureDef));
 
-  state.buildings = state.buildings.map((building) => {
-    if (building.id === factory.id) {
-      return { ...building, storage: factory.storage?.filter((_, i) => i !== index) };
+  state.structures = state.structures.map((structure) => {
+    if (structure.id === factory.id) {
+      return { ...structure, storage: factory.storage?.filter((_, i) => i !== index) };
     }
 
-    return building;
+    return structure;
   });
 };

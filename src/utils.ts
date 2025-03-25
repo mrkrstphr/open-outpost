@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
 import { StructureDetails, structureSpec } from './data/structures';
 import { GameState } from './state/slices/game';
-import { Building, BuildingStatus, ResearchType, type ResearchItem } from './types';
+import { ResearchType, Structure, StructureStatus, type ResearchItem } from './types';
 
 export function filterAvailableResearch(
   targetLab: ResearchType,
@@ -22,14 +22,14 @@ export function filterAvailableResearch(
 
 export function createNewStructure(
   structure: StructureDetails,
-  buildingStatus?: BuildingStatus
-): Building {
-  const status = buildingStatus ?? BuildingStatus.Building;
+  structureStatus?: StructureStatus
+): Structure {
+  const status = structureStatus ?? StructureStatus.Building;
 
   return {
     id: v4(),
     type: structure.type,
-    health: status === BuildingStatus.Building ? 0 : structure.hp,
+    health: status === StructureStatus.Building ? 0 : structure.hp,
     status,
     maxHealth: structure.hp,
   };
@@ -45,7 +45,7 @@ export const canBuildStructure = (
   );
 };
 
-export const sortStructures = (structures: Array<Building>) =>
+export const sortStructures = (structures: Array<Structure>) =>
   [...structures].sort((a, b) => {
     const firstLabel = `${a.type}-${a.id}`;
     const secondLabel = `${b.type}-${b.id}`;
@@ -56,31 +56,31 @@ export const sortStructures = (structures: Array<Building>) =>
     return 0;
   });
 
-export const buildingLabel = (building: Pick<Building, 'id' | 'type'>) => {
-  const structure = structureSpec[building.type];
-  return `${structure.name}@${building.id.substring(0, 6)}`;
+export const structureLabel = (structure: Pick<Structure, 'id' | 'type'>) => {
+  const def = structureSpec[structure.type];
+  return `${def.name}@${structure.id.substring(0, 6)}`;
 };
 
-export const filterActiveStructures = (structures: Array<Building>) =>
-  structures.filter((structure) => structure.status === BuildingStatus.Online);
+export const filterActiveStructures = (structures: Array<Structure>) =>
+  structures.filter((structure) => structure.status === StructureStatus.Online);
 
-export const filterOnlineOrNoPowerStructures = (structures: Array<Building>) =>
+export const filterOnlineOrNoPowerStructures = (structures: Array<Structure>) =>
   structures.filter(
     (structure) =>
-      structure.status === BuildingStatus.Online || structure.status === BuildingStatus.NoPower
+      structure.status === StructureStatus.Online || structure.status === StructureStatus.NoPower
   );
 
-export const calculateAvailableScientists = ({ colonists, buildings }: GameState) =>
+export const calculateAvailableScientists = ({ colonists, structures }: GameState) =>
   colonists.scientists -
-  filterActiveStructures(buildings).reduce((acc, structure) => {
+  filterActiveStructures(structures).reduce((acc, structure) => {
     const def = structureSpec[structure.type];
 
     return acc + (def.scientists ?? 0) + (structure.researchTopic?.assignedScientists ?? 0);
   }, 0);
 
-export const calculateAvailableWorkers = ({ colonists, buildings }: GameState) =>
+export const calculateAvailableWorkers = ({ colonists, structures }: GameState) =>
   colonists.workers -
-  filterActiveStructures(buildings).reduce((acc, structure) => {
+  filterActiveStructures(structures).reduce((acc, structure) => {
     const def = structureSpec[structure.type];
 
     return acc + (def.workers ?? 0);

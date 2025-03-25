@@ -4,7 +4,7 @@ export const initialState: GameState = {
   tick: 0,
   mark: 0,
   morale: 75,
-  buildings: [],
+  structures: [],
   finishedResearch: [],
   gameLog: [],
   notices: [],

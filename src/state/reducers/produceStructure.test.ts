@@ -1,7 +1,7 @@
 import { createDraft, produce } from 'immer';
 import { expect, test, vi } from 'vitest';
 import { structureSpec } from '../../data/structures';
-import { BuildingStatus, BuildingTypes } from '../../types';
+import { StructureStatus, StructureTypes } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { produceStructure } from './produceStructure';
@@ -9,20 +9,22 @@ import { produceStructure } from './produceStructure';
 test('starts producing the new structure when all conditions are met', () => {
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
-    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
+    draft.structures.push(
+      createNewStructure(structureSpec.FactoryStructure, StructureStatus.Online)
+    );
   });
 
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: BuildingTypes.Agridome },
+    payload: { factory: previousState.structures[0], type: StructureTypes.Agridome },
     type: 'game/produceStructure',
   });
 
   expect(newState).toEqual(
     produce(previousState, (draft) => {
       draft.ore.common = draft.ore.common - (structureSpec.Agridome.buildCost.common ?? 0);
-      draft.buildings[0].current = { type: BuildingTypes.Agridome, progress: 0 };
+      draft.structures[0].current = { type: StructureTypes.Agridome, progress: 0 };
     })
   );
 });
@@ -32,13 +34,15 @@ test('without enough ore, does not start producing the new structure', () => {
 
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 100;
-    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
+    draft.structures.push(
+      createNewStructure(structureSpec.FactoryStructure, StructureStatus.Online)
+    );
   });
 
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: BuildingTypes.Agridome },
+    payload: { factory: previousState.structures[0], type: StructureTypes.Agridome },
     type: 'game/produceStructure',
   });
 
@@ -51,14 +55,16 @@ test('does not start producing if the factory is busy', () => {
 
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
-    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
-    draft.buildings[0].current = { type: BuildingTypes.Agridome, progress: 0 };
+    draft.structures.push(
+      createNewStructure(structureSpec.FactoryStructure, StructureStatus.Online)
+    );
+    draft.structures[0].current = { type: StructureTypes.Agridome, progress: 0 };
   });
 
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: BuildingTypes.LabStandard },
+    payload: { factory: previousState.structures[0], type: StructureTypes.LabStandard },
     type: 'game/produceStructure',
   });
 
@@ -71,21 +77,23 @@ test('does not start producing if the factory storage is full', () => {
 
   const previousState = produce(initialState, (draft) => {
     draft.ore.common = 5000;
-    draft.buildings.push(createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online));
-    draft.buildings[0].storage = [
-      BuildingTypes.Agridome,
-      BuildingTypes.LabStandard,
-      BuildingTypes.SmelterCommon,
-      BuildingTypes.CommandCenter,
-      BuildingTypes.FactoryStructure,
-      BuildingTypes.Agridome,
+    draft.structures.push(
+      createNewStructure(structureSpec.FactoryStructure, StructureStatus.Online)
+    );
+    draft.structures[0].storage = [
+      StructureTypes.Agridome,
+      StructureTypes.LabStandard,
+      StructureTypes.SmelterCommon,
+      StructureTypes.CommandCenter,
+      StructureTypes.FactoryStructure,
+      StructureTypes.Agridome,
     ];
   });
 
   const newState = createDraft(previousState);
 
   produceStructure(newState, {
-    payload: { factory: previousState.buildings[0], type: BuildingTypes.LabStandard },
+    payload: { factory: previousState.structures[0], type: StructureTypes.LabStandard },
     type: 'game/produceStructure',
   });
 

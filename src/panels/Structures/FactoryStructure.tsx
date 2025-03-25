@@ -8,16 +8,16 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { StructureDetails, structureSpec } from '../../data/structures';
 import { useOre } from '../../hooks/useOre';
 import { buildStructure, cancelProduceStructure, produceStructure } from '../../state/slices/game';
-import { Building } from '../../types';
+import { Structure } from '../../types';
 import { canBuildStructure } from '../../utils';
 
 export type FactoryStructureProps = {
-  structure: Building;
+  structure: Structure;
   onClose?: () => void;
 };
 
 export type StorageProps = {
-  structure: Building;
+  structure: Structure;
   onClose?: FactoryStructureProps['onClose'];
 };
 
@@ -55,7 +55,7 @@ const Storage = ({ structure, onClose }: StorageProps) => {
 };
 
 export type BuildingStateProps = {
-  structure: Building;
+  structure: Structure;
 };
 
 const BuildingState = ({ structure }: BuildingStateProps) => {
@@ -169,7 +169,7 @@ const BuildMenuItem = ({ selected, structure, onBuild, onSelect }: BuildMenuItem
 };
 
 export type BuildMenuProps = {
-  structure: Building;
+  structure: Structure;
 };
 
 const BuildMenu = ({ structure }: BuildMenuProps) => {

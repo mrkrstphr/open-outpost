@@ -6,7 +6,7 @@ import { structureSpec } from '../../data/structures';
 import _edenResearchTree from '../../eden-research-tree.json';
 import { startResearch } from '../../state/slices/game';
 import { RootState } from '../../store';
-import { Building, ResearchItem } from '../../types';
+import { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
 
 // TODO: FIXME: remove hardcoded Eden
@@ -26,7 +26,7 @@ function TopicDetails({ topic }: { topic: ResearchItem }) {
   );
 }
 
-export const LabIsReady = ({ structure }: { structure: Building }) => {
+export const LabIsReady = ({ structure }: { structure: Structure }) => {
   const definition = structureSpec[structure.type];
   const { finishedResearch } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ export const LabIsReady = ({ structure }: { structure: Building }) => {
   );
 };
 
-export default function LabPanel({ structure }: { structure: Building }) {
+export default function LabPanel({ structure }: { structure: Structure }) {
   if (structure.researchTopic) {
     const percent = Math.min(
       (structure.researchTopic.progress / structure.researchTopic.cost) * 100,

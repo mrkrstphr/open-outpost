@@ -1,12 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Building, BuildingTypes } from '../../types';
+import { Structure, StructureTypes } from '../../types';
 import { canBuildStructure } from '../../utils';
 import { GameState } from '../slices/game';
 
 export const produceStructure = (
   state: GameState,
-  action: PayloadAction<{ factory: Building; type: BuildingTypes }>
+  action: PayloadAction<{ factory: Structure; type: StructureTypes }>
 ) => {
   const { factory, type } = action.payload;
   const factoryDefinition = structureSpec[factory.type];
@@ -27,12 +27,12 @@ export const produceStructure = (
     return;
   }
 
-  state.buildings = state.buildings.map((building) => {
-    if (building.id === factory.id) {
-      return { ...building, current: { type, progress: 0 } };
+  state.structures = state.structures.map((structure) => {
+    if (structure.id === factory.id) {
+      return { ...structure, current: { type, progress: 0 } };
     }
 
-    return building;
+    return structure;
   });
 
   state.ore.common -= definition.buildCost.common ?? 0;

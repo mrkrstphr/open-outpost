@@ -1,13 +1,13 @@
 import { isNil, isNotNil } from 'ramda';
 import { structureSpec } from '../../data/structures';
-import { Building, BuildingStatus } from '../../types';
+import { Structure, StructureStatus } from '../../types';
 import { filterActiveStructures } from '../../utils';
 import { GameState } from '../slices/game';
 
-function updateConstructionState(structure: Building) {
-  if (structure?.status === BuildingStatus.Building) {
+function updateConstructionState(structure: Structure) {
+  if (structure?.status === StructureStatus.Building) {
     if (structure.health + 1 >= structure.maxHealth) {
-      return { ...structure, status: BuildingStatus.Online, health: structure.maxHealth };
+      return { ...structure, status: StructureStatus.Online, health: structure.maxHealth };
     } else {
       return { ...structure, health: structure.health + 1 };
     }
@@ -16,8 +16,8 @@ function updateConstructionState(structure: Building) {
   return structure;
 }
 
-function buildingManager(building: Building, state: GameState) {
-  const newState = updateConstructionState(building);
+function structureManager(structure: Structure, state: GameState) {
+  const newState = updateConstructionState(structure);
 
   if (newState.current?.type) {
     newState.current.progress += 1;
@@ -40,25 +40,25 @@ function buildingManager(building: Building, state: GameState) {
 }
 
 function runProducers(state: GameState) {
-  const maxCommon = state.buildings.reduce(
-    (acc, building) => acc + (structureSpec[building.type].stores?.ore?.common ?? 0),
+  const maxCommon = state.structures.reduce(
+    (acc, structure) => acc + (structureSpec[structure.type].stores?.ore?.common ?? 0),
     0
   );
-  const maxRare = state.buildings.reduce(
-    (acc, building) => acc + (structureSpec[building.type].stores?.ore?.rare ?? 0),
+  const maxRare = state.structures.reduce(
+    (acc, structure) => acc + (structureSpec[structure.type].stores?.ore?.rare ?? 0),
     0
   );
-  const maxFood = filterActiveStructures(state.buildings).reduce(
-    (acc, building) => acc + (structureSpec[building.type].stores?.food ?? 0),
+  const maxFood = filterActiveStructures(state.structures).reduce(
+    (acc, structure) => acc + (structureSpec[structure.type].stores?.food ?? 0),
     0
   );
 
-  filterActiveStructures(state.buildings).forEach((building) => {
-    const definition = structureSpec[building.type];
+  filterActiveStructures(state.structures).forEach((structure) => {
+    const definition = structureSpec[structure.type];
 
-    if (state.mark === building.lastMark) return;
+    if (state.mark === structure.lastMark) return;
 
-    if (isNotNil(building.lastMark)) {
+    if (isNotNil(structure.lastMark)) {
       if (definition.produces?.ore?.common) {
         state.ore.common = Math.min(state.ore.common + definition.produces.ore.common, maxCommon);
       }
@@ -73,8 +73,8 @@ function runProducers(state: GameState) {
 }
 
 function performResearch(state: GameState) {
-  const activeLabs = state.buildings.filter(
-    (structure) => structure.status === BuildingStatus.Online && !!structure.researchTopic
+  const activeLabs = state.structures.filter(
+    (structure) => structure.status === StructureStatus.Online && !!structure.researchTopic
   );
 
   for (const lab of activeLabs) {
@@ -109,12 +109,12 @@ export const tick = (state: GameState) => {
     state.tick += 1;
   }
 
-  state.buildings = state.buildings.map((structure) => {
-    return buildingManager(structure, state);
+  state.structures = state.structures.map((structure) => {
+    return structureManager(structure, state);
   });
 
   runProducers(state);
   performResearch(state);
 
-  state.buildings = state.buildings.map((structure) => ({ ...structure, lastMark: state.mark }));
+  state.structures = state.structures.map((structure) => ({ ...structure, lastMark: state.mark }));
 };

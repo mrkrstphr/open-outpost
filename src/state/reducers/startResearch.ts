@@ -1,11 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Building, ResearchItem } from '../../types';
+import { ResearchItem, Structure } from '../../types';
 import { GameState } from '../slices/game';
 
 export const startResearch = (
   state: GameState,
-  action: PayloadAction<{ lab: Building; topic: ResearchItem; scientists: number }>
+  action: PayloadAction<{ lab: Structure; topic: ResearchItem; scientists: number }>
 ) => {
   const { lab, scientists, topic } = action.payload;
   const labDefinition = structureSpec[lab.type];
@@ -15,10 +15,10 @@ export const startResearch = (
     return;
   }
 
-  state.buildings = state.buildings.map((building) => {
-    if (building.id === lab.id) {
+  state.structures = state.structures.map((structure) => {
+    if (structure.id === lab.id) {
       return {
-        ...building,
+        ...structure,
         researchTopic: {
           ...topic,
           progress: 0,
@@ -28,6 +28,6 @@ export const startResearch = (
       };
     }
 
-    return building;
+    return structure;
   });
 };

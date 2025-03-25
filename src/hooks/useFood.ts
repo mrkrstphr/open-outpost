@@ -6,7 +6,7 @@ import { filterActiveStructures } from '../utils';
 export function useFood() {
   const state = useSelector((state: RootState) => state.game);
 
-  const production = filterActiveStructures(state.buildings).reduce((total, structure) => {
+  const production = filterActiveStructures(state.structures).reduce((total, structure) => {
     const def = structureSpec[structure.type];
     return total + (def.produces?.food ?? 0);
   }, 0);

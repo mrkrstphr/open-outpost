@@ -1,19 +1,19 @@
 import clsx from 'clsx';
 import { DetailedHTMLProps, HTMLAttributes } from 'react';
-import { BuildingStatus } from '../types';
+import { StructureStatus } from '../types';
 
 export type StructureStatusDotProps = DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > & {
-  status: BuildingStatus;
+  status: StructureStatus;
 };
 
-const statusToClassMap: Record<BuildingStatus, string> = {
-  [BuildingStatus.Building]: 'bg-gray-500',
-  [BuildingStatus.Online]: 'bg-green-500',
-  [BuildingStatus.Offline]: 'bg-gray-500',
-  [BuildingStatus.NoPower]: 'bg-red-500 animate-pulse',
+const statusToClassMap: Record<StructureStatus, string> = {
+  [StructureStatus.Building]: 'bg-gray-500',
+  [StructureStatus.Online]: 'bg-green-500',
+  [StructureStatus.Offline]: 'bg-gray-500',
+  [StructureStatus.NoPower]: 'bg-red-500 animate-pulse',
 };
 
 export const StructureStatusDot = ({ className, status, ...props }: StructureStatusDotProps) => (

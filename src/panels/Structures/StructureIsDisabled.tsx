@@ -1,7 +1,7 @@
-import { Building } from '../../types';
+import { Structure } from '../../types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function StructureIsDisabled({ structure }: { structure: Building }) {
+export function StructureIsDisabled({ structure }: { structure: Structure }) {
   return (
     <div>
       <div className="mb-1">This structure is disabled.</div>

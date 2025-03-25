@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'vitest';
 import { structureSpec } from './data/structures';
 import { GameState } from './state/slices/game';
-import { Building, BuildingStatus, BuildingTypes, LabResearchTopic } from './types';
+import { LabResearchTopic, Structure, StructureStatus, StructureTypes } from './types';
 import {
-  buildingLabel,
   calculateAvailableScientists,
   calculateAvailableWorkers,
   canBuildStructure,
   createNewStructure,
   sortStructures,
+  structureLabel,
 } from './utils';
 
 describe('createNewStructure', () => {
@@ -18,22 +18,22 @@ describe('createNewStructure', () => {
 
     expect(newStructure).toEqual({
       id: expect.any(String),
-      type: BuildingTypes.Agridome,
+      type: StructureTypes.Agridome,
       health: 0,
-      status: BuildingStatus.Building,
+      status: StructureStatus.Building,
       maxHealth: structureDef.hp,
     });
   });
 
   test('creates a new structure with the passed status', () => {
     const structureDef = structureSpec.Agridome;
-    const newStructure = createNewStructure(structureDef, BuildingStatus.Online);
+    const newStructure = createNewStructure(structureDef, StructureStatus.Online);
 
     expect(newStructure).toEqual({
       id: expect.any(String),
-      type: BuildingTypes.Agridome,
+      type: StructureTypes.Agridome,
       health: structureDef.hp,
-      status: BuildingStatus.Online,
+      status: StructureStatus.Online,
       maxHealth: structureDef.hp,
     });
   });
@@ -72,30 +72,30 @@ describe('canBuildStructure', () => {
 describe('sortStructures', () => {
   test('sorts structures by type and id', () => {
     const structures = [
-      { id: '9', type: BuildingTypes.CommandCenter },
-      { id: '2', type: BuildingTypes.Agridome },
-      { id: '1', type: BuildingTypes.LabStandard },
-      { id: '3', type: BuildingTypes.Agridome },
+      { id: '9', type: StructureTypes.CommandCenter },
+      { id: '2', type: StructureTypes.Agridome },
+      { id: '1', type: StructureTypes.LabStandard },
+      { id: '3', type: StructureTypes.Agridome },
     ];
 
-    const sorted = sortStructures(structures as Building[]);
+    const sorted = sortStructures(structures as Structure[]);
     expect(sorted).toEqual([
-      { id: '2', type: BuildingTypes.Agridome },
-      { id: '3', type: BuildingTypes.Agridome },
-      { id: '9', type: BuildingTypes.CommandCenter },
-      { id: '1', type: BuildingTypes.LabStandard },
+      { id: '2', type: StructureTypes.Agridome },
+      { id: '3', type: StructureTypes.Agridome },
+      { id: '9', type: StructureTypes.CommandCenter },
+      { id: '1', type: StructureTypes.LabStandard },
     ]);
   });
 });
 
-describe('buildingLabel', () => {
-  test('returns the correct label for a building', () => {
-    const building = {
+describe('structureLabel', () => {
+  test('returns the correct label for a structure', () => {
+    const structure = {
       id: '12345678-1234-5678-1234-567812345678',
-      type: BuildingTypes.Agridome,
+      type: StructureTypes.Agridome,
     };
 
-    expect(buildingLabel(building)).toEqual('Agridome@123456');
+    expect(structureLabel(structure)).toEqual('Agridome@123456');
   });
 });
 
@@ -103,14 +103,14 @@ describe('calculateAvailableScientists', () => {
   test('calculates the number of available scientists', () => {
     const state = {
       colonists: { children: 0, scientists: 5, workers: 10 },
-      buildings: [
-        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
-        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Offline),
-        createNewStructure(structureSpec.LabStandard, BuildingStatus.Online),
+      structures: [
+        createNewStructure(structureSpec.CommandCenter, StructureStatus.Online),
+        createNewStructure(structureSpec.CommandCenter, StructureStatus.Offline),
+        createNewStructure(structureSpec.LabStandard, StructureStatus.Online),
       ],
     };
 
-    state.buildings[0].researchTopic = {
+    state.structures[0].researchTopic = {
       assignedScientists: 2,
     } as LabResearchTopic;
 
@@ -124,14 +124,14 @@ describe('calculateAvailableWorkers', () => {
   test('calculates the number of available workers', () => {
     const state = {
       colonists: { children: 0, scientists: 5, workers: 30 },
-      buildings: [
-        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
-        createNewStructure(structureSpec.CommandCenter, BuildingStatus.Offline),
-        createNewStructure(structureSpec.LabStandard, BuildingStatus.Online),
+      structures: [
+        createNewStructure(structureSpec.CommandCenter, StructureStatus.Online),
+        createNewStructure(structureSpec.CommandCenter, StructureStatus.Offline),
+        createNewStructure(structureSpec.LabStandard, StructureStatus.Online),
       ],
     };
 
-    state.buildings[0].researchTopic = {
+    state.structures[0].researchTopic = {
       assignedScientists: 2,
     } as LabResearchTopic;
 

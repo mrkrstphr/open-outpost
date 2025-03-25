@@ -5,11 +5,11 @@ import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
 import PlymouthLabStandard from '../structures/plymouth-standard-lab.png';
 import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
 import PlymouthTokamak from '../structures/plymouth-tokamak.png';
-import { BuildingTypes, ResearchType } from '../types';
+import { ResearchType, StructureTypes } from '../types';
 
 export type StructureDetails = {
   name: string;
-  type: BuildingTypes;
+  type: StructureTypes;
   hp: number;
   buildCost: { common?: number; rare?: number };
   kitBuildTime: number;
@@ -32,10 +32,10 @@ export type StructureDetails = {
   image?: any;
 };
 
-export const structureSpec: Record<BuildingTypes, StructureDetails> = {
+export const structureSpec: Record<StructureTypes, StructureDetails> = {
   Agridome: {
     name: 'Agridome',
-    type: BuildingTypes.Agridome,
+    type: StructureTypes.Agridome,
     hp: 1000,
     buildCost: { common: 225, rare: 0 },
     kitBuildTime: 200,
@@ -48,7 +48,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   },
   CommandCenter: {
     name: 'Command Center',
-    type: BuildingTypes.CommandCenter,
+    type: StructureTypes.CommandCenter,
     hp: 2500,
     buildCost: { common: 2800, rare: 0 },
     kitBuildTime: 1925,
@@ -60,7 +60,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   },
   FactoryStructure: {
     name: 'Factory, Structure',
-    type: BuildingTypes.FactoryStructure,
+    type: StructureTypes.FactoryStructure,
     hp: 2000,
     // TODO: FIXME:
     buildCost: { common: 2500, rare: 0 },
@@ -73,7 +73,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   },
   LabStandard: {
     name: 'Lab, Standard',
-    type: BuildingTypes.LabStandard,
+    type: StructureTypes.LabStandard,
     hp: 1250,
     buildCost: { common: 1500, rare: 0 },
     kitBuildTime: 1025,
@@ -85,7 +85,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   },
   Residence: {
     name: 'Residence',
-    type: BuildingTypes.Residence,
+    type: StructureTypes.Residence,
     hp: 800,
     buildCost: { common: 600 },
     kitBuildTime: 225,
@@ -94,7 +94,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   },
   SmelterCommon: {
     name: 'Smelter, Common Ore',
-    type: BuildingTypes.SmelterCommon,
+    type: StructureTypes.SmelterCommon,
     hp: 2000,
     buildCost: { common: 2000, rare: 0 },
     kitBuildTime: 1500,
@@ -107,7 +107,7 @@ export const structureSpec: Record<BuildingTypes, StructureDetails> = {
   },
   Tokamak: {
     name: 'Tokamak',
-    type: BuildingTypes.Tokamak,
+    type: StructureTypes.Tokamak,
     hp: 1500,
     buildCost: { common: 1100 },
     kitBuildTime: 825,

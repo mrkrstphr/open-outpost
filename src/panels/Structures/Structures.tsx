@@ -5,13 +5,13 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { StructureStatusDot } from '../../components/StructureStatusDot';
 import { structureSpec } from '../../data/structures';
 import { useStructures } from '../../hooks/useStructures';
-import { Building, BuildingStatus, BuildingTypes } from '../../types';
-import { buildingLabel, sortStructures } from '../../utils';
+import { Structure, StructureStatus, StructureTypes } from '../../types';
+import { sortStructures, structureLabel } from '../../utils';
 import { StructureHasNoPower } from './StructureHasNoPower';
 import { StructureIsBuildingPanel } from './StructureIsBuildingPanel';
 import { StructureIsDisabled } from './StructureIsDisabled';
 
-const structureContentMap: Record<BuildingTypes, React.ElementType> = {
+const structureContentMap: Record<StructureTypes, React.ElementType> = {
   Agridome: () => <div>TODO: Agridome</div>,
   CommandCenter: lazy(() => import('./CommandCenter')),
   FactoryStructure: lazy(() => import('./FactoryStructure')),
@@ -24,7 +24,7 @@ const structureContentMap: Record<BuildingTypes, React.ElementType> = {
 const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) => {
   const structures = useStructures();
   const sortedStructures = useMemo(() => sortStructures(structures), [structures]);
-  const [highlightedStructure, setHighlightedStructure] = useState<Building | undefined>();
+  const [highlightedStructure, setHighlightedStructure] = useState<Structure | undefined>();
 
   if (structures.length === 0) {
     return <ContentBox title="Your Colony">There are no buildings in your colony.</ContentBox>;
@@ -33,33 +33,33 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
   return (
     <ContentBox title="Your Colony">
       <div className="flex flex-wrap">
-        {sortedStructures.map((building) => (
-          <div key={`building-${building.type}-${building.id}`} className="m-4">
+        {sortedStructures.map((structure) => (
+          <div key={`structure-${structure.type}-${structure.id}`} className="m-4">
             <div className="relative">
-              {building.health !== building.maxHealth && (
+              {structure.health !== structure.maxHealth && (
                 <ProgressBar
-                  percent={(building.health / building.maxHealth) * 100}
+                  percent={(structure.health / structure.maxHealth) * 100}
                   className="absolute inset-x-0.5 bottom-0.5 m-1"
                 />
               )}
               <StructureStatusDot
-                status={building.status}
+                status={structure.status}
                 className="absolute inset-y-0.5 right-0.5"
               />
               <img
-                src={structureSpec[building.type].image}
-                alt={building.type}
+                src={structureSpec[structure.type].image}
+                alt={structure.type}
                 className="hover:bg-gray-900 cursor-pointer h-16"
-                onMouseOver={() => setHighlightedStructure(building)}
+                onMouseOver={() => setHighlightedStructure(structure)}
                 onMouseOut={() => setHighlightedStructure(undefined)}
-                onClick={() => onSelect(building.id)}
+                onClick={() => onSelect(structure.id)}
               />
             </div>
           </div>
         ))}
       </div>
       <div className="border-t border-purple-500 -mx-1 p-1 -mb-1 text-sm">
-        {highlightedStructure ? buildingLabel(highlightedStructure) : <>&nbsp;</>}
+        {highlightedStructure ? structureLabel(highlightedStructure) : <>&nbsp;</>}
       </div>
     </ContentBox>
   );
@@ -69,7 +69,7 @@ const SelectedStructure = ({
   structure,
   onClose,
 }: {
-  structure: Building;
+  structure: Structure;
   onClose: () => void;
 }) => {
   const ContentPanel = structureContentMap[structure.type];
@@ -80,11 +80,11 @@ const SelectedStructure = ({
       action={<Button onClick={onClose}>Close</Button>}
     >
       <Suspense fallback={<div className="text-center">Loading...</div>}>
-        {structure.status === BuildingStatus.Building ? (
+        {structure.status === StructureStatus.Building ? (
           <StructureIsBuildingPanel structure={structure} />
-        ) : structure.status === BuildingStatus.Offline ? (
+        ) : structure.status === StructureStatus.Offline ? (
           <StructureIsDisabled structure={structure} />
-        ) : structure.status === BuildingStatus.NoPower ? (
+        ) : structure.status === StructureStatus.NoPower ? (
           <StructureHasNoPower structure={structure} />
         ) : (
           <ContentPanel structure={structure} onClose={onClose} />
@@ -100,7 +100,7 @@ export const StructuresPanel = () => {
 
   return selectedStructure ? (
     <SelectedStructure
-      structure={structures.find((s) => s.id === selectedStructure) as Building}
+      structure={structures.find((s) => s.id === selectedStructure) as Structure}
       onClose={() => setSelectedStructure(undefined)}
     />
   ) : (

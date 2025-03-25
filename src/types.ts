@@ -12,14 +12,14 @@ export type ResearchItem = {
   result: string;
 };
 
-export enum BuildingStatus {
+export enum StructureStatus {
   Building = 'Building',
   Online = 'Online',
   Offline = 'Offline',
   NoPower = 'NoPower',
 }
 
-export enum BuildingTypes {
+export enum StructureTypes {
   Agridome = 'Agridome',
   CommandCenter = 'CommandCenter',
   FactoryStructure = 'FactoryStructure',
@@ -35,14 +35,14 @@ export type LabResearchTopic = ResearchItem & {
   assignedScientists: number;
 };
 
-export type Building = {
+export type Structure = {
   id: string;
-  type: BuildingTypes;
+  type: StructureTypes;
   health: number;
   maxHealth: number;
-  status: BuildingStatus;
+  status: StructureStatus;
   lastMark?: number;
-  storage?: Array<BuildingTypes>;
-  current?: { type: BuildingTypes; progress: number };
+  storage?: Array<StructureTypes>;
+  current?: { type: StructureTypes; progress: number };
   researchTopic?: LabResearchTopic;
 };

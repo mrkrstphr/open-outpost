@@ -1,11 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Building } from '../../types';
+import { Structure } from '../../types';
 import { GameState } from '../slices/game';
 
 export const cancelProduceStructure = (
   state: GameState,
-  action: PayloadAction<{ factory: Building }>
+  action: PayloadAction<{ factory: Structure }>
 ) => {
   console.log('type', action.type);
   const { factory } = action.payload;
@@ -24,12 +24,12 @@ export const cancelProduceStructure = (
     rare: Math.floor((definition.buildCost?.rare ?? 0) * percentageComplete),
   };
 
-  state.buildings = state.buildings.map((building) => {
-    if (building.id === factory.id) {
-      return { ...building, current: undefined };
+  state.structures = state.structures.map((structure) => {
+    if (structure.id === factory.id) {
+      return { ...structure, current: undefined };
     }
 
-    return building;
+    return structure;
   });
 
   state.ore.common += refund.common;

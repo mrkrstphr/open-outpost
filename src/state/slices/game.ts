@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
 import type { PartialDeep } from 'type-fest';
 import { structureSpec } from '../../data/structures';
-import { Building, BuildingStatus } from '../../types';
+import { Structure, StructureStatus } from '../../types';
 import { createNewStructure } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
@@ -15,7 +15,7 @@ export type GameState = {
   tick: number;
   mark: number;
   morale: number;
-  buildings: Array<Building>;
+  structures: Array<Structure>;
   finishedResearch: string[];
   gameLog: string[];
   food: number;
@@ -31,12 +31,12 @@ export const gameSlice = createSlice({
   name: 'game',
   // TODO: FIXME: how to setup initial game state??
   initialState: createGameState({
-    buildings: [
-      createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
-      createNewStructure(structureSpec.Tokamak, BuildingStatus.Online),
-      createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online),
-      createNewStructure(structureSpec.SmelterCommon, BuildingStatus.Online),
-      createNewStructure(structureSpec.LabStandard, BuildingStatus.Online),
+    structures: [
+      createNewStructure(structureSpec.CommandCenter, StructureStatus.Online),
+      createNewStructure(structureSpec.Tokamak, StructureStatus.Online),
+      createNewStructure(structureSpec.FactoryStructure, StructureStatus.Online),
+      createNewStructure(structureSpec.SmelterCommon, StructureStatus.Online),
+      createNewStructure(structureSpec.LabStandard, StructureStatus.Online),
       createNewStructure(structureSpec.Agridome),
     ],
     ore: { common: 4000 },
