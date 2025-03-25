@@ -1,6 +1,7 @@
 import { lazy, Suspense, useMemo, useState } from 'react';
 import { ContentBox } from '../../components/ContentBox';
 import { ProgressBar } from '../../components/ProgressBar';
+import { StructureStatusDot } from '../../components/StructureStatusDot';
 import { structureSpec } from '../../data/structures';
 import { useStructures } from '../../hooks/useStructures';
 import { Building, BuildingStatus, BuildingTypes } from '../../types';
@@ -34,9 +35,13 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
               {building.health !== building.maxHealth && (
                 <ProgressBar
                   percent={(building.health / building.maxHealth) * 100}
-                  className="absolute inset-0.5 m-1"
+                  className="absolute inset-x-0.5 bottom-0.5 m-1"
                 />
               )}
+              <StructureStatusDot
+                status={building.status}
+                className="absolute inset-y-0.5 right-0.5"
+              />
               <img
                 src={structureSpec[building.type].image}
                 alt={building.type}
