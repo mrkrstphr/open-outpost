@@ -18,6 +18,7 @@ export type GameState = {
   gameLog: string[];
   food: number;
   ore: { common: number; rare: number };
+  notices: Array<{ message: string; mark: number }>;
 };
 
 function createGameState({

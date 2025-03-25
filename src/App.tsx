@@ -1,8 +1,11 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import useSound from 'use-sound';
 import { Box } from './components/Box';
 import { Tab } from './components/Tab';
+import { useNotices } from './hooks/useNotices';
 import { StructuresPanel } from './panels/Structures';
+import boopSfx from './sound/alert.mp3';
 import { tick } from './state/slices/game';
 import { RootState } from './store';
 
@@ -15,13 +18,21 @@ enum Tabs {
 
 function App() {
   const state = useSelector((state: RootState) => state.game);
+  const [latestNotice] = useNotices(1);
   const dispatch = useDispatch();
+  const [play] = useSound(boopSfx, { volume: 0.25 });
 
   const [activeTab, setActiveTab] = useState(0);
 
   const settings = {
     gameSpeed: 5,
   };
+
+  useEffect(() => {
+    if (latestNotice) {
+      play();
+    }
+  }, [latestNotice, play]);
 
   useEffect(() => {
     const tickInterval = 1000 / (settings.gameSpeed * 4);
@@ -62,6 +73,16 @@ function App() {
           {activeTab === Tabs.Home && <StructuresPanel />}
           {activeTab === Tabs.Debug && <DebugPanel />}
         </Suspense>
+
+        <Box className="mt-1 text-sm">
+          {latestNotice ? (
+            <>
+              @{latestNotice?.mark}: {latestNotice?.message}
+            </>
+          ) : (
+            <>&nbsp;</>
+          )}
+        </Box>
       </Box>
     </div>
   );

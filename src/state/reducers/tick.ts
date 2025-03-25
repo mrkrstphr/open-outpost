@@ -16,7 +16,7 @@ function updateConstructionState(structure: Building) {
   return structure;
 }
 
-function buildingManager(building: Building) {
+function buildingManager(building: Building, state: GameState) {
   const newState = updateConstructionState(building);
 
   if (newState.current?.type) {
@@ -26,6 +26,12 @@ function buildingManager(building: Building) {
       newState.storage = newState.storage
         ? [...newState.storage, newState.current.type]
         : [newState.current.type];
+
+      state.notices.push({
+        message: `Structure kit manufactured: ${newState.current.type}`,
+        mark: state.mark,
+      });
+
       newState.current = undefined;
     }
   }
@@ -47,7 +53,7 @@ function runProducers(state: GameState) {
     0
   );
 
-  filterActiveStructures(state.buildings).forEach((building, index) => {
+  filterActiveStructures(state.buildings).forEach((building) => {
     const definition = structureSpec[building.type];
 
     if (state.mark === building.lastMark) return;
@@ -84,6 +90,12 @@ function performResearch(state: GameState) {
 
     if (lab.researchTopic!.progress >= lab.researchTopic!.cost) {
       state.finishedResearch.push(lab.researchTopic!.id);
+
+      state.notices.push({
+        message: `Research completed: ${lab.researchTopic!.topic}`,
+        mark: state.mark,
+      });
+
       lab.researchTopic = undefined;
     }
   }
@@ -98,7 +110,7 @@ export const tick = (state: GameState) => {
   }
 
   state.buildings = state.buildings.map((structure) => {
-    return buildingManager(structure);
+    return buildingManager(structure, state);
   });
 
   runProducers(state);

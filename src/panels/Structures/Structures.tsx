@@ -58,7 +58,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
           </div>
         ))}
       </div>
-      <div className="border-t border-purple-500 -mx-1 px-1 -mb-1 text-sm">
+      <div className="border-t border-purple-500 -mx-1 p-1 -mb-1 text-sm">
         {highlightedStructure ? buildingLabel(highlightedStructure) : <>&nbsp;</>}
       </div>
     </ContentBox>

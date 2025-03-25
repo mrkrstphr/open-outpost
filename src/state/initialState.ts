@@ -5,9 +5,9 @@ export const initialState: GameState = {
   mark: 0,
   morale: 75,
   buildings: [],
-  currentResearchTopic: undefined,
   finishedResearch: [],
   gameLog: [],
+  notices: [],
   food: 0,
   ore: {
     rare: 0,
