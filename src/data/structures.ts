@@ -28,6 +28,7 @@ export type StructureDetails = {
     ore?: { common?: number; rare?: number };
   };
   researchType?: ResearchType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   image?: any;
 };
 

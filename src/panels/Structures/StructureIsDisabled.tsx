@@ -1,9 +1,7 @@
-import { structureSpec } from '../../data/structures';
 import { Building } from '../../types';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function StructureIsDisabled({ structure }: { structure: Building }) {
-  const definition = structureSpec[structure.type];
-
   return (
     <div>
       <div className="mb-1">This structure is disabled.</div>

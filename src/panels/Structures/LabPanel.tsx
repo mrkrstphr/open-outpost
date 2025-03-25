@@ -33,11 +33,9 @@ export const LabIsReady = ({ structure }: { structure: Building }) => {
 
   const [selectedTopic, setSelectedTopic] = useState<ResearchItem | undefined>();
 
-  const availableTopics = filterAvailableResearch(
-    definition.researchType,
-    edenResearchTree,
-    finishedResearch
-  );
+  const availableTopics = definition.researchType
+    ? filterAvailableResearch(definition.researchType, edenResearchTree, finishedResearch)
+    : [];
 
   return (
     <div className="flex w-full space-x-1">

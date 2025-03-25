@@ -1,9 +1,10 @@
 import { v4 } from 'uuid';
 import { StructureDetails, structureSpec } from './data/structures';
-import { Building, BuildingStatus, GameState, type LabType, type ResearchItem } from './types';
+import { GameState } from './state/slices/game';
+import { Building, BuildingStatus, ResearchType, type ResearchItem } from './types';
 
 export function filterAvailableResearch(
-  targetLab: LabType,
+  targetLab: ResearchType,
   allTopics: ResearchItem[],
   finishedTopics: string[]
 ) {

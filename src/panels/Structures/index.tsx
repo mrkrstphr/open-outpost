@@ -1,1 +1,1 @@
-export * from './Structures';
+export { StructuresPanel } from './Structures';
