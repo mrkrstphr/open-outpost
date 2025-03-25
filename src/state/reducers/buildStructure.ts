@@ -1,7 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { structureSpec } from '../../data/structures';
-import { Building, GameState } from '../../types';
+import { Building } from '../../types';
 import { createNewStructure } from '../../utils';
+import { GameState } from '../slices/game';
 
 export const buildStructure = (
   state: GameState,

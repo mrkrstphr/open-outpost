@@ -5,6 +5,7 @@ import { Building, BuildingStatus, ResearchItem } from '../../types';
 import { createNewStructure, filterActiveStructures } from '../../utils';
 import { initialState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
+import { cancelProduceStructure as cancelProduceStructureFunc } from '../reducers/cancelProduceStructure';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
 
 export type GameState = {
@@ -106,9 +107,11 @@ export const gameSlice = createSlice({
   initialState: createGameState({
     buildings: [
       createNewStructure(structureSpec.CommandCenter, BuildingStatus.Online),
+      createNewStructure(structureSpec.Tokamak, BuildingStatus.Online),
       createNewStructure(structureSpec.FactoryStructure, BuildingStatus.Online),
       createNewStructure(structureSpec.SmelterCommon, BuildingStatus.Online),
-      createNewStructure(structureSpec.LabStandard),
+      createNewStructure(structureSpec.LabStandard, BuildingStatus.Online),
+      createNewStructure(structureSpec.Agridome),
     ],
     ore: { common: 4000 },
   }),
@@ -129,10 +132,11 @@ export const gameSlice = createSlice({
     },
 
     buildStructure: buildStructureFunc,
+    cancelProduceStructure: cancelProduceStructureFunc,
     produceStructure: produceStructureFunc,
   },
 });
 
-export const { buildStructure, produceStructure, tick } = gameSlice.actions;
+export const { buildStructure, cancelProduceStructure, produceStructure, tick } = gameSlice.actions;
 
 export default gameSlice.reducer;

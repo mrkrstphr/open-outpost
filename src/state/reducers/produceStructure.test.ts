@@ -16,6 +16,7 @@ test('starts producing the new structure when all conditions are met', () => {
 
   produceStructure(newState, {
     payload: { factory: previousState.buildings[0], type: BuildingTypes.Agridome },
+    type: 'game/produceStructure',
   });
 
   expect(newState).toEqual(
@@ -38,6 +39,7 @@ test('without enough ore, does not start producing the new structure', () => {
 
   produceStructure(newState, {
     payload: { factory: previousState.buildings[0], type: BuildingTypes.Agridome },
+    type: 'game/produceStructure',
   });
 
   expect(newState).toEqual(previousState);
@@ -57,6 +59,7 @@ test('does not start producing if the factory is busy', () => {
 
   produceStructure(newState, {
     payload: { factory: previousState.buildings[0], type: BuildingTypes.LabStandard },
+    type: 'game/produceStructure',
   });
 
   expect(newState).toEqual(previousState);
@@ -83,6 +86,7 @@ test('does not start producing if the factory storage is full', () => {
 
   produceStructure(newState, {
     payload: { factory: previousState.buildings[0], type: BuildingTypes.LabStandard },
+    type: 'game/produceStructure',
   });
 
   expect(newState).toEqual(previousState);

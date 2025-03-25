@@ -7,7 +7,7 @@ import { ContentBox } from '../../components/ContentBox';
 import { ProgressBar } from '../../components/ProgressBar';
 import { StructureDetails, structureSpec } from '../../data/structures';
 import { useOre } from '../../hooks/useOre';
-import { buildStructure, produceStructure } from '../../state/slices/game';
+import { buildStructure, cancelProduceStructure, produceStructure } from '../../state/slices/game';
 import { Building } from '../../types';
 import { canBuildStructure } from '../../utils';
 
@@ -59,7 +59,9 @@ export type BuildingStateProps = {
 };
 
 const BuildingState = ({ structure }: BuildingStateProps) => {
+  const dispatch = useDispatch();
   const currentDefinition = structure.current ? structureSpec[structure.current.type] : undefined;
+  const [isPendingCancel, setIsPendingCancel] = useState(false);
 
   if (!currentDefinition) {
     return null;
@@ -88,6 +90,30 @@ const BuildingState = ({ structure }: BuildingStateProps) => {
             <div className="w-22 text-right">
               {structure.current?.progress ?? 0}/{currentDefinition.kitBuildTime}
             </div>
+          </div>
+          <div>
+            {!isPendingCancel && (
+              <Button onClick={() => setIsPendingCancel(true)}>Cancel Construction</Button>
+            )}
+            {isPendingCancel && (
+              <div className="flex space-x-1 items-center">
+                <div>Are you sure you want to cancel construction?</div>
+
+                <Button
+                  variant="danger"
+                  onClick={() => {
+                    dispatch(cancelProduceStructure({ factory: structure }));
+                    setIsPendingCancel(false);
+                  }}
+                >
+                  Confirm
+                </Button>
+
+                <Button variant="secondary" onClick={() => setIsPendingCancel(false)}>
+                  Cancel
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
