@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import type { IconType } from 'react-icons/lib';
 import type { BoxProps } from './Box';
 
 export type ContentBoxProps = BoxProps & {
   action?: React.ReactNode;
-  classNames?: { icon?: string };
+  classNames?: { body?: string; icon?: string };
   icon?: IconType;
   title: string;
   children: React.ReactNode;
@@ -18,7 +19,7 @@ export const ContentBox = ({
   classNames,
   ...props
 }: ContentBoxProps) => (
-  <div className={`border border-purple-500 ${className}`} {...props}>
+  <div className={`border flex flex-col border-purple-500 ${className}`} {...props}>
     <div className="border-b border-purple-500">
       <div className="p-1">
         <div className="flex items-center">
@@ -30,6 +31,6 @@ export const ContentBox = ({
         </div>
       </div>
     </div>
-    <div className="p-1">{children}</div>
+    <div className={clsx('p-1 flex-1', classNames?.body)}>{children}</div>
   </div>
 );
