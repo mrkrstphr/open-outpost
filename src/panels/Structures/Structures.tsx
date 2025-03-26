@@ -55,7 +55,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
           </div>
         ))}
       </div>
-      <div className="border-t border-purple-500 -mx-1 p-1 -mb-1 text-sm">
+      <div className="hidden lg:block border-t border-purple-500 -mx-1 p-1 -mb-1 text-sm">
         {highlightedStructure ? structureLabel(highlightedStructure) : <>&nbsp;</>}
       </div>
     </ContentBox>

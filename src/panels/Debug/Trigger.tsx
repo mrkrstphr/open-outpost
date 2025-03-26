@@ -8,7 +8,10 @@ export const DebugTrigger = () => {
 
   return (
     <>
-      <DebugIcon className="text-red-500" onClick={() => setIsOpen(true)} />
+      <DebugIcon
+        className="text-xl text-red-500 hover:text-red-400 active:text-red-400 cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      />
       {isOpen && <DebugPanel onClose={() => setIsOpen(false)} />}
     </>
   );

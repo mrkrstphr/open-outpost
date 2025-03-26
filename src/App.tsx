@@ -45,22 +45,10 @@ function App() {
           </div>
         </div>
 
-        <Box className="mb-1">
-          <Box className="flex items-center mb-1">
-            <div className="justify-self-end text-white mr-1">
-              Mark: <span className="bg-purple-400 text-sm py-0.5 px-1">{state.mark}</span>
-              <span className="text-purple-400"> | </span> Common:{' '}
-              <span className="bg-orange-500 text-sm py-0.5 px-1">{state.ore.common}</span>
-              <span className="text-purple-400"> | </span> Rare:{' '}
-              <span className="bg-yellow-500 text-sm py-0.5 px-1">{state.ore.rare}</span>
-              <span className="text-purple-400"> | </span> Moral:{' '}
-              <span className="bg-blue-400 text-sm py-0.5 px-1">{state.morale}</span>
-            </div>
-          </Box>
-
+        <Box className="flex flex-col space-y-1 text-sm">
           <StructuresPanel />
 
-          <Box className="mt-1 text-sm">
+          <Box className="mb-1 text-sm">
             {latestNotice ? (
               <>
                 @{latestNotice?.mark}: {latestNotice?.message}
@@ -68,6 +56,14 @@ function App() {
             ) : (
               <>&nbsp;</>
             )}
+          </Box>
+          <Box className="flex items-center space-x-1">
+            <Box className="text-sm flex flex-1 items-center space-x-1">
+              <span className="flex-1">Common:</span> <span>{state.ore.common}</span>
+            </Box>
+            <Box className="text-sm flex flex-1 items-center space-x-1">
+              <span className="flex-1">Rare:</span> <span>{state.ore.rare}</span>
+            </Box>
           </Box>
         </Box>
       </div>
