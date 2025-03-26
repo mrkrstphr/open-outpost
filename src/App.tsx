@@ -48,7 +48,7 @@ function App() {
         <Box className="flex flex-col space-y-1 text-sm">
           <StructuresPanel />
 
-          <Box className="mb-1 text-sm">
+          <Box className="mb-1 text-sm truncate">
             {latestNotice ? (
               <>
                 @{latestNotice?.mark}: {latestNotice?.message}

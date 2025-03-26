@@ -10,12 +10,7 @@ import { useColonists, useFood, useMark, useMorale, useOre, usePower } from '../
 const CommandCenterStructure = () => {
   const mark = useMark();
   const morale = useMorale();
-  const {
-    total: totalColonists,
-    children: totalChildren,
-    availableScientists,
-    availableWorkers,
-  } = useColonists();
+  const { total: totalColonists, children: totalChildren, availableScientists, availableWorkers } = useColonists();
   const { production: foodProduction, storage: foodStorage } = useFood();
   const { production: powerProduction, utilization: powerUtilization } = usePower();
   const { common, rare } = useOre();
@@ -25,11 +20,9 @@ const CommandCenterStructure = () => {
       <ContentBox classNames={{ icon: 'text-red-500' }} icon={StatsIcon} title="Stats">
         <SimpleDataTable
           id="stats"
-          rows={[
-            [
-              { label: 'Mark', value: mark },
-              { label: 'Morale', value: morale },
-            ],
+          data={[
+            { label: 'Mark', value: mark },
+            { label: 'Morale', value: morale },
           ]}
         />
       </ContentBox>
@@ -37,15 +30,11 @@ const CommandCenterStructure = () => {
       <ContentBox classNames={{ icon: 'text-blue-500' }} icon={ColonistsIcon} title="Colonists">
         <SimpleDataTable
           id="colonists"
-          rows={[
-            [
-              { label: 'Total', value: totalColonists },
-              { label: 'Children', value: totalChildren },
-            ],
-            [
-              { label: 'Available Workers', value: availableWorkers },
-              { label: 'Scientists', value: availableScientists },
-            ],
+          data={[
+            { label: 'Total', value: totalColonists },
+            { label: 'Children', value: totalChildren },
+            { label: 'Available Workers', value: availableWorkers },
+            { label: 'Available Scientists', value: availableScientists },
           ]}
         />
       </ContentBox>
@@ -53,11 +42,9 @@ const CommandCenterStructure = () => {
       <ContentBox classNames={{ icon: 'text-yellow-500' }} icon={PowerIcon} title="Power">
         <SimpleDataTable
           id="power"
-          rows={[
-            [
-              { label: 'Production', value: powerProduction },
-              { label: 'Utilization', value: powerUtilization },
-            ],
+          data={[
+            { label: 'Production', value: powerProduction },
+            { label: 'Utilization', value: powerUtilization },
           ]}
         />
       </ContentBox>
@@ -65,11 +52,9 @@ const CommandCenterStructure = () => {
       <ContentBox classNames={{ icon: 'text-green-500' }} icon={FoodIcon} title="Food">
         <SimpleDataTable
           id="food"
-          rows={[
-            [
-              { label: 'Production', value: foodProduction },
-              { label: 'Storage', value: foodStorage },
-            ],
+          data={[
+            { label: 'Production', value: foodProduction },
+            { label: 'Storage', value: foodStorage },
           ]}
         />
       </ContentBox>
@@ -77,11 +62,9 @@ const CommandCenterStructure = () => {
       <ContentBox classNames={{ icon: 'text-orange-500' }} icon={OreIcon} title="Ore">
         <SimpleDataTable
           id="ore"
-          rows={[
-            [
-              { label: 'Common', value: common },
-              { label: 'Rare', value: rare },
-            ],
+          data={[
+            { label: 'Common', value: common },
+            { label: 'Rare', value: rare },
           ]}
         />
       </ContentBox>
