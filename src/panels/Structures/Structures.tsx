@@ -31,7 +31,7 @@ const AllStructures = ({ onSelect }: { onSelect: (structure: string) => void }) 
   }
 
   return (
-    <ContentBox title="Your Colony">
+    <ContentBox title="Your Colony" variant="filled">
       <div className="flex flex-wrap">
         {sortedStructures.map((structure) => (
           <div key={`structure-${structure.type}-${structure.id}`} className="m-4">
@@ -68,7 +68,12 @@ const SelectedStructure = ({ structure, onClose }: { structure: Structure; onClo
   return (
     <ContentBox
       title={`${structureSpec[structure.type].name} [@${structure.id.substring(0, 6)}]`}
-      action={<Button onClick={onClose}>Close</Button>}
+      action={
+        <Button onClick={onClose} variant="outline">
+          Close
+        </Button>
+      }
+      variant="filled"
     >
       <Suspense fallback={<div className="text-center">Loading...</div>}>
         {structure.status === StructureStatus.Building ? (
