@@ -1,10 +1,10 @@
-import PlymouthAgridome from '../structures/plymouth-agridome.png';
-import PlymouthCommandCenter from '../structures/plymouth-command-center.png';
-import PlymouthResidence from '../structures/plymouth-residence.png';
-import PlymouthSmelterCommon from '../structures/plymouth-smelter-common.png';
-import PlymouthLabStandard from '../structures/plymouth-standard-lab.png';
-import PlymouthStructureFactory from '../structures/plymouth-structure-factory.png';
-import PlymouthTokamak from '../structures/plymouth-tokamak.png';
+import PlymouthAgridome from '../images/structures/plymouth-agridome.png';
+import PlymouthCommandCenter from '../images/structures/plymouth-command-center.png';
+import PlymouthResidence from '../images/structures/plymouth-residence.png';
+import PlymouthSmelterCommon from '../images/structures/plymouth-smelter-common.png';
+import PlymouthLabStandard from '../images/structures/plymouth-standard-lab.png';
+import PlymouthStructureFactory from '../images/structures/plymouth-structure-factory.png';
+import PlymouthTokamak from '../images/structures/plymouth-tokamak.png';
 import { type ResearchType, StructureTypes } from '../types';
 
 export type StructureDetails = {
