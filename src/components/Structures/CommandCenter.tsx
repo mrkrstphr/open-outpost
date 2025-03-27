@@ -6,11 +6,8 @@ import { PiCarrot as FoodIcon } from 'react-icons/pi';
 import { useColonists, useFood, useMark, useMorale, useOre, usePower } from '../../hooks';
 import { ContentBox } from '../ContentBox';
 import { SimpleDataTable } from '../SimpleDataTable';
-import { StructureStats } from './StructureStats';
-import { useStructurePageContext } from './types';
 
 const CommandCenterStructure = () => {
-  const { definition } = useStructurePageContext();
   const mark = useMark();
   const morale = useMorale();
   const { total: totalColonists, children: totalChildren, availableScientists, availableWorkers } = useColonists();
@@ -20,8 +17,6 @@ const CommandCenterStructure = () => {
 
   return (
     <div className="flex flex-col space-y-1">
-      <StructureStats extras={[{ label: 'Power Generation', value: definition.produces!.power! }]} />
-
       <ContentBox classNames={{ icon: 'text-red-500' }} icon={StatsIcon} title="Stats">
         <SimpleDataTable
           id="stats"

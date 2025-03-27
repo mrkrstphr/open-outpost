@@ -11,7 +11,6 @@ import { Box } from '../Box';
 import { Button } from '../Button';
 import { ContentBox } from '../ContentBox';
 import { ProgressBar } from '../ProgressBar';
-import { StructureStats } from './StructureStats';
 import { useStructurePageContext } from './types';
 
 export type FactoryStructureProps = {
@@ -199,7 +198,6 @@ const FactoryStructure = () => {
 
   return (
     <div className="flex flex-col space-y-1">
-      <StructureStats />
       <Storage structure={structure} />
       {!isCurrentlyBuilding && <BuildMenu structure={structure} />}
       {isCurrentlyBuilding && <BuildingState structure={structure} />}

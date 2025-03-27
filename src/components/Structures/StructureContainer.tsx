@@ -10,6 +10,7 @@ import { PageNotFound } from '../PageNotFound';
 import { StructureHasNoPower } from './StructureHasNoPower';
 import { StructureIsBuildingPanel } from './StructureIsBuildingPanel';
 import { StructureIsDisabled } from './StructureIsDisabled';
+import { StructureStats } from './StructureStats';
 
 export function StructureContainer() {
   const { id } = useParams<{ id: string }>();
@@ -29,6 +30,8 @@ export function StructureContainer() {
       title={structureLabel(structure)}
       variant="filled"
     >
+      <StructureStats definition={definition} structure={structure} />
+
       {structure.status === StructureStatus.Building ? (
         <StructureIsBuildingPanel structure={structure} />
       ) : structure.status === StructureStatus.Offline ? (

@@ -10,7 +10,6 @@ import type { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
 import { Button } from '../Button';
 import { ProgressBar } from '../ProgressBar';
-import { StructureStats } from './StructureStats';
 import { useStructurePageContext, type StructurePageContext } from './types';
 
 function TopicDetails({ assigned, topic }: { assigned?: number; topic: ResearchItem }) {
@@ -140,9 +139,6 @@ export default function LabPanel() {
   const { structure } = useOutletContext<StructurePageContext>();
 
   return (
-    <div className="flex flex-col space-y-1">
-      <StructureStats />
-      {structure.researchTopic ? <LabIsResearching /> : <LabIsReady />}
-    </div>
+    <div className="flex flex-col space-y-1">{structure.researchTopic ? <LabIsResearching /> : <LabIsReady />}</div>
   );
 }
