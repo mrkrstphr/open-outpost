@@ -4,3 +4,12 @@
   font-family: 'TechnoRace';
   src: local('TechnoRaceItalic'), url('./fonts/TechnoRaceItalic.otf') format('opentype');
 }
+
+a,
+a:visited {
+  @apply text-purple-500;
+}
+
+a:hover {
+  @apply text-white underline;
+}

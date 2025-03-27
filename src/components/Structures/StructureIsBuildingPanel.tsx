@@ -1,6 +1,6 @@
-import { ProgressBar } from '../../components/ProgressBar';
 import { structureSpec } from '../../data/structures';
 import type { Structure } from '../../types';
+import { ProgressBar } from '../ProgressBar';
 
 export function StructureIsBuildingPanel({ structure }: { structure: Structure }) {
   const definition = structureSpec[structure.type];

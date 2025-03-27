@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '../../components/Button';
-import { ProgressBar } from '../../components/ProgressBar';
+import { useOutletContext } from 'react-router';
 import { researchTree } from '../../data/research';
 import { structureSpec } from '../../data/structures';
 import { startResearch } from '../../state/slices/game';
 import type { RootState } from '../../store';
 import type { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
+import { Button } from '../Button';
+import { ProgressBar } from '../ProgressBar';
+import type { StructurePageContext } from './types';
 
 function TopicDetails({ topic }: { topic: ResearchItem }) {
   return (
@@ -80,7 +82,9 @@ export const LabIsReady = ({ structure }: { structure: Structure }) => {
   );
 };
 
-export default function LabPanel({ structure }: { structure: Structure }) {
+export default function LabPanel() {
+  const { structure } = useOutletContext<StructurePageContext>();
+
   if (structure.researchTopic) {
     const percent = Math.min((structure.researchTopic.progress / structure.researchTopic.cost) * 100, 100);
     return (

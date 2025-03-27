@@ -1,15 +1,17 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Box } from '../../components/Box';
-import { Button } from '../../components/Button';
-import { ContentBox } from '../../components/ContentBox';
-import { ProgressBar } from '../../components/ProgressBar';
-import { type StructureDetails, structureSpec } from '../../data/structures';
+import { useNavigate } from 'react-router';
+import { structureSpec, type StructureDetails } from '../../data/structures';
 import { useOre } from '../../hooks/useOre';
 import { buildStructure, cancelProduceStructure, produceStructure } from '../../state/slices/game';
-import type { Structure } from '../../types';
+import { type Structure } from '../../types';
 import { canBuildStructure } from '../../utils';
+import { Box } from '../Box';
+import { Button } from '../Button';
+import { ContentBox } from '../ContentBox';
+import { ProgressBar } from '../ProgressBar';
+import { useStructurePageContext } from './types';
 
 export type FactoryStructureProps = {
   structure: Structure;
@@ -18,11 +20,11 @@ export type FactoryStructureProps = {
 
 export type StorageProps = {
   structure: Structure;
-  onClose?: FactoryStructureProps['onClose'];
 };
 
-const Storage = ({ structure, onClose }: StorageProps) => {
+const Storage = ({ structure }: StorageProps) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const definition = structureSpec[structure.type];
 
   return (
@@ -39,7 +41,7 @@ const Storage = ({ structure, onClose }: StorageProps) => {
                 className="h-16 w-16 cursor-pointer object-contain"
                 onClick={() => {
                   dispatch(buildStructure({ factory: structure, index }));
-                  onClose?.();
+                  navigate('/');
                 }}
               />
             ) : (
@@ -190,12 +192,13 @@ const BuildMenu = ({ structure }: BuildMenuProps) => {
   );
 };
 
-const FactoryStructure = ({ structure, onClose }: FactoryStructureProps) => {
+const FactoryStructure = () => {
+  const { structure } = useStructurePageContext();
   const isCurrentlyBuilding = !!structure.current?.type;
 
   return (
     <div className="flex flex-col space-y-1">
-      <Storage structure={structure} onClose={onClose} />
+      <Storage structure={structure} />
       {!isCurrentlyBuilding && <BuildMenu structure={structure} />}
       {isCurrentlyBuilding && <BuildingState structure={structure} />}
     </div>

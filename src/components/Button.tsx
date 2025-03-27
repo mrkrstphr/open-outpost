@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import type { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
+import { Link, type LinkProps } from 'react-router';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success' | 'outline';
 
@@ -23,4 +24,17 @@ export const Button = ({ className, children, type = 'button', variant = 'primar
   >
     {children}
   </button>
+);
+
+export type ButtonLinkProps = LinkProps & {
+  variant?: ButtonVariant;
+};
+
+export const ButtonLink = ({ className, children, variant = 'primary', ...props }: ButtonLinkProps) => (
+  <Link
+    className={clsx('text-white hover:text-white py-0.5 px-1 cursor-pointer', variantToClassMap[variant], className)}
+    {...props}
+  >
+    {children}
+  </Link>
 );

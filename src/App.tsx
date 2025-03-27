@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Outlet } from 'react-router';
 import useSound from 'use-sound';
 import { Box } from './components/Box';
+import { DebugTrigger } from './components/Debug/Trigger';
 import { useNotices } from './hooks/useNotices';
-import { DebugTrigger } from './panels/Debug/Trigger';
-import { StructuresPanel } from './panels/Structures';
 import alertSfx from './sound/alert.mp3';
 import { tick } from './state/slices/game';
 import type { RootState } from './store';
@@ -40,13 +40,13 @@ function App() {
           <h1 className="text-4xl text-stone-200 flex-1" style={{ fontFamily: 'TechnoRace' }}>
             OpenOutpost
           </h1>
-          <div>
+          <div className="flex space-x-1 items-center">
             <DebugTrigger />
           </div>
         </div>
 
         <Box className="flex flex-col space-y-1 text-sm">
-          <StructuresPanel />
+          <Outlet />
 
           <Box className="mb-1 text-sm truncate">
             {latestNotice ? (

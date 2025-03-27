@@ -1,1 +1,0 @@
-export { StructuresPanel } from './Structures';
