@@ -20,7 +20,11 @@ const variantToClassMap: Record<ButtonVariant, string> = {
 export const Button = ({ className, children, type = 'button', variant = 'primary', ...props }: ButtonProps) => (
   <button
     type={type}
-    className={clsx('text-white py-0.5 px-1 cursor-pointer', variantToClassMap[variant], className)}
+    className={clsx(
+      'text-white disabled:bg-gray-500 disabled:cursor-auto py-0.5 px-1 cursor-pointer',
+      variantToClassMap[variant],
+      className
+    )}
     {...props}
   >
     {children}
