@@ -26,7 +26,7 @@ export const initialState: GameState = {
   },
 };
 
-const createGameState = (state?: PartialDeep<GameState>) => mergeDeepRight(initialState, state ?? {});
+export const createGameState = (state?: PartialDeep<GameState>) => mergeDeepRight(initialState, state ?? {});
 
 export const newGameState = () =>
   createGameState({

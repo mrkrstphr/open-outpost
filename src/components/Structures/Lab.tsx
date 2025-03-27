@@ -1,8 +1,10 @@
+import { isNotNil } from 'ramda';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router';
 import { researchTree } from '../../data/research';
 import { structureSpec } from '../../data/structures';
+import { useColonists } from '../../hooks';
 import { startResearch } from '../../state/slices/game';
 import type { RootState } from '../../store';
 import type { ResearchItem, Structure } from '../../types';
@@ -11,12 +13,12 @@ import { Button } from '../Button';
 import { ProgressBar } from '../ProgressBar';
 import type { StructurePageContext } from './types';
 
-function TopicDetails({ topic }: { topic: ResearchItem }) {
+function TopicDetails({ assigned, topic }: { assigned?: number; topic: ResearchItem }) {
   return (
     <>
       <h3 className="font-semibold mb-1">{topic.topic}</h3>
       <div className="border-b border-purple-500 mb-1 pb-1">
-        Scientists: {topic.scientists}, Cost: {topic.cost}
+        Scientists: {isNotNil(assigned) ? `${assigned}/${topic.scientists}` : topic.scientists}, Cost: {topic.cost}
       </div>
       <div className="border-b border-purple-500 mb-1 pb-1">{topic.teaser}</div>
       <div className="border-b border-purple-500 mb-1 pb-1">{topic.description}</div>
@@ -25,10 +27,60 @@ function TopicDetails({ topic }: { topic: ResearchItem }) {
   );
 }
 
+function AssignTopic({ structure, topic }: { structure: Structure; topic: ResearchItem }) {
+  const dispatch = useDispatch();
+  const { availableScientists } = useColonists();
+  const maxAvailableScientists = Math.min(availableScientists, topic.scientists);
+  const [assignedScientists, setAssignedScientists] = useState(maxAvailableScientists);
+
+  const handleAssignClick = () => {
+    dispatch(
+      startResearch({
+        lab: structure,
+        topic: topic,
+        scientists: assignedScientists,
+      })
+    );
+  };
+
+  const handleChangeAssigned = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setAssignedScientists(parseInt(e.target.value, 10));
+
+  return (
+    <>
+      <TopicDetails topic={topic} />
+
+      <div className="border-t border-purple-500 pt-1">
+        <p>Available Scientists: {availableScientists}</p>
+        <p>Max Scientists: {topic.scientists}</p>
+        <p>Assigned Scientists: {assignedScientists}</p>
+
+        <div className="w-full py-3 px-3">
+          <input
+            id="default-range"
+            type="range"
+            value={assignedScientists}
+            max={maxAvailableScientists}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            onChange={handleChangeAssigned}
+          />
+        </div>
+
+        {!structure.researchTopic && (
+          <div className="mt-1 text-center">
+            <Button disabled={assignedScientists === 0} onClick={handleAssignClick}>
+              Start Research
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
 export const LabIsReady = ({ structure }: { structure: Structure }) => {
   const definition = structureSpec[structure.type];
   const { colony, finishedResearch } = useSelector((state: RootState) => state.game);
-  const dispatch = useDispatch();
 
   const [selectedTopic, setSelectedTopic] = useState<ResearchItem | undefined>();
 
@@ -54,28 +106,7 @@ export const LabIsReady = ({ structure }: { structure: Structure }) => {
       </div>
       <div className="flex-1 border border-purple-500 p-1">
         {selectedTopic && (
-          <>
-            <TopicDetails topic={selectedTopic} />
-
-            {!structure.researchTopic && (
-              <div className="mt-1 text-center">
-                <Button
-                  // TODO: FIXME: scientist assignment...
-                  onClick={() =>
-                    dispatch(
-                      startResearch({
-                        lab: structure,
-                        topic: selectedTopic,
-                        scientists: selectedTopic.scientists,
-                      })
-                    )
-                  }
-                >
-                  Start Research
-                </Button>
-              </div>
-            )}
-          </>
+          <AssignTopic key={`assign-${selectedTopic.id}`} structure={structure} topic={selectedTopic} />
         )}
       </div>
     </div>
@@ -98,7 +129,7 @@ export default function LabPanel() {
 
         <ProgressBar percent={percent} className="my-1" />
 
-        <TopicDetails topic={structure.researchTopic} />
+        <TopicDetails assigned={structure.researchTopic.assignedScientists} topic={structure.researchTopic} />
       </div>
     );
   }
