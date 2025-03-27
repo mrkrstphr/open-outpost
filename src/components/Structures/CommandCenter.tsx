@@ -6,8 +6,11 @@ import { PiCarrot as FoodIcon } from 'react-icons/pi';
 import { useColonists, useFood, useMark, useMorale, useOre, usePower } from '../../hooks';
 import { ContentBox } from '../ContentBox';
 import { SimpleDataTable } from '../SimpleDataTable';
+import { StructureStats } from './StructureStats';
+import { useStructurePageContext } from './types';
 
 const CommandCenterStructure = () => {
+  const { definition } = useStructurePageContext();
   const mark = useMark();
   const morale = useMorale();
   const { total: totalColonists, children: totalChildren, availableScientists, availableWorkers } = useColonists();
@@ -16,60 +19,60 @@ const CommandCenterStructure = () => {
   const { common, rare } = useOre();
 
   return (
-    <div>
-      <div className="flex flex-col space-y-1">
-        <ContentBox classNames={{ icon: 'text-red-500' }} icon={StatsIcon} title="Stats">
-          <SimpleDataTable
-            id="stats"
-            data={[
-              { label: 'Mark', value: mark },
-              { label: 'Morale', value: morale },
-            ]}
-          />
-        </ContentBox>
+    <div className="flex flex-col space-y-1">
+      <StructureStats extras={[{ label: 'Power Generation', value: definition.produces!.power! }]} />
 
-        <ContentBox classNames={{ icon: 'text-blue-500' }} icon={ColonistsIcon} title="Colonists">
-          <SimpleDataTable
-            id="colonists"
-            data={[
-              { label: 'Total', value: totalColonists },
-              { label: 'Children', value: totalChildren },
-              { label: 'Available Workers', value: availableWorkers },
-              { label: 'Available Scientists', value: availableScientists },
-            ]}
-          />
-        </ContentBox>
+      <ContentBox classNames={{ icon: 'text-red-500' }} icon={StatsIcon} title="Stats">
+        <SimpleDataTable
+          id="stats"
+          data={[
+            { label: 'Mark', value: mark },
+            { label: 'Morale', value: morale },
+          ]}
+        />
+      </ContentBox>
 
-        <ContentBox classNames={{ icon: 'text-yellow-500' }} icon={PowerIcon} title="Power">
-          <SimpleDataTable
-            id="power"
-            data={[
-              { label: 'Production', value: powerProduction },
-              { label: 'Utilization', value: powerUtilization },
-            ]}
-          />
-        </ContentBox>
+      <ContentBox classNames={{ icon: 'text-blue-500' }} icon={ColonistsIcon} title="Colonists">
+        <SimpleDataTable
+          id="colonists"
+          data={[
+            { label: 'Total', value: totalColonists },
+            { label: 'Children', value: totalChildren },
+            { label: 'Available Workers', value: availableWorkers },
+            { label: 'Available Scientists', value: availableScientists },
+          ]}
+        />
+      </ContentBox>
 
-        <ContentBox classNames={{ icon: 'text-green-500' }} icon={FoodIcon} title="Food">
-          <SimpleDataTable
-            id="food"
-            data={[
-              { label: 'Production', value: foodProduction },
-              { label: 'Storage', value: foodStorage },
-            ]}
-          />
-        </ContentBox>
+      <ContentBox classNames={{ icon: 'text-yellow-500' }} icon={PowerIcon} title="Power">
+        <SimpleDataTable
+          id="power"
+          data={[
+            { label: 'Production', value: powerProduction },
+            { label: 'Utilization', value: powerUtilization },
+          ]}
+        />
+      </ContentBox>
 
-        <ContentBox classNames={{ icon: 'text-orange-500' }} icon={OreIcon} title="Ore">
-          <SimpleDataTable
-            id="ore"
-            data={[
-              { label: 'Common', value: common },
-              { label: 'Rare', value: rare },
-            ]}
-          />
-        </ContentBox>
-      </div>
+      <ContentBox classNames={{ icon: 'text-green-500' }} icon={FoodIcon} title="Food">
+        <SimpleDataTable
+          id="food"
+          data={[
+            { label: 'Production', value: foodProduction },
+            { label: 'Storage', value: foodStorage },
+          ]}
+        />
+      </ContentBox>
+
+      <ContentBox classNames={{ icon: 'text-orange-500' }} icon={OreIcon} title="Ore">
+        <SimpleDataTable
+          id="ore"
+          data={[
+            { label: 'Common', value: common },
+            { label: 'Rare', value: rare },
+          ]}
+        />
+      </ContentBox>
     </div>
   );
 };

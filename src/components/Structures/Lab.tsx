@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router';
 import { researchTree } from '../../data/research';
-import { structureSpec } from '../../data/structures';
 import { useColonists } from '../../hooks';
 import { startResearch } from '../../state/slices/game';
 import type { RootState } from '../../store';
@@ -11,7 +10,8 @@ import type { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
 import { Button } from '../Button';
 import { ProgressBar } from '../ProgressBar';
-import type { StructurePageContext } from './types';
+import { StructureStats } from './StructureStats';
+import { useStructurePageContext, type StructurePageContext } from './types';
 
 function TopicDetails({ assigned, topic }: { assigned?: number; topic: ResearchItem }) {
   return (
@@ -78,8 +78,8 @@ function AssignTopic({ structure, topic }: { structure: Structure; topic: Resear
   );
 }
 
-export const LabIsReady = ({ structure }: { structure: Structure }) => {
-  const definition = structureSpec[structure.type];
+export const LabIsReady = () => {
+  const { definition, structure } = useStructurePageContext();
   const { colony, finishedResearch } = useSelector((state: RootState) => state.game);
 
   const [selectedTopic, setSelectedTopic] = useState<ResearchItem | undefined>();
@@ -113,26 +113,36 @@ export const LabIsReady = ({ structure }: { structure: Structure }) => {
   );
 };
 
+function LabIsResearching() {
+  const { structure } = useStructurePageContext();
+
+  const topic = structure.researchTopic!;
+
+  const percent = Math.min((topic.progress / topic.cost) * 100, 100);
+
+  return (
+    <div>
+      <div className="flex space-x-2">
+        <div className="flex-1">Currently Researching: {topic.topic}</div>
+        <div className="">
+          {topic.progress} / {topic.cost}
+        </div>
+      </div>
+
+      <ProgressBar percent={percent} className="my-1" />
+
+      <TopicDetails assigned={topic.assignedScientists} topic={topic} />
+    </div>
+  );
+}
+
 export default function LabPanel() {
   const { structure } = useOutletContext<StructurePageContext>();
 
-  if (structure.researchTopic) {
-    const percent = Math.min((structure.researchTopic.progress / structure.researchTopic.cost) * 100, 100);
-    return (
-      <div>
-        <div className="flex space-x-2">
-          <div className="flex-1">Currently Researching: {structure.researchTopic.topic}</div>
-          <div className="">
-            {structure.researchTopic.progress} / {structure.researchTopic.cost}
-          </div>
-        </div>
-
-        <ProgressBar percent={percent} className="my-1" />
-
-        <TopicDetails assigned={structure.researchTopic.assignedScientists} topic={structure.researchTopic} />
-      </div>
-    );
-  }
-
-  return <LabIsReady structure={structure} />;
+  return (
+    <div className="flex flex-col space-y-1">
+      <StructureStats />
+      {structure.researchTopic ? <LabIsResearching /> : <LabIsReady />}
+    </div>
+  );
 }
