@@ -20,7 +20,7 @@ const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.BASE_URL ?? '/'}>
         <Routes>
           <Route element={<App />}>
             <Route index element={<Structures />} />
