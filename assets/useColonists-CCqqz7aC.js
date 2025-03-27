@@ -1,0 +1,1 @@
+import{u as i,t as o,v as c}from"./index-DYQgUpNh.js";const n=()=>{const s=i(l=>l.game),{colonists:a}=s,t=o(s),e=c(s);return{...a,total:a.children+a.workers+a.scientists,availableScientists:Math.max(0,t),availableWorkers:Math.max(0,e)}};export{n as u};
