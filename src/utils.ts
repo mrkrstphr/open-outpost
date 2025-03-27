@@ -54,15 +54,24 @@ export const filterOnlineOrNoPowerStructures = (structures: Array<Structure>) =>
     (structure) => structure.status === StructureStatus.Online || structure.status === StructureStatus.NoPower
   );
 
-export const calculateAvailableScientists = ({ colonists, structures }: GameState) =>
-  colonists.scientists -
-  filterActiveStructures(structures).reduce((acc, structure) => {
-    const def = structureSpec[structure.type];
+export const calculateAvailableScientists = ({
+  colonists,
+  structures,
+}: Pick<GameState, 'colonists' | 'structures'>) => {
+  const workerShortage = Math.min(0, calculateAvailableWorkers({ colonists, structures }));
 
-    return acc + (def.scientists ?? 0) + (structure.researchTopic?.assignedScientists ?? 0);
-  }, 0);
+  return (
+    colonists.scientists -
+    filterActiveStructures(structures).reduce((acc, structure) => {
+      const def = structureSpec[structure.type];
 
-export const calculateAvailableWorkers = ({ colonists, structures }: GameState) =>
+      return acc + (def.scientists ?? 0) + (structure.researchTopic?.assignedScientists ?? 0);
+    }, 0) +
+    workerShortage
+  );
+};
+
+export const calculateAvailableWorkers = ({ colonists, structures }: Pick<GameState, 'colonists' | 'structures'>) =>
   colonists.workers -
   filterActiveStructures(structures).reduce((acc, structure) => {
     const def = structureSpec[structure.type];

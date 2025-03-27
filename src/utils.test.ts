@@ -118,6 +118,25 @@ describe('calculateAvailableScientists', () => {
 
     expect(availableScientists).toEqual(2);
   });
+
+  test("should reduce availability if there aren't enough workers for all shifts", () => {
+    const state = {
+      colonists: { children: 0, scientists: 6, workers: 3 },
+      structures: [
+        createNewStructure(structureSpec.CommandCenter, StructureStatus.Online),
+        createNewStructure(structureSpec.CommandCenter, StructureStatus.Offline),
+        createNewStructure(structureSpec.LabStandard, StructureStatus.Online),
+      ],
+    };
+
+    state.structures[0].researchTopic = {
+      assignedScientists: 2,
+    } as LabResearchTopic;
+
+    const availableScientists = calculateAvailableScientists(state as GameState);
+
+    expect(availableScientists).toEqual(1);
+  });
 });
 
 describe('calculateAvailableWorkers', () => {
