@@ -13,6 +13,7 @@ import { store } from './store';
 const CommandCenter = lazy(() => import('./components/Structures/CommandCenter'));
 const FactoryStructure = lazy(() => import('./components/Structures/FactoryStructure'));
 const Lab = lazy(() => import('./components/Structures/Lab'));
+const Notices = lazy(() => import('./components/Notices'));
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
@@ -28,6 +29,7 @@ root.render(
               <Route path="structures/factory-structure/:id" element={<FactoryStructure />} />
               <Route path="structures/lab-standard/:id" element={<Lab />} />
             </Route>
+            <Route path="notices" element={<Notices />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>

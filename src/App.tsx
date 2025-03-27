@@ -4,6 +4,7 @@ import { Outlet } from 'react-router';
 import useSound from 'use-sound';
 import { Box } from './components/Box';
 import { DebugTrigger } from './components/Debug/Trigger';
+import { NoticeBar } from './components/NoticeBar';
 import { useNotices } from './hooks/useNotices';
 import alertSfx from './sound/alert.mp3';
 import { tick } from './state/slices/game';
@@ -47,16 +48,8 @@ function App() {
 
         <Box className="flex flex-col space-y-1 text-sm">
           <Outlet />
+          <NoticeBar />
 
-          <Box className="mb-1 text-sm truncate">
-            {latestNotice ? (
-              <>
-                @{latestNotice?.mark}: {latestNotice?.message}
-              </>
-            ) : (
-              <>&nbsp;</>
-            )}
-          </Box>
           <Box className="flex items-center space-x-1">
             <Box className="text-sm flex flex-1 items-center space-x-1">
               <span className="flex-1">Common:</span> <span>{state.ore.common}</span>
