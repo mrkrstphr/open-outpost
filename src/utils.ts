@@ -78,3 +78,6 @@ export const calculateAvailableWorkers = ({ colonists, structures }: Pick<GameSt
 
     return acc + (def.workers ?? 0);
   }, 0);
+
+export const canStructureBeDisabled = (structure: Structure) =>
+  [StructureStatus.NoPower, StructureStatus.Online].includes(structure.status);

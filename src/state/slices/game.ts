@@ -3,6 +3,7 @@ import { Colony, type Structure } from '../../types';
 import { newGameState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
 import { cancelProduceStructure as cancelProduceStructureFunc } from '../reducers/cancelProduceStructure';
+import { disableStructure as disableStructureFunc } from '../reducers/disableStructure';
 import { newGame as newGameFunc } from '../reducers/newGame';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
 import { startResearch as startResearchFunc } from '../reducers/startResearch';
@@ -29,6 +30,7 @@ export const gameSlice = createSlice({
   reducers: {
     buildStructure: buildStructureFunc,
     cancelProduceStructure: cancelProduceStructureFunc,
+    disableStructure: disableStructureFunc,
     produceStructure: produceStructureFunc,
     startResearch: startResearchFunc,
     tick: tickFunc,
@@ -36,7 +38,14 @@ export const gameSlice = createSlice({
   },
 });
 
-export const { buildStructure, cancelProduceStructure, newGame, produceStructure, startResearch, tick } =
-  gameSlice.actions;
+export const {
+  buildStructure,
+  cancelProduceStructure,
+  disableStructure,
+  newGame,
+  produceStructure,
+  startResearch,
+  tick,
+} = gameSlice.actions;
 
 export default gameSlice.reducer;
