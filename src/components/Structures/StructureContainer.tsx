@@ -5,7 +5,7 @@ import { structureSpec } from '../../data/structures';
 import { disableStructure, enableStructure } from '../../state/slices/game';
 import type { RootState } from '../../store';
 import { StructureStatus } from '../../types';
-import { canStructureBeDisabled, structureLabel } from '../../utils';
+import { canStructureBeDisabled } from '../../utils';
 import { Box } from '../Box';
 import { Button, ButtonLink } from '../Button';
 import { ContentBox } from '../ContentBox';
@@ -53,7 +53,7 @@ export function StructureContainer() {
           </ButtonLink>
         </div>
       }
-      title={structureLabel(structure)}
+      title={definition.name}
       variant="filled"
     >
       <div className="flex flex-col space-y-1">

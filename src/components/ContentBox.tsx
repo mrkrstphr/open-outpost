@@ -28,7 +28,7 @@ export const ContentBox = ({
   variant = 'default',
   ...props
 }: ContentBoxProps) => (
-  <div className={`border flex flex-col border-purple-500 ${className}`} {...props}>
+  <div className={clsx('border flex flex-col border-purple-500', className)} {...props}>
     <div className={clsx('border-b border-purple-500', headerVariantMap[variant])}>
       <div className="p-1">
         <div className="flex items-center">

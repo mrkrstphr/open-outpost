@@ -28,13 +28,13 @@ const Storage = ({ structure }: StorageProps) => {
   const definition = structureSpec[structure.type];
 
   return (
-    <ContentBox title="Structure Kit Storage">
+    <ContentBox title="Structure Kit Storage" classNames={{ body: 'pb-0' }}>
       <p className="text-sm mb-1">
         The following structure kits are in storage. Select a kit to build it in the colony.
       </p>
-      <div className="flex space-x-1">
+      <div className="flex flex-wrap">
         {Array.from({ length: definition.produces?.slots ?? 0 }).map((_, index) => (
-          <Box className="bg-gray-900 border border-purple-500" key={`slot-${index}`}>
+          <Box className="bg-gray-900 border border-purple-500 mr-1 mb-1" key={`slot-${index}`}>
             {structure.storage?.[index] ? (
               <img
                 src={structureSpec[structure.storage[index]].image}
@@ -72,7 +72,7 @@ const BuildingState = ({ structure }: BuildingStateProps) => {
   return (
     <ContentBox title="Current Production">
       <div className="flex space-x-1">
-        <Box className="bg-gray-900">
+        <Box className="bg-gray-900 self-start">
           <img src={currentDefinition.image} alt={currentDefinition.type} className="h-16 w-16 object-contain" />
         </Box>
         <div className="flex flex-col space-y-1 flex-1">
@@ -89,22 +89,24 @@ const BuildingState = ({ structure }: BuildingStateProps) => {
           <div>
             {!isPendingCancel && <Button onClick={() => setIsPendingCancel(true)}>Cancel Construction</Button>}
             {isPendingCancel && (
-              <div className="flex space-x-1 items-center">
+              <div className="flex flex-col space-y-1 items-center">
                 <div>Are you sure you want to cancel construction?</div>
 
-                <Button
-                  variant="danger"
-                  onClick={() => {
-                    dispatch(cancelProduceStructure({ factory: structure }));
-                    setIsPendingCancel(false);
-                  }}
-                >
-                  Confirm
-                </Button>
+                <div className="flex space-x-1 mt-1">
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      dispatch(cancelProduceStructure({ factory: structure }));
+                      setIsPendingCancel(false);
+                    }}
+                  >
+                    Confirm
+                  </Button>
 
-                <Button variant="secondary" onClick={() => setIsPendingCancel(false)}>
-                  Cancel
-                </Button>
+                  <Button variant="secondary" onClick={() => setIsPendingCancel(false)}>
+                    Cancel
+                  </Button>
+                </div>
               </div>
             )}
           </div>
