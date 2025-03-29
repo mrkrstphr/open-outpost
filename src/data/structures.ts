@@ -61,7 +61,6 @@ export const structureSpec: Record<StructureTypes, StructureDetails> = {
     name: 'Factory, Structure',
     type: StructureTypes.FactoryStructure,
     hp: 2000,
-    // TODO: FIXME:
     buildCost: { common: 2500, rare: 0 },
     kitBuildTime: 1875,
     powerUsage: 50,
@@ -88,6 +87,7 @@ export const structureSpec: Record<StructureTypes, StructureDetails> = {
     hp: 800,
     buildCost: { common: 600 },
     kitBuildTime: 225,
+    powerUsage: 20,
     workers: 1,
     image: PlymouthResidence,
   },

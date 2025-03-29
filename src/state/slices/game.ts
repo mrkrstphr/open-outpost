@@ -4,6 +4,7 @@ import { newGameState } from '../initialState';
 import { buildStructure as buildStructureFunc } from '../reducers/buildStructure';
 import { cancelProduceStructure as cancelProduceStructureFunc } from '../reducers/cancelProduceStructure';
 import { disableStructure as disableStructureFunc } from '../reducers/disableStructure';
+import { enableStructure as enableStructureFunc } from '../reducers/enableStructure';
 import { newGame as newGameFunc } from '../reducers/newGame';
 import { produceStructure as produceStructureFunc } from '../reducers/produceStructure';
 import { startResearch as startResearchFunc } from '../reducers/startResearch';
@@ -31,6 +32,7 @@ export const gameSlice = createSlice({
     buildStructure: buildStructureFunc,
     cancelProduceStructure: cancelProduceStructureFunc,
     disableStructure: disableStructureFunc,
+    enableStructure: enableStructureFunc,
     produceStructure: produceStructureFunc,
     startResearch: startResearchFunc,
     tick: tickFunc,
@@ -42,6 +44,7 @@ export const {
   buildStructure,
   cancelProduceStructure,
   disableStructure,
+  enableStructure,
   newGame,
   produceStructure,
   startResearch,

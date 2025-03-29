@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useParams } from 'react-router';
 import { structureSpec } from '../../data/structures';
-import { disableStructure } from '../../state/slices/game';
+import { disableStructure, enableStructure } from '../../state/slices/game';
 import type { RootState } from '../../store';
 import { StructureStatus } from '../../types';
 import { canStructureBeDisabled, structureLabel } from '../../utils';
@@ -32,10 +32,17 @@ export function StructureContainer() {
 
   const handleCancelDisableStructureClick = () => setIsPendingDisable(false);
 
+  const handleEnableStructureClick = () => dispatch(enableStructure({ structure }));
+
   return (
     <ContentBox
       action={
         <div className="flex space-x-1">
+          {structure.status === StructureStatus.Offline && (
+            <Button variant="success" onClick={handleEnableStructureClick}>
+              Enable
+            </Button>
+          )}
           {canStructureBeDisabled(structure) && (
             <Button variant="danger" onClick={() => setIsPendingDisable(true)}>
               Disable
