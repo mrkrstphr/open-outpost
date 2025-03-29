@@ -1,4 +1,4 @@
-import { isNotNil } from 'ramda';
+import { isNil, isNotNil } from 'ramda';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router';
@@ -8,14 +8,18 @@ import { startResearch } from '../../state/slices/game';
 import type { RootState } from '../../store';
 import type { ResearchItem, Structure } from '../../types';
 import { filterAvailableResearch } from '../../utils';
+import { Box } from '../Box';
 import { Button } from '../Button';
 import { ProgressBar } from '../ProgressBar';
 import { useStructurePageContext, type StructurePageContext } from './types';
 
-function TopicDetails({ assigned, topic }: { assigned?: number; topic: ResearchItem }) {
+function TopicDetails({ assigned, topic, onClose }: { assigned?: number; topic: ResearchItem; onClose?: () => void }) {
   return (
     <>
-      <h3 className="font-semibold mb-1">{topic.topic}</h3>
+      <div className="flex items-center space-x-1 mb-1">
+        <h3 className="flex-1 font-semibold">{topic.topic}</h3>
+        {onClose && <Button onClick={onClose}>Close</Button>}
+      </div>
       <div className="border-b border-purple-500 mb-1 pb-1">
         Scientists: {isNotNil(assigned) ? `${assigned}/${topic.scientists}` : topic.scientists}, Cost: {topic.cost}
       </div>
@@ -26,7 +30,15 @@ function TopicDetails({ assigned, topic }: { assigned?: number; topic: ResearchI
   );
 }
 
-function AssignTopic({ structure, topic }: { structure: Structure; topic: ResearchItem }) {
+function AssignTopic({
+  structure,
+  topic,
+  onClose,
+}: {
+  structure: Structure;
+  topic: ResearchItem;
+  onClose?: () => void;
+}) {
   const dispatch = useDispatch();
   const { availableScientists } = useColonists();
   const maxAvailableScientists = Math.min(availableScientists, topic.scientists);
@@ -47,7 +59,7 @@ function AssignTopic({ structure, topic }: { structure: Structure; topic: Resear
 
   return (
     <>
-      <TopicDetails topic={topic} />
+      <TopicDetails topic={topic} onClose={onClose} />
 
       <div className="border-t border-purple-500 pt-1">
         <p>Available Scientists: {availableScientists}</p>
@@ -80,7 +92,6 @@ function AssignTopic({ structure, topic }: { structure: Structure; topic: Resear
 export const LabIsReady = () => {
   const { definition, structure } = useStructurePageContext();
   const { colony, finishedResearch } = useSelector((state: RootState) => state.game);
-
   const [selectedTopic, setSelectedTopic] = useState<ResearchItem | undefined>();
 
   const availableTopics = definition.researchType
@@ -88,27 +99,58 @@ export const LabIsReady = () => {
     : [];
 
   return (
-    <div className="flex w-full space-x-1">
-      <div className="flex-1 border border-purple-500 p-1">
-        <div className="font-medium mb-1">Available Research Topics</div>
-        <ul className="ml-12 list-decimal">
-          {availableTopics.map((topic) => (
-            <li
-              key={`topic-${topic.topic}`}
-              className="mb-0.5 hover:underline cursor-pointer hover:text-purple-500"
-              onClick={() => setSelectedTopic(topic)}
-            >
-              {topic.topic}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="flex-1 border border-purple-500 p-1">
-        {selectedTopic && (
-          <AssignTopic key={`assign-${selectedTopic.id}`} structure={structure} topic={selectedTopic} />
+    <>
+      <Box className="lg:hidden">
+        {isNil(selectedTopic) && (
+          <div>
+            <div className="font-medium mb-1">Available Research Topics</div>
+            <ul className="ml-12 list-decimal">
+              {availableTopics.map((topic) => (
+                <li
+                  key={`topic-${topic.topic}`}
+                  className="mb-0.5 hover:underline cursor-pointer hover:text-purple-500"
+                  onClick={() => setSelectedTopic(topic)}
+                >
+                  {topic.topic}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
+        {selectedTopic && (
+          <Box>
+            <AssignTopic
+              key={`assign-${selectedTopic.id}`}
+              structure={structure}
+              topic={selectedTopic}
+              onClose={() => setSelectedTopic(undefined)}
+            />
+          </Box>
+        )}
+      </Box>
+
+      <div className="hidden lg:flex w-full space-x-1">
+        <div className="flex-1 border border-purple-500 p-1">
+          <div className="font-medium mb-1">Available Research Topics</div>
+          <ul className="ml-12 list-decimal">
+            {availableTopics.map((topic) => (
+              <li
+                key={`topic-${topic.topic}`}
+                className="mb-0.5 hover:underline cursor-pointer hover:text-purple-500"
+                onClick={() => setSelectedTopic(topic)}
+              >
+                {topic.topic}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex-1 border border-purple-500 p-1">
+          {selectedTopic && (
+            <AssignTopic key={`assign-${selectedTopic.id}`} structure={structure} topic={selectedTopic} />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -120,7 +162,7 @@ function LabIsResearching() {
   const percent = Math.min((topic.progress / topic.cost) * 100, 100);
 
   return (
-    <div>
+    <Box>
       <div className="flex space-x-2">
         <div className="flex-1">Currently Researching: {topic.topic}</div>
         <div className="">
@@ -131,7 +173,7 @@ function LabIsResearching() {
       <ProgressBar percent={percent} className="my-1" />
 
       <TopicDetails assigned={topic.assignedScientists} topic={topic} />
-    </div>
+    </Box>
   );
 }
 
